@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Nimo 硬件接入软件层分析报告</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', 'Segoe UI', sans-serif; margin: 42px; color: #111827; line-height: 1.65; }
+h1 { font-size: 30px; margin-bottom: 8px; }
+h2 { margin-top: 32px; padding-bottom: 6px; border-bottom: 1px solid #e5e7eb; color: #1d4ed8; }
+table { border-collapse: collapse; width: 100%; margin: 14px 0 22px; font-size: 13px; }
+th, td { border: 1px solid #d1d5db; padding: 8px 10px; vertical-align: top; }
+th { background: #eff6ff; color: #1e3a8a; text-align: left; }
+tr:nth-child(even) td { background: #f9fafb; }
+code { background: #eef2ff; color: #3730a3; padding: 2px 5px; border-radius: 5px; }
+@media print { body { margin: 18mm; } h2 { page-break-after: avoid; } table { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+<h1>Nimo 硬件接入软件层分析报告</h1><p>生成时间：2026-05-25 11:51</p><h2>一、结论摘要</h2><ul><li>Nimo 设备中心 v1 已完成软件侧硬件接入准备：设备 API、设备中心 UI、模拟设备闭环、局域网启动提示、固件请求示例和 smoke 自检。</li><li>当前软件处于可对接真实 ESP32-S3 固件的阶段；下一步重点从功能可用转向安全、持久化、诊断和长期维护。</li><li>短期硬件接入建议采用 HTTP 轮询方案：开机注册、定时心跳、读取配置、轮询下一条提醒、上报完成/稍后。</li></ul><h2>二、当前完成状态</h2><table>
+<thead><tr><th>模块</th><th>状态</th><th>说明</th></tr></thead>
+<tbody>
+<tr><td>设备中心 UI</td><td>已完成</td><td>顶部/左侧导航已加入“设备”，可展示接入地址、LAN 状态、设备列表、提醒、协议和固件示例。</td></tr>
+<tr><td>设备 API</td><td>已完成</td><td>已具备 register、heartbeat、config、status、next-reminder、complete、snooze、test-push、stream。</td></tr>
+<tr><td>模拟设备</td><td>已完成</td><td>可在无硬件条件下验证注册、心跳、测试推送、完成、稍后。</td></tr>
+<tr><td>协议自检</td><td>已完成</td><td>新增 npm run smoke:device，非破坏性检查设备协议。</td></tr>
+<tr><td>LAN 模式</td><td>已具备</td><td>已有 npm run start:lan；硬件接入时需电脑和 ESP32-S3 处于同一 Wi-Fi。</td></tr>
+<tr><td>安全配对</td><td>待增强</td><td>建议新增 pairing code、deviceToken 和接口鉴权。</td></tr>
+<tr><td>设备落库</td><td>待增强</td><td>当前设备注册更偏运行态，建议落库保存真实设备、token、固件版本、最后心跳。</td></tr>
+<tr><td>设备事件日志</td><td>待增强</td><td>建议记录硬件请求和错误，方便调试 ESP32-S3。</td></tr>
+</tbody></table><h2>三、设备协议 v1</h2><table>
+<thead><tr><th>接口</th><th>方法</th><th>用途</th><th>请求参数/Body</th><th>响应重点</th><th>是否会改数据</th></tr></thead>
+<tbody>
+<tr><td>/device/info</td><td>GET</td><td>获取服务器、设备列表和协议清单</td><td>无</td><td>server、devices、protocol</td><td>否</td></tr>
+<tr><td>/device/register</td><td>POST</td><td>设备开机注册</td><td>id、name、type、capabilities</td><td>device、server</td><td>是，登记/更新设备</td></tr>
+<tr><td>/device/heartbeat</td><td>POST</td><td>设备心跳保活</td><td>deviceId</td><td>device、serverTime</td><td>是，更新 lastSeenAt</td></tr>
+<tr><td>/device/config</td><td>GET</td><td>读取设备配置</td><td>deviceId 查询参数</td><td>pollIntervalSeconds、heartbeatSeconds、actions、snoozeMinutes</td><td>轻微，touch 设备</td></tr>
+<tr><td>/device/status</td><td>GET</td><td>读取设备状态</td><td>deviceId 可选</td><td>server、devices</td><td>轻微，touch 设备</td></tr>
+<tr><td>/device/next-reminder</td><td>GET</td><td>拉取下一条 active 提醒</td><td>deviceId 查询参数</td><td>reminder 或 null</td><td>轻微，touch 设备</td></tr>
+<tr><td>/device/complete</td><td>POST</td><td>硬件完成提醒</td><td>deviceId、reminderId</td><td>changes、reminder</td><td>是，完成提醒</td></tr>
+<tr><td>/device/snooze</td><td>POST</td><td>硬件稍后提醒</td><td>deviceId、reminderId、minutes</td><td>dueAt、minutes、reminder</td><td>是，修改提醒时间</td></tr>
+<tr><td>/device/test-push</td><td>POST</td><td>测试推送事件</td><td>deviceId、title、task 可选</td><td>payload</td><td>否，不改真实提醒</td></tr>
+<tr><td>/device/stream</td><td>GET</td><td>设备 SSE 实时事件流</td><td>deviceId 查询参数</td><td>SSE 事件</td><td>否</td></tr>
+</tbody></table><h2>四、ESP32-S3 固件最小接入流程</h2><table>
+<thead><tr><th>步骤</th><th>固件动作</th><th>软件接口</th><th>成功标准</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>连接 Wi-Fi</td><td>无</td><td>ESP32-S3 与电脑在同一局域网</td></tr>
+<tr><td>2</td><td>开机注册设备</td><td>POST /device/register</td><td>设备中心显示新设备</td></tr>
+<tr><td>3</td><td>读取配置</td><td>GET /device/config</td><td>获得轮询和心跳间隔</td></tr>
+<tr><td>4</td><td>定时心跳</td><td>POST /device/heartbeat</td><td>设备中心 90 秒内显示在线</td></tr>
+<tr><td>5</td><td>轮询提醒</td><td>GET /device/next-reminder</td><td>屏幕显示下一条 active 提醒</td></tr>
+<tr><td>6</td><td>用户点完成</td><td>POST /device/complete</td><td>提醒状态变为 completed</td></tr>
+<tr><td>7</td><td>用户点稍后</td><td>POST /device/snooze</td><td>提醒 dueAt 延后指定分钟</td></tr>
+</tbody></table><h2>五、软件后续路线图</h2><table>
+<thead><tr><th>阶段</th><th>目标</th><th>软件任务</th><th>优先级</th><th>验收方式</th></tr></thead>
+<tbody>
+<tr><td>P0 已完成</td><td>硬件接入协议可用</td><td>设备中心、API、模拟设备、smoke:device</td><td>已完成</td><td>npm run smoke:device 通过</td></tr>
+<tr><td>P1</td><td>真实硬件安全接入</td><td>配对码、deviceToken、接口鉴权</td><td>高</td><td>未授权请求被拒绝，已配对设备可用</td></tr>
+<tr><td>P1</td><td>设备可长期管理</td><td>设备表落库、重命名、删除、固件版本、最后心跳</td><td>高</td><td>重启后设备仍存在</td></tr>
+<tr><td>P1</td><td>调试可观测</td><td>设备事件日志、错误统计、最近请求、离线原因</td><td>中高</td><td>设备页可看到最近 20 条事件</td></tr>
+<tr><td>P2</td><td>提醒展示更精细</td><td>ack、displayText、speakText、priority、sound、requiresAck</td><td>中</td><td>硬件不重复展示已确认提醒</td></tr>
+<tr><td>P2</td><td>LAN 诊断</td><td>端口检测、防火墙提示、二维码配置</td><td>中</td><td>页面可判断硬件是否可连</td></tr>
+<tr><td>P3</td><td>长期维护</td><td>OTA 元信息、配置下发、WebSocket/MQTT 方案</td><td>中低</td><td>设备可上报版本并读取升级信息</td></tr>
+</tbody></table><h2>六、风险与建议</h2><table>
+<thead><tr><th>风险</th><th>影响</th><th>当前状态</th><th>建议处理</th></tr></thead>
+<tbody>
+<tr><td>局域网未开启</td><td>ESP32-S3 无法访问电脑 API</td><td>当前默认 127.0.0.1</td><td>硬件调试使用 npm run start:lan，并放行 Windows 防火墙</td></tr>
+<tr><td>无设备鉴权</td><td>同网段设备可能误调用提醒接口</td><td>待增强</td><td>实现 pairing code + deviceToken</td></tr>
+<tr><td>设备状态未持久化</td><td>重启后设备记录丢失</td><td>待增强</td><td>新增 devices 表和 device_events 表</td></tr>
+<tr><td>轮询延迟</td><td>提醒非实时</td><td>可接受</td><td>第一版使用 15 秒轮询；后续评估 SSE/WebSocket/MQTT</td></tr>
+<tr><td>普通 Node 与 better-sqlite3 ABI 不一致</td><td>部分本地脚本不能直接读提醒库</td><td>已在 smoke 中跳过 DB 依赖项</td><td>使用 Electron runtime 或重建 better-sqlite3</td></tr>
+<tr><td>防火墙阻断</td><td>硬件无法连接</td><td>需现场验证</td><td>设备中心加入 LAN 诊断和二维码</td></tr>
+</tbody></table><h2>七、涉及文件</h2><table>
+<thead><tr><th>文件</th><th>用途</th></tr></thead>
+<tbody>
+<tr><td>src/api.js</td><td>设备 API、服务器信息、LAN 地址、协议清单</td></tr>
+<tr><td>src/ui/brain-ui/device-view.js</td><td>设备中心前端逻辑、模拟设备、固件示例</td></tr>
+<tr><td>src/ui/brain-ui/app-shell.js</td><td>设备页面结构、导航入口、接入清单</td></tr>
+<tr><td>src/ui/brain-ui/app.js</td><td>初始化设备中心、SSE 事件分发</td></tr>
+<tr><td>src/ui/brain-ui/styles.css</td><td>设备中心样式</td></tr>
+<tr><td>scripts/smoke-device.mjs</td><td>设备协议非破坏性 smoke test</td></tr>
+<tr><td>package.json</td><td>新增 npm run smoke:device</td></tr>
+</tbody></table><h2>八、建议下一步</h2><p>1. 优先实现设备配对码与 deviceToken。<br>2. 新增设备表和设备事件日志表。<br>3. 给设备中心增加局域网诊断和二维码配置。<br>4. 硬件到手后先用 HTTP 轮询跑通注册、心跳、拉取提醒、完成、稍后。</p>
+</body>
+</html>

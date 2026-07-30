@@ -1,0 +1,4 @@
+numpy
+websockets
+openai-whisper
+pyinstaller

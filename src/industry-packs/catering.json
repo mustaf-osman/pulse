@@ -1,0 +1,179 @@
+{
+  "id": "catering",
+  "name": "餐饮服务",
+  "icon": "🍜",
+  "tagline": "门店会员、活动方案和客诉处理。",
+  "category": "store_ops",
+  "order": 150,
+  "assistantTitle": "餐饮服务助手",
+  "assistantTagline": "懂门店 · 懂活动 · 懂客诉处理",
+  "themeColor": {
+    "primary": "#dc2626",
+    "glow": "rgba(220,38,38,0.18)",
+    "bg_tint": "rgba(220,38,38,0.04)"
+  },
+  "aiPersona": "你是一位餐饮门店经营助手，熟悉会员复购、套餐活动、外卖平台、门店客诉和社群运营。回答时给出可执行活动方案和话术，关注食品安全与真实服务，不夸大宣传。",
+  "hotspotSources": [
+    "dianping",
+    "meituan",
+    "douyin_food",
+    "xiaohongshu_food"
+  ],
+  "customerFields": [
+    {
+      "key": "member_name",
+      "label": "顾客/会员名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "store_type",
+      "label": "门店类型",
+      "type": "select",
+      "options": [
+        "中餐",
+        "火锅",
+        "烧烤",
+        "快餐",
+        "咖啡茶饮",
+        "烘焙",
+        "小吃",
+        "外卖店"
+      ]
+    },
+    {
+      "key": "preference",
+      "label": "口味/偏好",
+      "type": "tags",
+      "options": [
+        "辣",
+        "清淡",
+        "甜品",
+        "套餐",
+        "家庭餐",
+        "商务宴请",
+        "外卖",
+        "到店"
+      ]
+    },
+    {
+      "key": "member_level",
+      "label": "会员等级",
+      "type": "select",
+      "options": [
+        "新客",
+        "普通会员",
+        "高频会员",
+        "储值会员",
+        "沉睡会员"
+      ]
+    },
+    {
+      "key": "issue_tags",
+      "label": "客诉/关注点",
+      "type": "tags",
+      "options": [
+        "等位久",
+        "出餐慢",
+        "口味",
+        "服务",
+        "价格",
+        "卫生",
+        "配送",
+        "评价"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新客",
+        "复购",
+        "储值",
+        "活动邀约",
+        "客诉处理",
+        "沉睡唤醒"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "生成活动方案",
+      "description": "按门店类型设计活动和话术",
+      "action": "go-chat",
+      "prompt": "请生成门店活动方案：目标人群、套餐设计、社群话术、执行步骤和注意事项。"
+    },
+    {
+      "title": "写老客召回",
+      "description": "唤醒久未到店会员",
+      "action": "go-chat",
+      "prompt": "请生成老客召回话术，语气自然，带明确到店/下单引导。"
+    },
+    {
+      "title": "处理客诉回复",
+      "description": "生成差评/客诉安抚话术",
+      "action": "go-chat",
+      "prompt": "请生成餐饮客诉处理回复，包含安抚、核实、补偿边界和复购挽回。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "小套餐、储值会员和社群活动成为门店增长重点。"
+      },
+      {
+        "source": "客户需求",
+        "title": "评价、出餐速度和复购券影响平台排序。"
+      },
+      {
+        "source": "运营机会",
+        "title": "探店短视频和本地生活团购持续带来新客。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "沉睡会员召回",
+        "hint": "按上次到店时间筛选 30 天未到店客户做小额券召回。"
+      },
+      {
+        "title": "差评转回访",
+        "hint": "差评处理后 24 小时内做二次回访。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "本地生活",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "储值会员",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "客诉处理",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "餐饮服务客户推进",
+        "stages": [
+          "新客",
+          "复购",
+          "储值",
+          "回访"
+        ]
+      }
+    ]
+  }
+}

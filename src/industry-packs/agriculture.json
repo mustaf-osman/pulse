@@ -1,0 +1,317 @@
+{
+  "id": "agriculture",
+  "name": "农业农资",
+  "icon": "🌾",
+  "tagline": "作物周期、农事计划、农资复购、病虫害风险和农业经营工作台。",
+  "category": "professional_services",
+  "order": 230,
+  "assistantTitle": "农业农资助手",
+  "assistantTagline": "懂农时 · 懂作物 · 懂农资服务",
+  "themeColor": {
+    "primary": "#65a30d",
+    "glow": "rgba(101,163,13,0.18)",
+    "bg_tint": "rgba(101,163,13,0.04)"
+  },
+  "aiPersona": "你是一位农业农资客户服务助手，熟悉农户、合作社、种植基地的客户档案、作物周期、农资复购和季节性营销。回答时围绕经营和服务提醒，不做病虫害确诊或替代农技专家判断。",
+  "hotspotSources": [
+    "agri_news",
+    "baidu_hot",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "farm_name",
+      "label": "农户/基地名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "crop_type",
+      "label": "主要作物",
+      "type": "tags",
+      "options": [
+        "水稻",
+        "玉米",
+        "小麦",
+        "大豆",
+        "蔬菜",
+        "水果",
+        "茶叶",
+        "花卉"
+      ]
+    },
+    {
+      "key": "acreage",
+      "label": "种植面积(亩)",
+      "type": "number"
+    },
+    {
+      "key": "season_stage",
+      "label": "作物阶段",
+      "type": "select",
+      "options": [
+        "备耕",
+        "播种",
+        "苗期",
+        "生长期",
+        "采收",
+        "休耕"
+      ]
+    },
+    {
+      "key": "product_needs",
+      "label": "农资需求",
+      "type": "tags",
+      "options": [
+        "种子",
+        "肥料",
+        "农药",
+        "农机",
+        "滴灌",
+        "技术服务"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新客",
+        "询价",
+        "已采购",
+        "复购",
+        "技术服务",
+        "沉睡"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "生成农事日历",
+      "description": "按作物和阶段安排农事",
+      "action": "go-chat",
+      "prompt": "请根据作物、地区、面积和当前生长阶段，生成农事日历：施肥、灌溉、巡田、病虫害观察、采收和注意事项。"
+    },
+    {
+      "title": "农资复购提醒",
+      "description": "种子/肥料/农药采购节点",
+      "action": "go-chat",
+      "prompt": "请根据作物面积、生长阶段和上次采购记录，生成农资复购提醒方案和给农户发的微信话术。"
+    },
+    {
+      "title": "病虫害风险",
+      "description": "观察点和求助建议",
+      "action": "go-chat",
+      "prompt": "请根据作物、季节、天气和症状描述，给出病虫害风险提示、需要观察的问题和请农技员现场判断的建议。"
+    },
+    {
+      "title": "成本收益复盘",
+      "description": "投入、产量、售价和利润",
+      "action": "go-chat",
+      "prompt": "请帮我做农业成本收益复盘：种子、肥料、农药、人工、灌溉、农机、产量、售价和下季优化建议。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "春耕、肥料价格和作物预警影响采购节奏。"
+      },
+      {
+        "source": "客户需求",
+        "title": "种植基地更关注技术服务和稳定供货。"
+      },
+      {
+        "source": "运营机会",
+        "title": "合作社、基地和绿色农业带来服务机会。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "按农时触达",
+        "hint": "把客户按作物阶段分组，提前推肥料/农药/技术服务提醒。"
+      },
+      {
+        "title": "大户档案经营",
+        "hint": "对种植面积大、采购稳定的客户做年度服务计划。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "农资复购",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "种植基地",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "绿色农业",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "farm_calendar",
+      "title": "农事日历",
+      "category": "农事",
+      "template": "作物 {{crop}}，地区 {{region}}，面积 {{acreage}} 亩，当前阶段 {{stage}}。请生成未来 30 天农事日历和注意事项。",
+      "vars": [
+        "crop",
+        "region",
+        "acreage",
+        "stage"
+      ]
+    },
+    {
+      "id": "agri_repurchase",
+      "title": "农资复购提醒",
+      "category": "农资",
+      "template": "农户 {{farm_name}} 种植 {{crop}} {{acreage}} 亩，当前阶段 {{stage}}，上次采购 {{last_purchase}}。请生成复购建议和微信话术。",
+      "vars": [
+        "farm_name",
+        "crop",
+        "acreage",
+        "stage",
+        "last_purchase"
+      ]
+    },
+    {
+      "id": "pest_risk",
+      "title": "病虫害风险提示",
+      "category": "风险",
+      "template": "作物 {{crop}} 出现 {{symptoms}}，天气 {{weather}}。请给出可能风险、观察点、临时处理原则和需要农技员确认的问题。",
+      "vars": [
+        "crop",
+        "symptoms",
+        "weather"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "农业农资客户推进",
+        "stages": [
+          "询价",
+          "采购",
+          "复购",
+          "服务"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "农业工作台 · 农事计划与农资服务",
+    "sub": "围绕作物、面积、农时、肥水、病虫害风险、农资采购和销售复盘，生成可执行的农业服务计划。"
+  },
+  "domainObjects": [
+    "农户/基地",
+    "作物",
+    "地块",
+    "农时",
+    "肥料",
+    "农药",
+    "灌溉",
+    "病虫害风险",
+    "农机",
+    "采收销售"
+  ],
+  "experts": [
+    {
+      "id": "crop-plan",
+      "name": "作物种植专家",
+      "focus": "农时、播种、管理、采收和投入产出"
+    },
+    {
+      "id": "agri-input",
+      "name": "农资服务专家",
+      "focus": "种子、肥料、农药、农机和复购周期"
+    },
+    {
+      "id": "pest-risk",
+      "name": "病虫害风险提醒专家",
+      "focus": "根据季节和症状给出风险提醒和请农技员判断"
+    },
+    {
+      "id": "farm-business",
+      "name": "农业经营分析专家",
+      "focus": "成本、产量、销售和利润复盘"
+    }
+  ],
+  "skills": [
+    {
+      "id": "farm-calendar",
+      "name": "农事日历",
+      "description": "按作物和地区生成播种、施肥、灌溉、病虫害巡查节点",
+      "outputs": [
+        "农事计划",
+        "提醒"
+      ]
+    },
+    {
+      "id": "input-repurchase",
+      "name": "农资复购提醒",
+      "description": "按面积、作物阶段和用量估算复购时点",
+      "outputs": [
+        "采购提醒",
+        "话术"
+      ]
+    },
+    {
+      "id": "pest-risk-check",
+      "name": "病虫害风险提示",
+      "description": "根据描述给出可能风险、观察点和专业求助建议",
+      "outputs": [
+        "风险清单",
+        "观察问题"
+      ]
+    },
+    {
+      "id": "cost-profit",
+      "name": "成本收益复盘",
+      "description": "整理投入、产量、售价和利润结构",
+      "outputs": [
+        "成本表",
+        "经营建议"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "season-plan",
+      "name": "一季种植计划",
+      "steps": [
+        "作物/面积",
+        "农时节点",
+        "肥水管理",
+        "病虫害巡查",
+        "采收销售"
+      ],
+      "output": "作物季节计划"
+    },
+    {
+      "id": "agri-service-follow",
+      "name": "农资服务闭环",
+      "steps": [
+        "建档",
+        "农时提醒",
+        "产品建议",
+        "使用反馈",
+        "复购维护"
+      ],
+      "output": "农户服务档案"
+    }
+  ],
+  "safety": [
+    "不替代农技专家现场诊断，病虫害只做风险提示",
+    "农药使用必须遵守标签、安全间隔期和当地法规",
+    "天气、价格、产量预测只能作为参考，不能承诺收益"
+  ]
+}

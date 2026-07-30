@@ -1,0 +1,466 @@
+{
+  "id": "tech",
+  "name": "科技",
+  "icon": "💻",
+  "tagline": "B2B 科技公司线索、Demo、POC、方案和客户成功工作台。",
+  "assistantTitle": "科技助手",
+  "assistantTagline": "懂线索 · 懂 Demo · 懂 POC · 懂交付",
+  "themeColor": {
+    "primary": "#4a9fd5",
+    "glow": "rgba(74,159,213,0.18)",
+    "bg_tint": "rgba(74,159,213,0.04)"
+  },
+  "aiPersona": "你是一位深耕中国 B2B SaaS 与互联网行业 5 年以上的资深销售顾问。你熟悉 ARR、MRR、Churn、CAC、LTV、PMF、PLG、POC、demo、Lead 等行业术语，了解从天使轮到 C+ 各融资阶段公司的典型痛点。回答时请优先使用行业老炮的口吻：简洁、有数据、有判断，不说废话，不画大饼。客户问技术问题时先识别对方角色（CTO 还是 CEO 还是产品负责人），用对应深度作答。",
+  "hotspotSources": [
+    "36kr",
+    "huxiu",
+    "geekpark",
+    "itjuzi",
+    "producthunt",
+    "hackernews",
+    "github_trending",
+    "lagou_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "company_name",
+      "label": "公司名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "sub_category",
+      "label": "行业子类",
+      "type": "select",
+      "options": [
+        "SaaS",
+        "工具类",
+        "AI 大模型",
+        "硬件",
+        "平台",
+        "电商基础设施",
+        "开发者工具",
+        "其他"
+      ]
+    },
+    {
+      "key": "team_size",
+      "label": "团队规模",
+      "type": "select",
+      "options": [
+        "1-10",
+        "11-50",
+        "51-200",
+        "201-500",
+        "500+"
+      ]
+    },
+    {
+      "key": "funding_stage",
+      "label": "融资轮次",
+      "type": "select",
+      "options": [
+        "未融资",
+        "天使",
+        "Pre-A",
+        "A 轮",
+        "B 轮",
+        "C 轮+",
+        "已上市"
+      ]
+    },
+    {
+      "key": "tech_stack",
+      "label": "技术栈",
+      "type": "tags"
+    },
+    {
+      "key": "pain_point",
+      "label": "核心痛点",
+      "type": "text"
+    },
+    {
+      "key": "decision_role",
+      "label": "决策人角色",
+      "type": "select",
+      "options": [
+        "CEO",
+        "CTO",
+        "产品负责人",
+        "增长负责人",
+        "运营负责人",
+        "采购"
+      ]
+    },
+    {
+      "key": "decision_cycle",
+      "label": "决策周期",
+      "type": "select",
+      "options": [
+        "1 周内",
+        "1 月内",
+        "1 季度",
+        "半年以上"
+      ]
+    },
+    {
+      "key": "budget_level",
+      "label": "预算量级",
+      "type": "select",
+      "options": [
+        "<1万",
+        "1-10万",
+        "10-100万",
+        "100万+"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "线索",
+        "Demo",
+        "POC",
+        "签约",
+        "续约"
+      ],
+      "required": true
+    }
+  ],
+  "prompts": [
+    {
+      "id": "demo_invite",
+      "title": "Demo 邀约首发文案",
+      "category": "邀约",
+      "template": "您好 {{name}}，我看到贵司在 {{topic}} 上的动作。我们刚好做了一个面向 {{role}} 的工具，能帮你们把 {{pain}} 的效率提一倍。要不要约个 20 分钟的 demo？周三或周四下午方便吗？",
+      "vars": [
+        "name",
+        "topic",
+        "role",
+        "pain"
+      ]
+    },
+    {
+      "id": "price_objection",
+      "title": "客户嫌贵怎么破",
+      "category": "异议处理",
+      "template": "理解您的考虑。我们这个价格对应的是 {{value}}：第一 {{benefit_1}}，第二 {{benefit_2}}。按贵司 {{metric}} 的规模算下来，单位成本其实是 {{unit_cost}}。要不要先用 POC 跑两周看效果再决定？",
+      "vars": [
+        "value",
+        "benefit_1",
+        "benefit_2",
+        "metric",
+        "unit_cost"
+      ]
+    },
+    {
+      "id": "post_funding_congrats",
+      "title": "客户公司融资了 → 第一时间发什么",
+      "category": "关系维护",
+      "template": "{{name}}，看到贵司 {{round}} 融资的消息，恭喜！这一轮主要是要发力 {{focus}} 吧？我们之前的合作正好能帮上这块。月底前要不要碰一下，看看下半年怎么配合？",
+      "vars": [
+        "name",
+        "round",
+        "focus"
+      ]
+    },
+    {
+      "id": "competitor_comparison",
+      "title": "客户对比竞品时怎么应对",
+      "category": "竞争对抗",
+      "template": "{{competitor}} 我们很熟，他们在 {{their_strength}} 上确实有优势。但贵司的场景里 {{our_advantage}} 更关键，这块我们做了 3 年深度积累。要不要约一次架构沟通，让你们 CTO 评估一下？",
+      "vars": [
+        "competitor",
+        "their_strength",
+        "our_advantage"
+      ]
+    },
+    {
+      "id": "poc_to_signing",
+      "title": "POC 收尾推动签约",
+      "category": "推单",
+      "template": "{{name}}，POC 跑下来两周，{{metric_1}} 提升了 {{percent}}%，{{metric_2}} 也达到预期。我们这边可以本周内把合同发过来，下周走完流程，月底前完成上线。您看这个节奏 ok 吗？",
+      "vars": [
+        "name",
+        "metric_1",
+        "percent",
+        "metric_2"
+      ]
+    },
+    {
+      "id": "renewal_warmup",
+      "title": "续约前 30 天预热",
+      "category": "续约",
+      "template": "{{name}}，咱们合同到 {{end_date}}。这一年贵司用我们的产品做了 {{achievement}}。下一年我们准备把 {{new_feature}} 也开放给你们。要不要约个续约沟通，把明年的方案聊一下？",
+      "vars": [
+        "name",
+        "end_date",
+        "achievement",
+        "new_feature"
+      ]
+    },
+    {
+      "id": "cold_outreach",
+      "title": "陌生客户首次破冰",
+      "category": "邀约",
+      "template": "{{name}}你好，我是 {{my_name}}，做 {{product_category}} 的。看到贵司最近在 {{trigger_event}}，刚好我们有几个 {{industry_peer}} 的客户最近用我们的方案解决了 {{shared_problem}}。\n\n不强行约时间，先发个 1 分钟的简介给你看下，方便聊几句吗？",
+      "vars": [
+        "name",
+        "my_name",
+        "product_category",
+        "trigger_event",
+        "industry_peer",
+        "shared_problem"
+      ]
+    },
+    {
+      "id": "ghost_revive",
+      "title": "客户已读不回唤醒",
+      "category": "跟进",
+      "template": "{{name}}，上次聊到 {{last_topic}} 之后没你的回音，是这边节奏不对还是我没说到点上？\n\n如果是优先级低了，没事，记一下你这边的时间窗。如果是 {{possible_blocker}} 没想清，我这边可以发个一页纸的对比给你，5 分钟看完帮你决策。",
+      "vars": [
+        "name",
+        "last_topic",
+        "possible_blocker"
+      ]
+    },
+    {
+      "id": "delay_pressure",
+      "title": "客户拖延决策推进",
+      "category": "推单",
+      "template": "{{name}}，这事拖了 {{weeks}} 周了。我理解你那边 {{reason}}，但有个现实问题：\n\n1. 我们 Q{{quarter}} 价格政策只到 {{deadline}}，过了就回到 list price\n2. 现在排期 {{slot_count}} 个，再晚就要往 {{next_window}} 排\n\n要不咱们这周定个内部对齐会，把决策点列出来，5 个工作日内给我个 yes/no？",
+      "vars": [
+        "name",
+        "weeks",
+        "reason",
+        "quarter",
+        "deadline",
+        "slot_count",
+        "next_window"
+      ]
+    },
+    {
+      "id": "intro_request",
+      "title": "请求引荐到决策人",
+      "category": "关系维护",
+      "template": "{{contact_name}}，跟你聊了几轮，方向应该是对的。但要真正推到 {{stage}}，可能要把 {{decision_role}} 拉进来一起看。\n\n方便帮我引荐一下吗？我可以先发份 {{material}} 给他看，让他对我们有基本认知。开会的时候你不一定要主导，我来 brief 整体方案。",
+      "vars": [
+        "contact_name",
+        "stage",
+        "decision_role",
+        "material"
+      ]
+    },
+    {
+      "id": "tech_concern",
+      "title": "客户技术疑虑回应",
+      "category": "异议处理",
+      "template": "{{name}}，关于 {{concern}} 这点你顾虑得很合理。说几个事实：\n\n1. 我们目前 {{customer_count}} 家客户在跑，{{biggest_customer}} 这种 {{scale_metric}} 量级的也在用\n2. 我们 SLA 是 {{sla}}，去年全年事故 {{incident_count}} 次，平均恢复 {{mttr}}\n3. 如果你这边架构师方便，我可以拉我们 CTO 直接对齐一次技术细节\n\n比起继续辩论，技术对技术对一次最快。要约个时间吗？",
+      "vars": [
+        "name",
+        "concern",
+        "customer_count",
+        "biggest_customer",
+        "scale_metric",
+        "sla",
+        "incident_count",
+        "mttr"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "本月销售漏斗",
+        "stages": [
+          "线索",
+          "Demo",
+          "POC",
+          "签约"
+        ]
+      },
+      {
+        "type": "bubble",
+        "title": "客户分布",
+        "x_axis": "funding_stage",
+        "y_axis": "team_size"
+      },
+      {
+        "type": "heatmap",
+        "title": "决策周期分布",
+        "field": "decision_cycle"
+      },
+      {
+        "type": "sla_alert",
+        "title": "跟进时效预警",
+        "threshold_days": 7
+      }
+    ]
+  },
+  "category": "sales_growth",
+  "order": 20,
+  "quickActions": [
+    {
+      "title": "推进 POC",
+      "description": "验收标准、负责人、风险和下一步",
+      "action": "go-chat",
+      "prompt": "请帮我推进一个 B2B 科技客户 POC：整理目标、验收标准、数据准备、客户负责人、我方负责人、风险点和下一步跟进话术。"
+    },
+    {
+      "title": "Demo 复盘",
+      "description": "把反馈转成推进动作",
+      "action": "go-chat",
+      "prompt": "请根据 Demo 后客户反馈，输出复盘摘要、决策角色判断、客户真实关注点、下一次会议目标和跟进消息。"
+    },
+    {
+      "title": "生成解决方案",
+      "description": "一页纸方案和价值证明",
+      "action": "go-chat",
+      "prompt": "请为一个 B2B 科技客户生成一页纸解决方案：背景、痛点、方案、架构、收益、交付边界、报价逻辑和风险。"
+    },
+    {
+      "title": "竞品对比",
+      "description": "对比竞品并生成应对口径",
+      "action": "go-chat",
+      "prompt": "请帮我做竞品对比：客户正在比较竞品，请输出竞品优势、我方优势、风险、差异化表达和客户沟通话术。"
+    },
+    {
+      "title": "续约风险",
+      "description": "识别使用和关键人风险",
+      "action": "go-chat",
+      "prompt": "请帮我分析一个 B2B 客户的续约风险：使用率、价值感知、关键人、预算、竞品和挽回动作。"
+    }
+  ],
+  "homeCopy": {
+    "eyebrow": "科技 B2B 工作台 · 线索、方案与 POC 推进",
+    "sub": "围绕线索识别、决策路径、Demo 复盘、POC 验收、解决方案和续约成功，帮助团队把复杂销售推进清楚。"
+  },
+  "domainObjects": [
+    "线索",
+    "客户公司",
+    "决策角色",
+    "需求痛点",
+    "Demo 反馈",
+    "POC 项目",
+    "解决方案",
+    "报价",
+    "合同",
+    "续约风险"
+  ],
+  "experts": [
+    {
+      "id": "solution-architect",
+      "name": "售前解决方案专家",
+      "focus": "把客户需求转成方案、架构和价值证明"
+    },
+    {
+      "id": "poc-manager",
+      "name": "POC 推进专家",
+      "focus": "拆验收标准、时间线、负责人和风险"
+    },
+    {
+      "id": "b2b-sales",
+      "name": "B2B 销售专家",
+      "focus": "识别角色、预算、周期和下一步推进动作"
+    },
+    {
+      "id": "customer-success",
+      "name": "客户成功专家",
+      "focus": "上线、使用、续约和扩容路径"
+    },
+    {
+      "id": "competitive-intel",
+      "name": "竞品对比专家",
+      "focus": "提炼差异化、替代成本和应对口径"
+    }
+  ],
+  "skills": [
+    {
+      "id": "lead-qualification",
+      "name": "线索资格审查",
+      "description": "按行业、角色、预算、痛点、时机判断优先级",
+      "outputs": [
+        "线索评分",
+        "下一步"
+      ]
+    },
+    {
+      "id": "demo-recap",
+      "name": "Demo 复盘",
+      "description": "把演示反馈转成决策人关心的价值和风险",
+      "outputs": [
+        "复盘摘要",
+        "跟进话术"
+      ]
+    },
+    {
+      "id": "poc-plan",
+      "name": "POC 计划",
+      "description": "拆目标、验收标准、数据准备、负责人、时间表",
+      "outputs": [
+        "POC 表",
+        "风险清单"
+      ]
+    },
+    {
+      "id": "proposal",
+      "name": "解决方案生成",
+      "description": "生成一页纸方案、价值点、交付边界和报价逻辑",
+      "outputs": [
+        "方案框架",
+        "报价说明"
+      ]
+    },
+    {
+      "id": "renewal-risk",
+      "name": "续约风险识别",
+      "description": "从使用率、关键人、价值感知判断续约风险",
+      "outputs": [
+        "风险等级",
+        "挽回动作"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "lead-to-demo",
+      "name": "线索到 Demo",
+      "steps": [
+        "识别角色",
+        "确认痛点",
+        "判断预算",
+        "设计 Demo 目标"
+      ],
+      "output": "Demo 邀约方案"
+    },
+    {
+      "id": "demo-to-poc",
+      "name": "Demo 到 POC",
+      "steps": [
+        "整理反馈",
+        "明确验收",
+        "拉齐技术/业务负责人",
+        "设定时间线"
+      ],
+      "output": "POC 推进表"
+    },
+    {
+      "id": "poc-to-contract",
+      "name": "POC 到签约",
+      "steps": [
+        "验收数据",
+        "ROI 证明",
+        "采购流程",
+        "合同付款"
+      ],
+      "output": "签约推进方案"
+    }
+  ],
+  "safety": [
+    "不虚构客户案例、性能指标或安全资质",
+    "技术承诺必须标注前提和边界",
+    "涉及数据安全、隐私、合规时建议客户走正式评审"
+  ]
+}

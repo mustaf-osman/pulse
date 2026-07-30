@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nimo 提醒助手</title>
+<style>
+  :root {
+    --bg: #080f1f; --card: #0f1a30; --card2: #13213c; --line: #1e2c4a;
+    --text: #e6ecf7; --muted: #8b9bb8; --accent: #4f8cff; --good: #34d399;
+    --warn: #fbbf24; --bad: #f87171;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; min-height: 100vh; padding-bottom: 76px; }
+  header { padding: 18px 16px 10px; display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 20px; }
+  #conn-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--bad); margin-right: 6px; }
+  #conn-dot.ok { background: var(--good); }
+  #conn-label { font-size: 12px; color: var(--muted); }
+  .page { display: none; padding: 0 14px; }
+  .page.active { display: block; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+  .card h2 { font-size: 14px; color: var(--muted); margin-bottom: 10px; font-weight: 600; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; }
+  input, select { width: 100%; background: var(--card2); border: 1px solid var(--line); border-radius: 10px; color: var(--text); padding: 11px 12px; font-size: 15px; outline: none; }
+  input:focus { border-color: var(--accent); }
+  button { border: none; border-radius: 10px; padding: 11px 14px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-primary { background: var(--accent); color: #fff; width: 100%; margin-top: 12px; }
+  .btn-ghost { background: var(--card2); color: var(--text); border: 1px solid var(--line); }
+  .btn-sm { padding: 7px 12px; font-size: 13px; border-radius: 8px; }
+  .btn-good { background: rgba(52,211,153,.15); color: var(--good); }
+  .btn-warn { background: rgba(251,191,36,.15); color: var(--warn); }
+  .btn-bad { background: rgba(248,113,113,.12); color: var(--bad); }
+  .reminder { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .reminder:last-child { border-bottom: none; }
+  .reminder .task { font-size: 15px; }
+  .reminder .due { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .reminder .due.overdue { color: var(--bad); }
+  .actions { display: flex; gap: 6px; flex-shrink: 0; }
+  .device { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .device:last-child { border-bottom: none; }
+  .device .name { font-size: 15px; }
+  .device .meta { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .badge { display: inline-block; font-size: 11px; border-radius: 99px; padding: 2px 9px; margin-left: 8px; }
+  .badge.on { background: rgba(52,211,153,.15); color: var(--good); }
+  .badge.off { background: rgba(248,113,113,.12); color: var(--bad); }
+  .empty { color: var(--muted); font-size: 13px; text-align: center; padding: 18px 0; }
+  #toast { position: fixed; left: 50%; bottom: 92px; transform: translateX(-50%); background: #223354; color: var(--text); padding: 10px 18px; border-radius: 99px; font-size: 13px; opacity: 0; transition: opacity .25s; pointer-events: none; max-width: 86vw; }
+  #toast.show { opacity: 1; }
+  nav { position: fixed; left: 0; right: 0; bottom: 0; background: #0a1428; border-top: 1px solid var(--line); display: flex; }
+  nav button { flex: 1; background: none; color: var(--muted); font-size: 12px; padding: 10px 0 12px; border-radius: 0; }
+  nav button .ico { display: block; font-size: 20px; margin-bottom: 2px; }
+  nav button.active { color: var(--accent); }
+  .row { display: flex; gap: 8px; }
+  .row > * { flex: 1; }
+  .hint { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Nimo 提醒</h1>
+  <div><span id="conn-dot"></span><span id="conn-label">未连接</span></div>
+</header>
+
+<!-- 提醒页 -->
+<div class="page active" id="page-reminders">
+  <div class="card">
+    <h2>新建提醒</h2>
+    <label>提醒内容</label>
+    <input id="new-task" placeholder="例如：喝水、开会、吃药…">
+    <label>提醒时间</label>
+    <input id="new-due" type="datetime-local">
+    <button class="btn-primary" onclick="createReminder()">创建提醒</button>
+  </div>
+  <div class="card">
+    <h2>待办提醒</h2>
+    <div id="reminder-list"><div class="empty">加载中…</div></div>
+  </div>
+</div>
+
+<!-- 设备页 -->
+<div class="page" id="page-devices">
+  <div class="card">
+    <h2>硬件设备</h2>
+    <div id="device-list"><div class="empty">加载中…</div></div>
+  </div>
+  <div class="card">
+    <h2>测试推送</h2>
+    <div class="hint">向服务器发送一条测试推送，验证链路是否连通。</div>
+    <button class="btn-primary" onclick="testPush()">发送测试推送</button>
+  </div>
+</div>
+
+<!-- 设置页 -->
+<div class="page" id="page-settings">
+  <div class="card">
+    <h2>服务器连接</h2>
+    <label>服务器地址</label>
+    <input id="set-base" placeholder="https://cloud.agent1.xin/nimo">
+    <label>API Key</label>
+    <input id="set-key" placeholder="服务器 API Key">
+    <button class="btn-primary" onclick="saveSettings()">保存并测试连接</button>
+    <div class="hint">
+      云端模式：填 <b>https://cloud.agent1.xin/nimo</b>（任何网络可用）。<br>
+      局域网模式：填 <b>http://电脑IP:3721</b>（需电脑运行 npm run start:lan）。
+    </div>
+  </div>
+  <div class="card">
+    <h2>连接状态</h2>
+    <div id="conn-detail" class="hint">尚未测试</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<nav>
+  <button class="active" data-page="reminders" onclick="switchPage('reminders')"><span class="ico">⏰</span>提醒</button>
+  <button data-page="devices" onclick="switchPage('devices')"><span class="ico">📟</span>设备</button>
+  <button data-page="settings" onclick="switchPage('settings')"><span class="ico">⚙️</span>设置</button>
+</nav>
+
+<script>
+const DEFAULT_BASE = 'https://cloud.agent1.xin/nimo';
+let serverBase = localStorage.getItem('serverBase') || DEFAULT_BASE;
+let apiKey = localStorage.getItem('apiKey') || '';
+let pollTimer = null;
+
+function $(id) { return document.getElementById(id); }
+
+function toast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+async function api(path, options = {}) {
+  const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+  if (apiKey) headers['X-Nimo-Key'] = apiKey;
+  const res = await fetch(serverBase.replace(/\/$/, '') + path, Object.assign({}, options, { headers }));
+  const data = await res.json();
+  if (res.status === 401) throw new Error('API Key 无效，请到设置页填写');
+  if (!res.ok || data.ok === false) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+function setConn(ok, label) {
+  $('conn-dot').className = ok ? 'ok' : '';
+  $('conn-label').textContent = label;
+}
+
+function switchPage(name) {
+  document.querySelectorAll('.page').forEach((p) => p.classList.remove('active'));
+  $('page-' + name).classList.add('active');
+  document.querySelectorAll('nav button').forEach((b) => b.classList.toggle('active', b.dataset.page === name));
+  if (name === 'reminders') loadReminders();
+  if (name === 'devices') loadDevices();
+}
+
+// ---- 连接 ----
+async function testConnection() {
+  try {
+    const data = await api('/device/info');
+    setConn(true, '已连接');
+    $('conn-detail').innerHTML =
+      '✅ 已连接 <b>' + (data.server?.name || 'Nimo') + '</b><br>' +
+      '地址：' + serverBase + '<br>' +
+      '协议版本：' + (data.server?.protocolVersion || '-') + '<br>' +
+      '在线设备：' + (data.devices || []).filter((d) => d.online).length + ' / ' + (data.devices || []).length;
+    return true;
+  } catch (e) {
+    setConn(false, '未连接');
+    $('conn-detail').textContent = '❌ 连接失败：' + e.message;
+    return false;
+  }
+}
+
+// ---- 设置 ----
+function saveSettings() {
+  serverBase = ($('set-base').value.trim() || DEFAULT_BASE).replace(/\/$/, '');
+  apiKey = $('set-key').value.trim();
+  localStorage.setItem('serverBase', serverBase);
+  localStorage.setItem('apiKey', apiKey);
+  toast('已保存，正在测试连接…');
+  testConnection().then((ok) => { if (ok) { toast('连接成功'); loadReminders(); loadDevices(); } });
+}
+
+// ---- 提醒 ----
+function fmtDue(iso) {
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return iso;
+  const now = new Date();
+  const sameDay = d.toDateString() === now.toDateString();
+  const hm = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  return (sameDay ? '今天 ' : (d.getMonth() + 1) + '月' + d.getDate() + '日 ') + hm;
+}
+
+async function loadReminders() {
+  try {
+    const data = await api('/reminders');
+    const list = data.reminders || [];
+    if (!list.length) { $('reminder-list').innerHTML = '<div class="empty">暂无待办提醒</div>'; return; }
+    $('reminder-list').innerHTML = list.map((r) => {
+      const overdue = r.status === 'fired' || new Date(r.dueAt).getTime() < Date.now();
+      return '<div class="reminder">' +
+        '<div><div class="task">' + escapeHtml(r.task) + '</div>' +
+        '<div class="due' + (overdue ? ' overdue' : '') + '">' + fmtDue(r.dueAt) + (r.status === 'fired' ? ' · 已到时' : '') + (r.snoozeCount ? ' · 已延' + r.snoozeCount + '次' : '') + '</div></div>' +
+        '<div class="actions">' +
+        '<button class="btn-sm btn-good" onclick="completeReminder(' + r.id + ')">完成</button>' +
+        '<button class="btn-sm btn-warn" onclick="snoozeReminder(' + r.id + ')">稍后</button>' +
+        '<button class="btn-sm btn-bad" onclick="cancelReminder(' + r.id + ')">取消</button>' +
+        '</div></div>';
+    }).join('');
+    setConn(true, '已连接');
+  } catch (e) {
+    $('reminder-list').innerHTML = '<div class="empty">加载失败：' + escapeHtml(e.message) + '</div>';
+    setConn(false, '未连接');
+  }
+}
+
+async function createReminder() {
+  const task = $('new-task').value.trim();
+  const due = $('new-due').value;
+  if (!task) return toast('请输入提醒内容');
+  if (!due) return toast('请选择提醒时间');
+  try {
+    const dueAt = new Date(due).toISOString();
+    await api('/reminders', { method: 'POST', body: JSON.stringify({ task, dueAt, source: 'nimo-mobile' }) });
+    $('new-task').value = '';
+    toast('提醒已创建');
+    loadReminders();
+  } catch (e) { toast('创建失败：' + e.message); }
+}
+
+async function completeReminder(id) {
+  try { await api('/reminders/' + id + '/complete', { method: 'POST' }); toast('已完成'); loadReminders(); }
+  catch (e) { toast('操作失败：' + e.message); }
+}
+
+async function snoozeReminder(id) {
+  try { await api('/reminders/' + id + '/snooze', { method: 'POST', body: JSON.stringify({ minutes: 10 }) }); toast('已推迟 10 分钟'); loadReminders(); }
+  catch (e) { toast('操作失败：' + e.message); }
+}
+
+async function cancelReminder(id) {
+  try { await api('/reminders/' + id + '/cancel', { method: 'POST' }); toast('已取消'); loadReminders(); }
+  catch (e) { toast('操作失败：' + e.message); }
+}
+
+// ---- 设备 ----
+async function loadDevices() {
+  try {
+    const data = await api('/device/status');
+    const list = data.devices || [];
+    if (!list.length) { $('device-list').innerHTML = '<div class="empty">暂无设备（ESP32 注册后会出现在这里）</div>'; return; }
+    $('device-list').innerHTML = list.map((d) =>
+      '<div class="device"><div class="name">' + escapeHtml(d.name || d.id) +
+      '<span class="badge ' + (d.online ? 'on' : 'off') + '">' + (d.online ? '在线' : '离线') + '</span></div>' +
+      '<div class="meta">ID: ' + escapeHtml(d.id) + '<br>最后心跳: ' + (d.lastSeenAt ? fmtDue(d.lastSeenAt) : '-') + '</div></div>'
+    ).join('');
+  } catch (e) {
+    $('device-list').innerHTML = '<div class="empty">加载失败：' + escapeHtml(e.message) + '</div>';
+  }
+}
+
+async function testPush() {
+  try {
+    await api('/device/test-push', { method: 'POST', body: JSON.stringify({ title: 'Nimo 测试提醒', task: '手机端推送链路正常' }) });
+    toast('测试推送已发送');
+  } catch (e) { toast('推送失败：' + e.message); }
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+// ---- init ----
+(function init() {
+  // 支持 URL 传参一键配置: https://.../nimo/app#key=xxx
+  try {
+    const hm = (location.hash || '').match(/key=([\w-]+)/);
+    if (hm) {
+      apiKey = hm[1];
+      localStorage.setItem('apiKey', apiKey);
+      if (location.protocol.startsWith('http')) {
+        serverBase = location.origin + location.pathname.replace(/\/(app\/?|mobile\.html)?(#.*)?$/, '');
+        localStorage.setItem('serverBase', serverBase);
+      }
+      history.replaceState(null, '', location.pathname);
+    }
+  } catch (e) {}
+  $('set-base').value = serverBase;
+  $('set-key').value = apiKey;
+  const d = new Date(Date.now() + 30 * 60 * 1000);
+  d.setSeconds(0, 0);
+  $('new-due').value = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') +
+    'T' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+  testConnection().then(() => loadReminders());
+  pollTimer = setInterval(() => {
+    const active = document.querySelector('.page.active').id;
+    if (active === 'page-reminders') loadReminders();
+    if (active === 'page-devices') loadDevices();
+  }, 20000);
+})();
+</script>
+</body>
+</html>

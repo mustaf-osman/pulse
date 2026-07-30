@@ -1,0 +1,346 @@
+{
+  "id": "fitness",
+  "name": "健身运动",
+  "icon": "🏋️",
+  "tagline": "训练计划、饮食建议、动作指导和进度复盘工作台。",
+  "category": "store_ops",
+  "order": 120,
+  "assistantTitle": "健身服务助手",
+  "assistantTagline": "懂训练 · 懂饮食 · 懂进度复盘",
+  "themeColor": {
+    "primary": "#22c55e",
+    "glow": "rgba(34,197,94,0.18)",
+    "bg_tint": "rgba(34,197,94,0.04)"
+  },
+  "aiPersona": "你是一位健身训练和运动计划助手，适合个人健身、私教工作室和健身房使用。你可以做训练计划、饮食结构建议、动作注意事项、进度复盘和会员沟通，但不做医疗诊断、不保证减脂增肌结果、不建议滥用药物或极端节食。",
+  "hotspotSources": [
+    "xiaohongshu_fitness",
+    "douyin_hot",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "member_name",
+      "label": "用户/会员姓名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "fitness_goal",
+      "label": "训练目标",
+      "type": "tags",
+      "options": [
+        "减脂",
+        "增肌",
+        "塑形",
+        "力量提升",
+        "跑步",
+        "体态改善",
+        "康复后恢复"
+      ]
+    },
+    {
+      "key": "training_level",
+      "label": "训练基础",
+      "type": "select",
+      "options": [
+        "零基础",
+        "初级",
+        "中级",
+        "高级"
+      ]
+    },
+    {
+      "key": "available_days",
+      "label": "每周可训练天数",
+      "type": "select",
+      "options": [
+        "1-2 天",
+        "3 天",
+        "4 天",
+        "5 天+"
+      ]
+    },
+    {
+      "key": "limitations",
+      "label": "限制/不适",
+      "type": "tags",
+      "options": [
+        "膝盖不适",
+        "腰背不适",
+        "肩颈不适",
+        "时间少",
+        "器械有限",
+        "饮食难控制"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "阶段",
+      "type": "select",
+      "options": [
+        "体测评估",
+        "计划制定",
+        "执行中",
+        "复盘调整",
+        "续费/服务"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "生成训练计划",
+      "description": "按目标和基础安排周计划",
+      "action": "go-chat",
+      "prompt": "请作为健身教练，先确认我的目标、训练基础、每周可训练天数、器械条件和伤病限制，然后生成一份安全的周训练计划。"
+    },
+    {
+      "title": "饮食结构建议",
+      "description": "餐盘比例和外食选择",
+      "action": "go-chat",
+      "prompt": "请根据我的健身目标，给出饮食结构建议：蛋白、碳水、脂肪、蔬菜、水分和外食替代方案，不要极端节食。"
+    },
+    {
+      "title": "动作指导",
+      "description": "发力、常见错误和安全提醒",
+      "action": "go-chat",
+      "prompt": "请讲解一个训练动作的正确做法、目标肌群、常见错误、发力提示和不适时的处理原则。"
+    },
+    {
+      "title": "进度复盘",
+      "description": "根据记录调整计划",
+      "action": "go-chat",
+      "prompt": "请根据我的训练记录、体重围度变化、疲劳感和饮食执行情况，做一次健身进度复盘，并给出下周调整。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "普拉提、体态改善和女性力量训练内容升温。"
+      },
+      {
+        "source": "客户需求",
+        "title": "低频会员唤醒和私教续费成为门店重点。"
+      },
+      {
+        "source": "运营机会",
+        "title": "短视频训练打卡带来引流机会。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "到期前 14 天续费",
+        "hint": "按剩余课时和训练目标提前启动续费关怀。"
+      },
+      {
+        "title": "沉睡会员低门槛召回",
+        "hint": "用体测复盘/免费纠姿替代硬促销。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "普拉提",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "私教续费",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "体态改善",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "weekly_training_plan",
+      "title": "一周训练计划",
+      "category": "训练",
+      "template": "目标：{{goal}}；基础：{{level}}；每周训练 {{days}} 天；器械：{{equipment}}；限制：{{limitations}}。请生成一周训练计划，包含动作、组数、次数、休息和注意事项。",
+      "vars": [
+        "goal",
+        "level",
+        "days",
+        "equipment",
+        "limitations"
+      ]
+    },
+    {
+      "id": "meal_structure",
+      "title": "饮食结构建议",
+      "category": "饮食",
+      "template": "我的目标是 {{goal}}，日常饮食习惯是 {{diet_habit}}，外食频率 {{eat_out}}。请给出饮食结构、样例三餐和外食选择。",
+      "vars": [
+        "goal",
+        "diet_habit",
+        "eat_out"
+      ]
+    },
+    {
+      "id": "movement_explain",
+      "title": "动作讲解",
+      "category": "动作",
+      "template": "请讲解 {{movement}}：目标肌群、动作步骤、常见错误、发力提示、替代动作和安全提醒。",
+      "vars": [
+        "movement"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "calendar",
+        "title": "训练计划日历"
+      },
+      {
+        "type": "trend",
+        "title": "体重/围度趋势",
+        "groupby": "fitness_goal"
+      },
+      {
+        "type": "alert",
+        "title": "伤病风险提醒"
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "健身工作台 · 训练计划与饮食复盘",
+    "sub": "围绕目标、身体数据、训练基础、动作安排、饮食结构和进度复盘，生成安全可执行的健身计划。"
+  },
+  "domainObjects": [
+    "训练目标",
+    "身体数据",
+    "训练动作",
+    "训练计划",
+    "饮食结构",
+    "伤病限制",
+    "训练记录",
+    "体测数据",
+    "会员档案"
+  ],
+  "experts": [
+    {
+      "id": "fat-loss",
+      "name": "减脂教练",
+      "focus": "热量缺口、训练频率和可持续习惯"
+    },
+    {
+      "id": "muscle-gain",
+      "name": "增肌教练",
+      "focus": "力量训练、渐进超负荷和蛋白摄入"
+    },
+    {
+      "id": "running",
+      "name": "跑步教练",
+      "focus": "配速、心率、跑量和恢复"
+    },
+    {
+      "id": "nutrition",
+      "name": "饮食规划师",
+      "focus": "餐盘结构、蛋白、碳水、脂肪和外食选择"
+    },
+    {
+      "id": "injury-risk",
+      "name": "伤病风险提醒专家",
+      "focus": "识别不适信号、动作风险和恢复边界"
+    }
+  ],
+  "skills": [
+    {
+      "id": "body-assessment",
+      "name": "体测评估",
+      "description": "根据身高体重、围度、训练史和目标判断起点",
+      "outputs": [
+        "起点评估",
+        "风险提醒"
+      ]
+    },
+    {
+      "id": "weekly-plan",
+      "name": "周训练计划",
+      "description": "安排力量、有氧、拉伸和休息日",
+      "outputs": [
+        "周计划",
+        "动作清单"
+      ]
+    },
+    {
+      "id": "meal-structure",
+      "name": "饮食结构建议",
+      "description": "给出餐盘比例、蛋白来源和外食选择",
+      "outputs": [
+        "饮食建议",
+        "替换表"
+      ]
+    },
+    {
+      "id": "movement-cue",
+      "name": "动作注意事项",
+      "description": "解释动作发力、常见错误和安全提醒",
+      "outputs": [
+        "动作提示",
+        "风险点"
+      ]
+    },
+    {
+      "id": "progress-review",
+      "name": "进度复盘",
+      "description": "根据训练记录调整强度、容量和恢复",
+      "outputs": [
+        "复盘结论",
+        "下周调整"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "fat-loss-plan",
+      "name": "减脂计划工作流",
+      "steps": [
+        "目标确认",
+        "体测",
+        "饮食结构",
+        "训练安排",
+        "每周复盘"
+      ],
+      "output": "4 周减脂计划"
+    },
+    {
+      "id": "muscle-gain-plan",
+      "name": "增肌计划工作流",
+      "steps": [
+        "动作模式评估",
+        "训练分化",
+        "重量进阶",
+        "饮食补充",
+        "恢复管理"
+      ],
+      "output": "增肌训练周期"
+    },
+    {
+      "id": "member-review",
+      "name": "会员复盘工作流",
+      "steps": [
+        "训练记录",
+        "体测变化",
+        "主观感受",
+        "风险提醒",
+        "下阶段安排"
+      ],
+      "output": "会员复盘报告"
+    }
+  ],
+  "safety": [
+    "不替代医生、兽医或临床专家诊断",
+    "不承诺治疗效果、减脂效果或签证/案件/收益结果",
+    "涉及疾病、伤病、药物或急症时提醒寻求专业人员帮助",
+    "不建议极端节食、催吐、脱水、禁食或滥用药物",
+    "出现胸痛、晕厥、剧烈疼痛等症状时建议立即停止训练并就医"
+  ]
+}

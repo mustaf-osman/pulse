@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nimo 提醒助手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/ui/brain-ui/styles.css">
+<link rel="stylesheet" href="./src/ui/brain-ui/styles-enhance.css">
+<link rel="stylesheet" href="./src/ui/brain-ui/stripe-theme.css">
+<script src="/vendor/d3/d3.min.js"></script>
+<style>
+  /* Pulse · 顶部应用栏 · Linear 极简风 */
+  #pulse-app-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 44px; z-index: 9999;
+    display: flex; align-items: center; padding: 0 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    color: #0a0a0a;
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+    user-select: none;
+  }
+  #pulse-app-bar .nb-brand { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; letter-spacing: -0.1px; color: #0a0a0a; }
+  #pulse-app-bar .nb-logo { width: 22px; height: 22px; flex-shrink: 0; }
+  #pulse-app-bar .nb-logo img { width: 100%; height: 100%; display: block; }
+  #pulse-app-bar .nb-divider { width: 1px; height: 16px; background: #ececec; margin: 0 12px; }
+  #pulse-app-bar .nb-nav { display: flex; align-items: center; gap: 2px; }
+  #pulse-app-bar .nb-nav button { background: transparent; border: none; padding: 4px 8px; font-size: 12px; color: #525252; cursor: pointer; border-radius: 5px; font-family: inherit; transition: background 0.12s, color 0.12s; }
+  #pulse-app-bar .nb-nav button:hover { background: #f5f5f5; color: #0a0a0a; }
+  #pulse-app-bar .nb-nav button.active { background: #f0f0f0; color: #0a0a0a; font-weight: 500; }
+  #pulse-app-bar .nb-spacer { flex: 1; }
+  #pulse-app-bar .nb-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #8a8a8a; }
+  #pulse-app-bar .nb-meta .nb-version { color: #8a8a8a; letter-spacing: 0.2px; }
+  #pulse-app-bar .nb-user { display: flex; align-items: center; gap: 7px; padding: 3px 9px 3px 3px; border-radius: 4px; cursor: pointer; transition: background 0.12s; }
+  #pulse-app-bar .nb-user:hover { background: #f5f5f5; }
+  #pulse-app-bar .nb-avatar { width: 22px; height: 22px; background: #0a0a0a; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  #pulse-app-bar .nb-user > span { color: #0a0a0a; font-size: 12.5px; }
+  body { padding-top: 44px !important; background: #ffffff; }
+</style>
+</head>
+<body data-theme="linear">
+<header id="pulse-app-bar">
+  <div class="nb-brand">
+    <div class="nb-logo"><img src="./build/logo.svg" alt="Nimo 提醒助手"></div>
+    <span>Nimo 提醒助手</span>
+  </div>
+  <div class="nb-divider"></div>
+  <nav class="nb-nav">
+    <button class="active" data-nav="home">首页</button>
+    <button data-nav="chat">对话</button>
+    <button data-nav="memory">记忆</button>
+    <button data-nav="workspace">资料台</button>
+    <button data-nav="settings">设置</button>
+  </nav>
+  <div class="nb-spacer"></div>
+  <div class="nb-meta">
+    <span class="nb-version">v0.1.0</span>
+    <div class="nb-user" title="账号">
+      <div class="nb-avatar">A</div>
+      <span>admin</span>
+    </div>
+  </div>
+</header>
+<script>
+  document.querySelectorAll('#pulse-app-bar .nb-nav button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const target = btn.dataset.nav
+      if (target === 'home' || target === 'chat') {
+        document.querySelectorAll('#pulse-app-bar .nb-nav button').forEach(b => b.classList.remove('active'))
+        btn.classList.add('active')
+        return
+      }
+      if (target === 'settings') {
+        document.getElementById('settings-btn')?.click?.()
+        return
+      }
+      if (target === 'memories') {
+        window.dispatchEvent(new CustomEvent('pulse:open-memory-manager'))
+        return
+      }
+      if (target === 'workspace') {
+        window.dispatchEvent(new CustomEvent('pulse:open-org-workspace'))
+        return
+      }
+    })
+  })
+</script>
+<script type="module" src="./src/ui/brain-ui/app.js"></script>
+</body>
+</html>

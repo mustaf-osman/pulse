@@ -1,0 +1,421 @@
+{
+  "id": "pharma",
+  "name": "制药医药",
+  "icon": "💊",
+  "tagline": "面向学生、老师和科研人员的药学科研学习工作台。",
+  "category": "professional_services",
+  "order": 220,
+  "assistantTitle": "药学科研学习助手",
+  "assistantTagline": "懂课题 · 懂文献 · 懂实验思路",
+  "objectLabels": {
+    "singular": "科研课题",
+    "plural": "科研课题",
+    "current": "当前科研课题",
+    "asset": "课题资产",
+    "profile": "课题资料",
+    "save": "保存为课题",
+    "clearConfirm": "确定清空当前课题草稿？",
+    "statsTitle": "当前科研课题",
+    "statsSub": "默认仅显示当前行业课题资产",
+    "diagnosticsHeader": "课题",
+    "streamTitle": "药学科研训练",
+    "workspaceNav": "课题资料",
+    "businessNav": "课题孵化",
+    "literatureNav": "文献精读",
+    "experimentNav": "实验设计",
+    "chatCopy": "💊 药学科研学习工作台 · 聚焦适应症、靶点机制、文献综述、实验设计和合规边界",
+    "placeholder": "输入药学课题、适应症、靶点、文献或实验设计问题…",
+    "briefTitle": "课题今日简报",
+    "briefSub": "课题资产、资料缺口和今日推进建议",
+    "todayStat": "待推进课题",
+    "weekStat": "本周新课题",
+    "contactStat": "今日更新",
+    "quickTitle": "待推进科研课题",
+    "empty": "今天没有待推进课题，可以新建一个适应症、靶点或文献综述任务",
+    "unnamed": "未命名课题",
+    "sectionTitle": "课题动态",
+    "sectionSub": "同步课题资料、研究记录和文献线索",
+    "staleNoun": "课题",
+    "staleRisk": "资料停滞",
+    "nextActionEmpty": "今天没有明显待推进课题，可以补充课题资料、整理文献证据表或生成实验设计思路。",
+    "businessEyebrow": "药学科研课题工作台",
+    "businessTitle": "课题推进与数据",
+    "businessSub": "课题资产、阶段分布、资料更新、实验规划和停滞风险放在一个页面里看。",
+    "dashboardJump": "课题数据",
+    "followupsJump": "推进列表",
+    "workspaceTitle": "科研课题资料台",
+    "workspaceSub": "统一管理课题资料、研究记录和团队成员 —— AI 会基于这些辅助课题分析",
+    "shellSub": "把课题、资料、成员都放在一个窗口统一管理",
+    "companyTab": "团队信息",
+    "customerTab": "课题管理",
+    "employeeTab": "成员管理",
+    "companyStat": "团队信息",
+    "customerStat": "科研课题",
+    "customerStatSub": "在研科研课题",
+    "customerPageTitle": "课题资料",
+    "customerPageSub": "先查看科研课题列表，需要时再新增或编辑课题资料。",
+    "savedCustomersTitle": "已保存课题",
+    "newCustomer": "新增课题",
+    "addCustomer": "添加课题",
+    "editCustomer": "编辑课题",
+    "emptyCustomers": "暂无课题，点击“新增课题”添加第一个研究任务。",
+    "customerLoadFail": "课题加载失败",
+    "quotaName": "课题管理",
+    "savedMessage": "课题已添加，AI 已感知",
+    "noIndustryError": "请先选择行业后再添加课题",
+    "nextDateLabel": "下次推进日期",
+    "ownerLabel": "负责人/导师",
+    "notesLabel": "研究备注"
+  },
+  "themeColor": {
+    "primary": "#06b6d4",
+    "glow": "rgba(6,182,212,0.18)",
+    "bg_tint": "rgba(6,182,212,0.04)"
+  },
+  "aiPersona": "你是一位药学科研学习与课题研究助手，适合大学生、研究生、老师、科研人员和实验室团队使用。你擅长帮助用户理解适应症、靶点机制、公开文献、研究假设、实验思路、ADMET 风险、临床试验框架和合规边界。你主要用于学习、教学、科研训练和课题方案梳理，不是医院临床系统，不做真实诊断、处方、治疗建议或危险实验操作指导。",
+  "hotspotSources": [
+    "pharma_news",
+    "nhsa_policy",
+    "medical_device_news",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "project_name",
+      "label": "项目/课题名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "indication",
+      "label": "适应症/疾病方向",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "drug_type",
+      "label": "药物类型",
+      "type": "select",
+      "options": [
+        "小分子",
+        "抗体",
+        "多肽",
+        "核酸药物",
+        "细胞治疗",
+        "基因治疗",
+        "中药/天然产物",
+        "医疗器械/诊断"
+      ]
+    },
+    {
+      "key": "target",
+      "label": "靶点/机制",
+      "type": "text"
+    },
+    {
+      "key": "research_stage",
+      "label": "研发阶段",
+      "type": "select",
+      "options": [
+        "方向调研",
+        "靶点验证",
+        "发现阶段",
+        "临床前",
+        "IND 准备",
+        "I 期",
+        "II 期",
+        "III 期",
+        "上市后"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "工作阶段",
+      "type": "select",
+      "options": [
+        "资料调研",
+        "方案设计",
+        "实验规划",
+        "临床框架",
+        "合规审查",
+        "同类研究分析"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "分析适应症",
+      "description": "疾病负担、现有疗法和机会风险",
+      "action": "go-chat",
+      "prompt": "请作为药学科研学习助手，帮我分析一个适应症/疾病方向：疾病背景、现有治疗、未满足需求、同类研究、可研究问题和主要风险。仅用于学习和课题讨论。"
+    },
+    {
+      "title": "梳理靶点机制",
+      "description": "靶点、通路、证据和验证问题",
+      "action": "go-chat",
+      "prompt": "请帮我梳理一个靶点/机制：相关疾病、作用通路、证据强弱、关键文献线索、验证实验问题和潜在风险。"
+    },
+    {
+      "title": "做文献综述",
+      "description": "结构化总结公开文献证据",
+      "action": "go-chat",
+      "prompt": "请帮我做制药/生命科学文献综述框架：研究背景、关键论文分类、证据表、争议点、结论和后续研究问题。"
+    },
+    {
+      "title": "生成课题框架",
+      "description": "研究问题、假设和实验思路",
+      "action": "go-chat",
+      "prompt": "请根据适应症、靶点和药物类型，帮我生成药学科研课题框架：研究背景、科学问题、研究假设、实验设计思路、预期结果、风险点和需要老师/导师确认的事项。"
+    },
+    {
+      "title": "实验设计思路",
+      "description": "模型、指标、对照和风险",
+      "action": "go-chat",
+      "prompt": "请帮我设计一个药学科研实验思路：研究目标、模型选择、实验分组、关键指标、对照设置、风险点和伦理/合规注意事项。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "公开药学研究、疾病机制和新靶点进展可用于课题选题。"
+      },
+      {
+        "source": "学习需求",
+        "title": "学生和老师更关注文献综述、实验思路、课题框架和方法边界。"
+      },
+      {
+        "source": "运营机会",
+        "title": "药学科研训练更强调公开资料、证据等级、实验可行性和安全合规。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "课题记录标准化",
+        "hint": "每个课题沉淀背景、假设、文献证据、实验思路和下一步问题。"
+      },
+      {
+        "title": "文献证据表",
+        "hint": "按课题方向整理关键论文、证据等级、争议点和可验证问题。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "课题框架",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "文献综述",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "实验设计",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "indication_analysis",
+      "title": "适应症分析",
+      "category": "研发",
+      "template": "请分析适应症「{{indication}}」：疾病背景、现有疗法、未满足需求、同类研究、潜在靶点、课题机会和主要风险。",
+      "vars": [
+        "indication"
+      ]
+    },
+    {
+      "id": "target_mechanism",
+      "title": "靶点机制梳理",
+      "category": "靶点",
+      "template": "请梳理靶点「{{target}}」在「{{disease}}」中的作用机制、证据来源、验证实验思路和风险假设。",
+      "vars": [
+        "target",
+        "disease"
+      ]
+    },
+    {
+      "id": "admet_checklist",
+      "title": "ADMET 风险清单",
+      "category": "安全性",
+      "template": "针对 {{drug_type}} / {{candidate}}，请从 ADMET 角度列出早期风险清单、需要补充的数据和验证建议。",
+      "vars": [
+        "drug_type",
+        "candidate"
+      ]
+    },
+    {
+      "id": "clinical_outline",
+      "title": "临床试验框架",
+      "category": "临床",
+      "template": "请为 {{indication}} 的 {{phase}} 临床试验生成框架：人群、入排标准、终点、风险点、伦理和合规注意事项。",
+      "vars": [
+        "indication",
+        "phase"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "pipeline",
+        "title": "研发阶段看板",
+        "stages": [
+          "调研",
+          "验证",
+          "临床前",
+          "IND",
+          "临床"
+        ]
+      },
+      {
+        "type": "matrix",
+        "title": "适应症/靶点矩阵"
+      },
+      {
+        "type": "alert",
+        "title": "合规风险提醒"
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "药学科研学习工作台 · 课题、文献与实验思路",
+    "sub": "面向大学生、老师和科研人员，围绕适应症、靶点机制、文献证据、课题框架、实验设计和安全合规边界做学习与科研训练。"
+  },
+  "domainObjects": [
+    "适应症",
+    "靶点",
+    "作用机制",
+    "药物类型",
+    "候选化合物",
+    "ADMET",
+    "临床试验",
+    "文献证据",
+    "同类研究",
+    "法规路径"
+  ],
+  "experts": [
+    {
+      "id": "indication",
+      "name": "适应症分析专家",
+      "focus": "疾病背景、未满足需求、同类研究和课题价值"
+    },
+    {
+      "id": "target",
+      "name": "靶点机制专家",
+      "focus": "靶点、通路、机制证据和风险假设"
+    },
+    {
+      "id": "drug-discovery",
+      "name": "药物研发路线专家",
+      "focus": "发现、验证、临床前、IND 和临床路径"
+    },
+    {
+      "id": "clinical-trial",
+      "name": "临床试验方案专家",
+      "focus": "人群、终点、入排标准和风险点"
+    },
+    {
+      "id": "regulatory",
+      "name": "法规合规专家",
+      "focus": "材料清单、合规边界和风险提醒"
+    }
+  ],
+  "skills": [
+    {
+      "id": "indication-review",
+      "name": "适应症分析",
+      "description": "分析疾病方向、治疗现状、同类研究和未满足需求",
+      "outputs": [
+        "适应症摘要",
+        "机会/风险"
+      ]
+    },
+    {
+      "id": "target-map",
+      "name": "靶点机制梳理",
+      "description": "整理靶点、通路、证据等级和关键疑问",
+      "outputs": [
+        "机制图谱",
+        "验证问题"
+      ]
+    },
+    {
+      "id": "literature-review",
+      "name": "文献综述",
+      "description": "基于公开资料做结构化文献摘要和证据表",
+      "outputs": [
+        "综述提纲",
+        "证据表"
+      ]
+    },
+    {
+      "id": "admet-risk",
+      "name": "ADMET 风险提示",
+      "description": "从吸收、分布、代谢、排泄、毒性角度列风险",
+      "outputs": [
+        "ADMET 清单",
+        "验证建议"
+      ]
+    },
+    {
+      "id": "trial-outline",
+      "name": "临床试验框架",
+      "description": "草拟试验目标、人群、终点和关键风险",
+      "outputs": [
+        "方案框架",
+        "问题清单"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "indication-to-target",
+      "name": "适应症到靶点",
+      "steps": [
+        "疾病背景",
+        "治疗现状",
+        "靶点候选",
+        "证据等级",
+        "风险假设"
+      ],
+      "output": "课题方向初筛报告"
+    },
+    {
+      "id": "target-to-preclinical",
+      "name": "靶点到临床前",
+      "steps": [
+        "机制验证",
+        "模型选择",
+        "候选物评估",
+        "ADMET 风险",
+        "IND 材料清单"
+      ],
+      "output": "临床前路线图"
+    },
+    {
+      "id": "trial-design",
+      "name": "临床试验框架",
+      "steps": [
+        "目标人群",
+        "入排标准",
+        "终点设计",
+        "样本量问题",
+        "伦理/合规"
+      ],
+      "output": "临床方案初稿框架"
+    }
+  ],
+  "safety": [
+    "不替代医生、兽医或临床专家诊断",
+    "不承诺治疗效果、减脂效果或签证/案件/收益结果",
+    "涉及疾病、伤病、药物或急症时提醒寻求专业人员帮助",
+    "不提供危险化学品、管制药物或违法药品的制备步骤",
+    "不替代临床试验统计师、PI、伦理委员会或法规负责人判断",
+    "医学和药物信息必须强调公开资料、待验证和专业审核"
+  ]
+}

@@ -1,0 +1,314 @@
+{
+  "id": "usedcar",
+  "name": "二手车交易",
+  "icon": "🚗",
+  "tagline": "车况评估、估价、试驾、置换金融和成交跟进工作台。",
+  "category": "sales_growth",
+  "order": 40,
+  "assistantTitle": "二手车交易助手",
+  "assistantTagline": "懂车况 · 懂估价 · 懂试驾 · 懂透明成交",
+  "themeColor": {
+    "primary": "#ef4444",
+    "glow": "rgba(239,68,68,0.18)",
+    "bg_tint": "rgba(239,68,68,0.04)"
+  },
+  "aiPersona": "你是一位二手车销售与门店线索跟进助手，熟悉预算、车型偏好、车况、试驾、置换和贷款。回答时帮助销售推进线索、整理车况卖点和异议处理，不隐瞒事故、水泡、重大维修等关键信息。",
+  "hotspotSources": [
+    "dongchedi",
+    "autohome",
+    "douyin_hot",
+    "baidu_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "customer_name",
+      "label": "客户姓名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "car_interest",
+      "label": "意向车型",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "budget",
+      "label": "预算",
+      "type": "select",
+      "options": [
+        "<5万",
+        "5-10万",
+        "10-20万",
+        "20-30万",
+        "30万+"
+      ]
+    },
+    {
+      "key": "usage",
+      "label": "用车场景",
+      "type": "tags",
+      "options": [
+        "家用",
+        "通勤",
+        "商务",
+        "营运",
+        "练手",
+        "置换升级"
+      ]
+    },
+    {
+      "key": "finance_need",
+      "label": "金融/置换需求",
+      "type": "tags",
+      "options": [
+        "贷款",
+        "全款",
+        "置换",
+        "分期",
+        "保险",
+        "上牌"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新线索",
+        "推荐车型",
+        "到店试驾",
+        "报价谈判",
+        "订车",
+        "成交回访"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "整理车况卖点",
+      "description": "透明讲清优势和风险",
+      "action": "go-chat",
+      "prompt": "请帮我整理一辆二手车的车况卖点：基础信息、配置亮点、维修保养、检测结果、必须披露的风险和客户问答。"
+    },
+    {
+      "title": "估价对比",
+      "description": "行情、里程、配置和议价边界",
+      "action": "go-chat",
+      "prompt": "请帮我做二手车估价解释：车型年份、里程、配置、车况、市场行情、价格合理性和可让价边界。"
+    },
+    {
+      "title": "试驾邀约",
+      "description": "按用车场景邀约到店",
+      "action": "go-chat",
+      "prompt": "请根据客户预算、用车场景和意向车型，生成二手车试驾邀约话术，突出到店理由、透明车况和时间确认。"
+    },
+    {
+      "title": "置换金融",
+      "description": "资料清单和付款方案沟通",
+      "action": "go-chat",
+      "prompt": "请为二手车客户整理置换/贷款/保险/上牌方案，包含资料清单、预算解释、风险提示和下一步动作。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "新能源二手车价格波动带来询价机会。"
+      },
+      {
+        "source": "客户需求",
+        "title": "到店试驾率和金融方案影响成交效率。"
+      },
+      {
+        "source": "运营机会",
+        "title": "车况透明、质保和价格对比仍是核心问题。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "试驾前确认预算",
+        "hint": "邀约前确认预算、用车场景和付款方式，减少无效到店。"
+      },
+      {
+        "title": "置换客户优先跟进",
+        "hint": "有旧车置换需求的客户成交概率更高。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "新能源二手车",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "置换",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "试驾邀约",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "car_condition_summary",
+      "title": "车况摘要",
+      "category": "车况",
+      "template": "请把这辆车的信息整理成透明车况摘要：{{car_info}}。包含优势、风险披露、客户常问问题和试驾话术。",
+      "vars": [
+        "car_info"
+      ]
+    },
+    {
+      "id": "usedcar_test_drive",
+      "title": "试驾邀约",
+      "category": "邀约",
+      "template": "{{name}}您好，您关注的 {{car_model}} 适合 {{usage}}。这台车核心优势是 {{selling_points}}，车况我们会现场透明说明。您看 {{time_1}} 或 {{time_2}} 哪个时间方便试驾？",
+      "vars": [
+        "name",
+        "car_model",
+        "usage",
+        "selling_points",
+        "time_1",
+        "time_2"
+      ]
+    },
+    {
+      "id": "finance_checklist",
+      "title": "贷款置换资料",
+      "category": "金融",
+      "template": "客户预算 {{budget}}，付款方式 {{pay_type}}，是否置换 {{trade_in}}。请列资料清单、费用构成、风险提示和沟通话术。",
+      "vars": [
+        "budget",
+        "pay_type",
+        "trade_in"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "二手车交易客户推进",
+        "stages": [
+          "线索",
+          "试驾",
+          "报价",
+          "成交"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "二手车工作台 · 车况估价与透明成交",
+    "sub": "围绕车型、车况、预算、试驾、置换、金融和合同风险，帮助门店把车辆卖点与风险讲清楚。"
+  },
+  "domainObjects": [
+    "车辆",
+    "车型",
+    "车况",
+    "里程",
+    "事故/水泡/火烧",
+    "维修保养",
+    "估价",
+    "试驾",
+    "置换",
+    "贷款保险"
+  ],
+  "experts": [
+    {
+      "id": "condition",
+      "name": "车况评估专家",
+      "focus": "事故、水泡、火烧、维修和检测报告解读"
+    },
+    {
+      "id": "valuation",
+      "name": "二手车估价专家",
+      "focus": "年份、里程、配置、行情和议价空间"
+    },
+    {
+      "id": "test-drive",
+      "name": "试驾转化专家",
+      "focus": "到店理由、试驾路线和成交推进"
+    },
+    {
+      "id": "finance",
+      "name": "置换金融专家",
+      "focus": "贷款、保险、上牌、置换和资料提醒"
+    }
+  ],
+  "skills": [
+    {
+      "id": "condition-summary",
+      "name": "车况卖点整理",
+      "description": "把检测报告转成透明卖点和风险说明",
+      "outputs": [
+        "车况摘要",
+        "客户问答"
+      ]
+    },
+    {
+      "id": "price-compare",
+      "name": "价格对比",
+      "description": "按行情、配置、里程和车况解释价格",
+      "outputs": [
+        "价格话术",
+        "议价边界"
+      ]
+    },
+    {
+      "id": "test-drive-invite",
+      "name": "试驾邀约",
+      "description": "根据预算和用途生成到店试驾话术",
+      "outputs": [
+        "邀约话术",
+        "到店准备"
+      ]
+    },
+    {
+      "id": "trade-in-finance",
+      "name": "置换金融方案",
+      "description": "整理旧车置换、贷款资料和付款方案",
+      "outputs": [
+        "资料清单",
+        "沟通话术"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "car-listing",
+      "name": "车辆上架",
+      "steps": [
+        "车况核查",
+        "卖点提炼",
+        "风险披露",
+        "价格区间",
+        "发布文案"
+      ],
+      "output": "车辆上架包"
+    },
+    {
+      "id": "lead-to-test-drive",
+      "name": "线索到试驾",
+      "steps": [
+        "预算确认",
+        "用途确认",
+        "车型匹配",
+        "邀约到店",
+        "试驾复盘"
+      ],
+      "output": "试驾推进方案"
+    }
+  ],
+  "safety": [
+    "不得隐瞒事故、水泡、火烧、重大维修或调表风险",
+    "估价和金融方案必须说明仅供参考，以合同和机构审核为准",
+    "不得诱导客户签署不透明合同或绕开法定告知"
+  ]
+}

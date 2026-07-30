@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse · AI 销售客户脉络助手 | 下载</title>
+  <meta name="description" content="Pulse 是面向销售团队的 AI 客户管理桌面应用。按行业独立工作台管理客户、跟进、业务上下文。Windows 一键安装，数据全部本地。" />
+  <meta name="theme-color" content="#0f172a" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --ink: #0f172a;
+      --ink-2: #1f2a44;
+      --muted: #5b6b88;
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --line: #e5eaf3;
+      --accent: #2457d6;
+      --accent-deep: #102a55;
+      --warn: #b45309;
+      --max: 1140px;
+      --radius: 18px;
+      --shadow: 0 18px 38px rgba(15, 23, 42, 0.06);
+      --shadow-strong: 0 28px 64px rgba(15, 23, 42, 0.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { width: min(var(--max), calc(100vw - 40px)); margin: 0 auto; }
+
+    /* ── Topbar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(246, 248, 252, 0.85);
+      backdrop-filter: saturate(160%) blur(14px);
+      -webkit-backdrop-filter: saturate(160%) blur(14px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s ease, background .2s ease;
+    }
+    .topbar.scrolled { border-color: var(--line); }
+    .topbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 10px; font-weight: 800;
+      font-size: 18px; letter-spacing: -0.01em;
+    }
+    .brand-mark {
+      width: 30px; height: 30px; border-radius: 9px;
+      background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+      display: grid; place-items: center; color: #fff; font-weight: 800;
+      font-size: 14px; letter-spacing: 0.02em;
+      box-shadow: 0 6px 16px rgba(36, 87, 214, 0.3);
+    }
+    .nav { display: flex; align-items: center; gap: 6px; }
+    .nav a {
+      padding: 8px 12px; border-radius: 8px; color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: color .15s ease, background .15s ease;
+    }
+    .nav a:hover { color: var(--ink); background: rgba(15, 23, 42, 0.04); }
+    .nav .cta-mini {
+      margin-left: 6px; background: var(--ink); color: #fff;
+      padding: 9px 14px; border-radius: 999px; font-weight: 700;
+    }
+    .nav .cta-mini:hover { background: var(--accent-deep); color: #fff; }
+    @media (max-width: 720px) {
+      .nav a:not(.cta-mini) { display: none; }
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      padding: 64px 0 40px;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: ""; position: absolute; inset: -80px -80px auto auto;
+      width: 520px; height: 520px;
+      background: radial-gradient(closest-side, rgba(36, 87, 214, 0.12), transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 48px; align-items: center;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 900px) {
+      .hero { padding: 40px 0 24px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 7px 12px; border-radius: 999px;
+      background: #eef4ff; color: var(--accent);
+      font-size: 12px; font-weight: 700; letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+    .eyebrow::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.18);
+    }
+    h1 {
+      margin: 0 0 18px;
+      font-size: clamp(34px, 4.4vw, 56px);
+      line-height: 1.1; letter-spacing: -0.02em; font-weight: 800;
+      color: var(--ink);
+    }
+    h1 .accent { color: var(--accent); }
+    .lede {
+      font-size: clamp(16px, 1.4vw, 18px);
+      color: var(--muted); margin: 0 0 28px;
+      max-width: 540px;
+    }
+    .cta-row {
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .cta-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 26px; border-radius: 12px;
+      background: var(--ink); color: #fff;
+      font-weight: 700; font-size: 16px;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    .cta-primary:hover {
+      transform: translateY(-1px);
+      background: var(--accent-deep);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.22);
+    }
+    .cta-primary svg { width: 18px; height: 18px; }
+    .cta-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 18px; border-radius: 12px;
+      color: var(--ink-2); font-weight: 600; font-size: 15px;
+      border: 1px solid var(--line); background: var(--card);
+      transition: border-color .15s ease, color .15s ease;
+    }
+    .cta-secondary:hover { border-color: var(--ink); color: var(--ink); }
+    .cta-meta {
+      color: var(--muted); font-size: 13px; font-weight: 500;
+    }
+    .cta-meta strong { color: var(--ink-2); font-weight: 700; }
+
+    /* ── Hero visual: 模拟应用截图 ── */
+    .hero-mock {
+      position: relative; border-radius: 22px;
+      background: var(--card); border: 1px solid var(--line);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+    }
+    .mock-titlebar {
+      display: flex; align-items: center; gap: 6px;
+      padding: 12px 16px; border-bottom: 1px solid var(--line);
+      background: #fafbfd;
+    }
+    .mock-dot { width: 11px; height: 11px; border-radius: 50%; background: #cdd5e1; }
+    .mock-dot.r { background: #ff5f57; }
+    .mock-dot.y { background: #ffbd2e; }
+    .mock-dot.g { background: #28c840; }
+    .mock-tab {
+      margin-left: auto; padding: 4px 12px; border-radius: 6px;
+      background: #eef4ff; color: var(--accent);
+      font-size: 11px; font-weight: 700;
+    }
+    .mock-body { padding: 18px; }
+    .mock-overview {
+      padding: 18px; border-radius: 14px; border: 1px solid var(--line);
+      background: #ffffff; margin-bottom: 14px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+    }
+    .mock-kicker {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      letter-spacing: 0.04em; margin-bottom: 6px;
+    }
+    .mock-title { font-size: 19px; font-weight: 800; color: var(--ink); margin: 0 0 8px; }
+    .mock-sub { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.6; }
+    .mock-card {
+      padding: 14px; border-radius: 12px; background: #fff; border: 1px solid var(--line);
+      margin-bottom: 10px; box-shadow: 0 6px 16px rgba(15, 23, 42, 0.03);
+    }
+    .mock-card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .mock-card-title { font-size: 13px; font-weight: 800; color: var(--ink-2); }
+    .mock-card-link { font-size: 11px; color: var(--accent); font-weight: 700; }
+    .mock-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 7px 8px; border-radius: 8px; background: #f8fafc;
+      margin-bottom: 6px; font-size: 12px;
+    }
+    .mock-row:last-child { margin-bottom: 0; }
+    .mock-pill {
+      padding: 1px 7px; border-radius: 999px; background: #eef4ff;
+      color: var(--accent); font-size: 10px; font-weight: 800;
+    }
+    .mock-name { color: var(--ink-2); font-weight: 600; flex: 1; min-width: 0; }
+    .mock-day { color: var(--warn); font-weight: 700; font-size: 11px; }
+
+    /* ── Section base ── */
+    section.block { padding: 72px 0; }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 12px; font-weight: 800; color: var(--accent);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(28px, 3vw, 40px);
+      line-height: 1.18; letter-spacing: -0.02em; font-weight: 800;
+      color: var(--ink); margin: 0 0 16px; max-width: 720px;
+    }
+    .section-lede {
+      max-width: 640px; color: var(--muted); margin: 0 0 36px;
+      font-size: clamp(15px, 1.2vw, 17px);
+    }
+
+    /* ── Features ── */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 760px) {
+      .features-grid { grid-template-columns: 1fr; }
+    }
+    .feature {
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .feature:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-strong);
+    }
+    .feature-icon {
+      width: 40px; height: 40px; border-radius: 11px;
+      background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+      display: grid; place-items: center; color: #fff;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 16px rgba(36, 87, 214, 0.25);
+    }
+    .feature-icon svg { width: 20px; height: 20px; }
+    .feature h3 {
+      font-size: 18px; font-weight: 800; margin: 0 0 8px;
+      color: var(--ink);
+    }
+    .feature p {
+      margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.7;
+    }
+
+    /* ── Workspace dual cards ── */
+    .ws-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    }
+    @media (max-width: 800px) {
+      .ws-grid { grid-template-columns: 1fr; }
+    }
+    .ws-card {
+      padding: 32px; border-radius: 22px; position: relative;
+      overflow: hidden; color: #fff;
+      box-shadow: 0 22px 48px rgba(15, 23, 42, 0.18);
+    }
+    .ws-card.ecom {
+      background: linear-gradient(155deg, #ff7a6b 0%, #d63a2c 100%);
+    }
+    .ws-card.tech {
+      background: linear-gradient(155deg, #3b82f6 0%, #102a55 100%);
+    }
+    .ws-card::after {
+      content: ""; position: absolute; inset: auto auto -120px -60px;
+      width: 280px; height: 280px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); pointer-events: none;
+    }
+    .ws-tag {
+      display: inline-block; padding: 5px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.18); font-size: 11px; font-weight: 800;
+      letter-spacing: 0.04em; margin-bottom: 18px;
+    }
+    .ws-card h3 {
+      font-size: 26px; font-weight: 800; margin: 0 0 12px;
+      letter-spacing: -0.01em;
+    }
+    .ws-card p {
+      margin: 0 0 20px; opacity: 0.92; font-size: 15px; line-height: 1.7;
+    }
+    .ws-list {
+      list-style: none; padding: 0; margin: 0;
+      display: flex; flex-direction: column; gap: 9px;
+      position: relative; z-index: 1;
+    }
+    .ws-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; opacity: 0.96;
+    }
+    .ws-list li::before {
+      content: ""; width: 16px; height: 16px; border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: grid; place-items: center;
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* ── How (steps) ── */
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    @media (max-width: 800px) {
+      .steps { grid-template-columns: 1fr; }
+    }
+    .step {
+      padding: 28px; border-radius: var(--radius);
+      background: var(--card); border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+    .step-num {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: grid; place-items: center;
+      background: var(--ink); color: #fff;
+      font-weight: 800; font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .step h3 {
+      margin: 0 0 8px; font-size: 17px; font-weight: 800; color: var(--ink);
+    }
+    .step p {
+      margin: 0; color: var(--muted); font-size: 14px; line-height: 1.7;
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      max-width: 760px;
+      margin: 0;
+      padding: 0;
+    }
+    details {
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 14px; padding: 18px 22px; margin-bottom: 12px;
+      transition: box-shadow .15s ease, border-color .15s ease;
+    }
+    details[open] { box-shadow: var(--shadow); border-color: #cfd9eb; }
+    summary {
+      cursor: pointer; font-weight: 700; font-size: 15px; color: var(--ink);
+      display: flex; justify-content: space-between; align-items: center;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: "+"; font-size: 22px; color: var(--muted); font-weight: 400;
+      transition: transform .2s ease;
+    }
+    details[open] summary::after { content: "−"; }
+    details p {
+      margin: 12px 0 0; color: var(--muted); font-size: 14.5px; line-height: 1.75;
+    }
+
+    /* ── Final CTA ── */
+    .final {
+      margin: 48px 0 96px;
+      padding: 56px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, var(--ink) 0%, var(--accent-deep) 100%);
+      color: #fff; position: relative; overflow: hidden;
+      box-shadow: 0 30px 70px rgba(15, 23, 42, 0.22);
+    }
+    .final::before {
+      content: ""; position: absolute; inset: -80px -80px auto auto;
+      width: 360px; height: 360px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.12), transparent 70%);
+    }
+    @media (max-width: 700px) { .final { padding: 36px 24px; } }
+    .final-inner {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 28px; flex-wrap: wrap;
+    }
+    .final h2 { color: #fff; margin: 0 0 8px; }
+    .final p { color: rgba(255,255,255,0.78); margin: 0; font-size: 15px; }
+    .final .cta-primary {
+      background: #fff; color: var(--ink);
+    }
+    .final .cta-primary:hover {
+      background: #eef4ff; color: var(--accent-deep);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 28px 0 56px;
+      color: var(--muted); font-size: 13px;
+      border-top: 1px solid var(--line);
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; padding-top: 28px;
+    }
+
+    /* ── 安全提示 banner（SmartScreen 提醒） ── */
+    .notice {
+      margin-top: 18px;
+      padding: 14px 18px; border-radius: 12px;
+      background: #fff7ed; border: 1px solid #fed7aa;
+      color: #9a3412; font-size: 13px; line-height: 1.65;
+      max-width: 540px;
+    }
+    .notice strong { color: #7c2d12; }
+  </style>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">P</span>
+        <span>Pulse</span>
+      </a>
+      <nav class="nav">
+        <a href="#features">能力</a>
+        <a href="#workspace">行业工作台</a>
+        <a href="#how">三步开始</a>
+        <a href="#faq">常见问题</a>
+        <a class="cta-mini" href="https://agent2.oss-cn-beijing.aliyuncs.com/pulse/Pulse-Setup-0.1.3.exe">下载</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">AI 销售客户脉络助手</span>
+          <h1>客户太多<br />靠脑子<span class="accent">记不住</span></h1>
+          <p class="lede">
+            Pulse 把每次电话、微信、面谈和签约状态自动归档到对应客户，下次跟进前 30 秒，就能看清上次聊到了哪。按行业独立工作台，电商和科技互不污染。
+          </p>
+          <div class="cta-row">
+            <a href="https://agent2.oss-cn-beijing.aliyuncs.com/pulse/Pulse-Setup-0.1.3.exe" class="cta-primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              立即下载 Windows 版
+            </a>
+            <a href="#features" class="cta-secondary">看看能做什么 →</a>
+          </div>
+          <div class="cta-meta" style="margin-top:14px">
+            <strong>v0.1.3</strong> · 86 MB · Windows 10 及以上 · 免费
+          </div>
+          <div class="notice">
+            <strong>第一次安装提示？</strong> 当前版本未做代码签名，Windows 会弹出 SmartScreen 提示「未知发布者」。点 <strong>更多信息 → 仍要运行</strong> 即可。我们正在申请签名。
+          </div>
+        </div>
+
+        <div class="hero-mock" aria-hidden="true">
+          <div class="mock-titlebar">
+            <span class="mock-dot r"></span>
+            <span class="mock-dot y"></span>
+            <span class="mock-dot g"></span>
+            <span class="mock-tab">科技工作台</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-overview">
+              <div class="mock-kicker">当前行业工作台</div>
+              <div class="mock-title">科技工作台</div>
+              <p class="mock-sub">聚焦线索推进、Demo 跟进、POC 交付和方案销售，科技资料与其他行业完全隔离。</p>
+            </div>
+            <div class="mock-card">
+              <div class="mock-card-head">
+                <span class="mock-card-title">今日跟进 · 科技客户</span>
+                <span class="mock-card-link">客户列表 →</span>
+              </div>
+              <div class="mock-row">
+                <span class="mock-pill">POC</span>
+                <span class="mock-name">某某云科技 · 张总</span>
+                <span class="mock-day">停滞 9 天</span>
+              </div>
+              <div class="mock-row">
+                <span class="mock-pill">Demo</span>
+                <span class="mock-name">智数科技 · 王经理</span>
+                <span class="mock-day">停滞 5 天</span>
+              </div>
+              <div class="mock-row">
+                <span class="mock-pill">线索</span>
+                <span class="mock-name">某行 SaaS 项目组</span>
+                <span class="mock-day" style="color: var(--accent);">今日新增</span>
+              </div>
+            </div>
+            <div class="mock-card">
+              <div class="mock-card-head">
+                <span class="mock-card-title">行业热点 · 科技</span>
+                <span class="mock-card-link">完整热点 →</span>
+              </div>
+              <div class="mock-row">
+                <span class="mock-pill" style="background:#fef3c7; color:#92400e;">AI</span>
+                <span class="mock-name">大模型应用、Agent 产品和企业落地趋势</span>
+              </div>
+              <div class="mock-row">
+                <span class="mock-pill" style="background:#dcfce7; color:#15803d;">SaaS</span>
+                <span class="mock-name">B2B 增长、续约、POC 和客户成功信号</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="block">
+      <div class="container">
+        <span class="section-eyebrow">CORE</span>
+        <h2>把销售里最耗时的 4 件事交给 AI</h2>
+        <p class="section-lede">客户记忆、跟进提醒、行业洞察、数据安全 —— 一个 Pulse 全部解决。</p>
+        <div class="features-grid">
+          <article class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <h3>多行业工作台隔离</h3>
+            <p>电商和科技业务的客户、员工、公司资料完全独立。一个应用管多个行业，互不污染，切换一秒。</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <h3>客户脉络自动追踪</h3>
+            <p>每次电话、微信、面谈自动归档到对应客户档案。下次跟进前打开 Pulse，30 秒就能复盘上次聊到哪。</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <h3>AI 主动提醒</h3>
+            <p>哪些客户停滞了 7 天？哪些进入了关键 stage？哪个行业有热点变化？Pulse 在你需要看到时主动推到桌面。</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3>数据全部在本地</h3>
+            <p>客户资料、沟通记录、AI 对话都存在你电脑里。不上传、不共享、不被分析。卸载即清空。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="workspace" class="block" style="padding-top: 24px">
+      <div class="container">
+        <span class="section-eyebrow">WORKSPACE</span>
+        <h2>电商和科技，两套独立工作台</h2>
+        <p class="section-lede">不是一个软件硬塞所有行业。每个行业的客户阶段、跟进重点、热点信号都不一样，Pulse 给你不同的工作台。</p>
+        <div class="ws-grid">
+          <article class="ws-card ecom">
+            <span class="ws-tag">电商</span>
+            <h3>电商工作台</h3>
+            <p>围绕店铺增长、客户复购、售后风险与日常跟进。</p>
+            <ul class="ws-list">
+              <li>客户阶段分布（询价 → 下单 → 复购）</li>
+              <li>抖音 / 小红书 / 微信 全平台行业热点</li>
+              <li>停滞老客户主动提醒、售后风险预警</li>
+              <li>选品、直播、复购任务流</li>
+            </ul>
+          </article>
+          <article class="ws-card tech">
+            <span class="ws-tag">科技</span>
+            <h3>科技工作台</h3>
+            <p>围绕线索推进、Demo 跟进、POC 交付与方案销售。</p>
+            <ul class="ws-list">
+              <li>按决策角色（CEO / CTO / 采购）排序</li>
+              <li>AI / SaaS / GitHub 行业热点</li>
+              <li>POC、签约阶段任务流</li>
+              <li>大客户拜访前 AI 自动整理上下文</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="block">
+      <div class="container">
+        <span class="section-eyebrow">START</span>
+        <h2>三步开始用 Pulse</h2>
+        <p class="section-lede">从下载到管住第一个客户，整个过程不超过 5 分钟。</p>
+        <div class="steps">
+          <article class="step">
+            <div class="step-num">1</div>
+            <h3>下载并安装</h3>
+            <p>点上面下载按钮，得到 86 MB 的 .exe，双击按提示安装。Windows 提示选「仍要运行」即可。</p>
+          </article>
+          <article class="step">
+            <div class="step-num">2</div>
+            <h3>选择当前行业</h3>
+            <p>启动后选「电商」或「科技」，工作台立刻切换为对应行业的客户、跟进和热点视图。</p>
+          </article>
+          <article class="step">
+            <div class="step-num">3</div>
+            <h3>开始记录客户</h3>
+            <p>新增客户、记录每次沟通，AI 自动整理脉络，在你需要时主动提醒下一步行动。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="block">
+      <div class="container">
+        <span class="section-eyebrow">FAQ</span>
+        <h2>常见问题</h2>
+        <div class="faq-list">
+          <details>
+            <summary>下载后弹「Windows 已保护你的电脑」怎么办？</summary>
+            <p>当前版本暂未做代码签名，Windows SmartScreen 会拦下未知发布者。点击弹窗中的「<strong>更多信息</strong>」，再点「<strong>仍要运行</strong>」即可。代码签名证书我们正在申请中。</p>
+          </details>
+          <details>
+            <summary>客户数据存在哪里？会被上传吗？</summary>
+            <p>所有客户、跟进、对话数据都存在你电脑的 <code>%APPDATA%\Pulse</code> 本地目录。Pulse 不会主动上传任何内容。AI 功能调用大模型时只会发送你当前对话的必要片段，不会发送完整客户库。</p>
+          </details>
+          <details>
+            <summary>免费吗？要联网吗？</summary>
+            <p>软件本身免费下载和使用。AI 功能需要你提供自己的 API key（DeepSeek / OpenAI / 通义等），消耗的 token 费用由你自己的密钥承担，Pulse 不抽成。无 AI 功能时也能离线管理客户。</p>
+          </details>
+          <details>
+            <summary>怎么更新到新版本？</summary>
+            <p>Pulse 每次启动会自动检测新版，发现后自动后台下载，下载完会询问你是否立即重启安装。也可以手动从本页下载最新安装包覆盖安装。</p>
+          </details>
+          <details>
+            <summary>支持 macOS 和 Linux 吗？</summary>
+            <p>当前只有 Windows 版。macOS 和 Linux 在路上，进度会在本站更新。</p>
+          </details>
+          <details>
+            <summary>能多人协作吗？我团队有几个人</summary>
+            <p>当前是单机版本，每个人在自己电脑上独立使用。多人协作（共享客户库、团队权限）在产品 roadmap 里，预计后续版本支持。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="final">
+        <div class="final-inner">
+          <div>
+            <h2>把客户都装进 Pulse</h2>
+            <p>Windows 10 及以上，免费下载，5 分钟开始用。</p>
+          </div>
+          <a href="https://agent2.oss-cn-beijing.aliyuncs.com/pulse/Pulse-Setup-0.1.3.exe" class="cta-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            下载 Pulse v0.1.3
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Pulse · AI 销售客户脉络助手</span>
+      <span>v0.1.3 · 86 MB · Windows</span>
+    </div>
+  </footer>
+
+  <script>
+    // 顶栏滚动后加边
+    const topbar = document.getElementById('topbar');
+    const onScroll = () => {
+      if (window.scrollY > 8) topbar.classList.add('scrolled');
+      else topbar.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  </script>
+</body>
+</html>

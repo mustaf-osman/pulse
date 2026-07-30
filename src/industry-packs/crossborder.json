@@ -1,0 +1,159 @@
+{
+  "id": "crossborder",
+  "name": "跨境贸易",
+  "icon": "🌍",
+  "tagline": "外贸询盘、报价邮件和海外客户跟进。",
+  "category": "sales_growth",
+  "order": 30,
+  "assistantTitle": "跨境贸易助手",
+  "assistantTagline": "懂询盘 · 懂报价 · 懂英文跟进",
+  "themeColor": {
+    "primary": "#2563eb",
+    "glow": "rgba(37,99,235,0.18)",
+    "bg_tint": "rgba(37,99,235,0.04)"
+  },
+  "aiPersona": "你是一位跨境贸易和外贸业务助手，熟悉询盘、报价、样品、PI、付款方式、物流条款、展会线索和海外客户跟进。回答时可以提供中英文话术，但不要伪造合同事实或承诺不可控交付。",
+  "hotspotSources": [
+    "alibaba_global",
+    "made_in_china",
+    "google_trends",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "company_name",
+      "label": "海外客户/公司名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "country",
+      "label": "国家/地区",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "product_interest",
+      "label": "询盘产品",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "trade_terms",
+      "label": "贸易条款",
+      "type": "select",
+      "options": [
+        "EXW",
+        "FOB",
+        "CIF",
+        "DDP",
+        "未确定"
+      ]
+    },
+    {
+      "key": "payment_method",
+      "label": "付款方式",
+      "type": "select",
+      "options": [
+        "T/T",
+        "L/C",
+        "PayPal",
+        "信用卡",
+        "未确定"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新询盘",
+        "报价",
+        "寄样",
+        "谈判",
+        "PI/合同",
+        "已成交",
+        "复购"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "写英文开发信",
+      "description": "生成海外客户破冰邮件",
+      "action": "go-chat",
+      "prompt": "请根据当前跨境客户资料，生成一封英文开发信，要求简洁、专业、有明确 CTA，并附中文解释。"
+    },
+    {
+      "title": "生成报价跟进",
+      "description": "报价后催单和异议处理",
+      "action": "go-chat",
+      "prompt": "请生成英文报价后跟进邮件，包含价格、交期、样品和下一步确认。"
+    },
+    {
+      "title": "整理客户询盘",
+      "description": "拆解需求、风险和待确认问题",
+      "action": "go-chat",
+      "prompt": "请整理当前跨境客户询盘，输出已知需求、风险点、待确认问题和下一步跟进计划。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "小单快反、样品转化和 WhatsApp 跟进影响成交。"
+      },
+      {
+        "source": "客户需求",
+        "title": "B2B 平台询盘质量分化，独立站线索需要精细跟进。"
+      },
+      {
+        "source": "运营机会",
+        "title": "物流价格和交期波动影响报价有效期。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "报价后 48 小时跟进",
+        "hint": "报价后两天内补发差异化价值和样品方案。"
+      },
+      {
+        "title": "展会线索分级",
+        "hint": "按国家、采购量和决策时间筛选高优先级客户。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "英文开发信",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "样品转化",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "WhatsApp 跟进",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "跨境贸易客户推进",
+        "stages": [
+          "询盘",
+          "报价",
+          "寄样",
+          "成交"
+        ]
+      }
+    ]
+  }
+}

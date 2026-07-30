@@ -1,0 +1,318 @@
+{
+  "id": "food",
+  "name": "食品零售",
+  "icon": "🍱",
+  "tagline": "食品研发、配方、包装、渠道动销和食品安全工作台。",
+  "category": "store_ops",
+  "order": 140,
+  "assistantTitle": "食品零售助手",
+  "assistantTagline": "懂配方 · 懂动销 · 懂食品安全",
+  "themeColor": {
+    "primary": "#f97316",
+    "glow": "rgba(249,115,22,0.18)",
+    "bg_tint": "rgba(249,115,22,0.04)"
+  },
+  "aiPersona": "你是一位食品零售和食品渠道客户经营助手，关注渠道客户、订货周期、保质期、新品推广、复购和客诉处理。回答时强调食品安全、真实卖点和合规宣传，不夸大功效。",
+  "hotspotSources": [
+    "douyin_food",
+    "xiaohongshu_food",
+    "weibo_hot",
+    "baidu_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "customer_name",
+      "label": "客户/渠道名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "food_category",
+      "label": "食品品类",
+      "type": "select",
+      "options": [
+        "休闲零食",
+        "饮品",
+        "烘焙",
+        "预制菜",
+        "生鲜",
+        "调味品",
+        "地方特产"
+      ]
+    },
+    {
+      "key": "channel_type",
+      "label": "渠道类型",
+      "type": "select",
+      "options": [
+        "门店",
+        "社区团购",
+        "商超",
+        "批发",
+        "餐饮渠道",
+        "电商",
+        "私域"
+      ]
+    },
+    {
+      "key": "order_cycle",
+      "label": "订货周期",
+      "type": "select",
+      "options": [
+        "每周",
+        "半月",
+        "每月",
+        "季度",
+        "不固定"
+      ]
+    },
+    {
+      "key": "concerns",
+      "label": "关注点",
+      "type": "tags",
+      "options": [
+        "价格",
+        "保质期",
+        "口味",
+        "包装",
+        "物流",
+        "动销",
+        "食品安全"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新客",
+        "试样",
+        "首单",
+        "复购",
+        "新品推广",
+        "沉睡"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "新品定位",
+      "description": "人群、场景、口味和价格带",
+      "action": "go-chat",
+      "prompt": "请帮我做食品新品定位：目标人群、消费场景、口味卖点、价格带、包装建议、渠道策略和合规风险。"
+    },
+    {
+      "title": "标签文案检查",
+      "description": "避免功效夸大和标签风险",
+      "action": "go-chat",
+      "prompt": "请帮我检查食品包装/详情页文案是否存在功效夸大、过敏原遗漏、储存/保质期表达不清等风险，并给出修改版。"
+    },
+    {
+      "title": "渠道动销方案",
+      "description": "商超/团购/私域动销动作",
+      "action": "go-chat",
+      "prompt": "请为一个食品产品设计渠道动销方案：渠道选择、陈列、试吃、社群话术、复购提醒和数据指标。"
+    },
+    {
+      "title": "处理食品客诉",
+      "description": "安抚、核查和补偿边界",
+      "action": "go-chat",
+      "prompt": "请帮我处理食品客诉：先安抚客户，再列出批次/物流/储存/留样核查清单、补偿边界和后续复购维护。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "健康零食、低糖饮品和地方特产热度上升。"
+      },
+      {
+        "source": "客户需求",
+        "title": "社区团购和私域复购依赖稳定供货。"
+      },
+      {
+        "source": "运营机会",
+        "title": "食品宣传需避免夸大功效。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "按订货周期复购",
+        "hint": "用上次订货日期和订货周期预测复购提醒。"
+      },
+      {
+        "title": "新品试样转首单",
+        "hint": "给渠道客户提供试样、陈列和动销话术。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "健康零食",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "复购提醒",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "地方特产",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "food_launch",
+      "title": "食品新品上市",
+      "category": "新品",
+      "template": "请为 {{category}} 新品设计上市方案：目标人群、核心卖点、包装表达、渠道、试吃策略、首月动销动作和合规风险。",
+      "vars": [
+        "category"
+      ]
+    },
+    {
+      "id": "food_label_check",
+      "title": "食品标签检查",
+      "category": "合规",
+      "template": "请检查这段食品文案：{{copy}}。重点看功效夸大、过敏原、保质期、储存条件、营养表达和修改建议。",
+      "vars": [
+        "copy"
+      ]
+    },
+    {
+      "id": "food_complaint",
+      "title": "食品客诉处理",
+      "category": "客诉",
+      "template": "客户反馈 {{issue}}，产品批次 {{batch}}。请生成安抚话术、核查清单、补偿边界和内部复盘项。",
+      "vars": [
+        "issue",
+        "batch"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "食品零售客户推进",
+        "stages": [
+          "试样",
+          "首单",
+          "复购",
+          "新品"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "食品工作台 · 配方包装与安全动销",
+    "sub": "围绕食品品类、配方卖点、标签包装、渠道动销、客诉和食品安全，输出合规可执行的经营建议。"
+  },
+  "domainObjects": [
+    "食品品类",
+    "配方",
+    "原料",
+    "营养标签",
+    "包装",
+    "保质期",
+    "渠道",
+    "批次",
+    "客诉",
+    "动销"
+  ],
+  "experts": [
+    {
+      "id": "food-product",
+      "name": "食品产品专家",
+      "focus": "品类定位、口味、包装和卖点"
+    },
+    {
+      "id": "food-safety",
+      "name": "食品安全专家",
+      "focus": "过敏原、保质期、储存和投诉处理"
+    },
+    {
+      "id": "channel-sales",
+      "name": "渠道动销专家",
+      "focus": "商超、团购、餐饮渠道和私域复购"
+    },
+    {
+      "id": "label-compliance",
+      "name": "标签合规专家",
+      "focus": "宣传边界、营养标签和风险提示"
+    }
+  ],
+  "skills": [
+    {
+      "id": "product-positioning",
+      "name": "食品新品定位",
+      "description": "拆人群、场景、口味、价格带和包装卖点",
+      "outputs": [
+        "新品定位",
+        "卖点清单"
+      ]
+    },
+    {
+      "id": "label-copy",
+      "name": "标签文案检查",
+      "description": "检查功效夸大、过敏原、储存和保质期表达",
+      "outputs": [
+        "风险提示",
+        "修改建议"
+      ]
+    },
+    {
+      "id": "channel-plan",
+      "name": "渠道动销方案",
+      "description": "针对门店/团购/电商/餐饮制定陈列和试吃策略",
+      "outputs": [
+        "动销动作",
+        "话术"
+      ]
+    },
+    {
+      "id": "complaint-handle",
+      "name": "食品客诉处理",
+      "description": "处理口味、包装、物流、食品安全类投诉",
+      "outputs": [
+        "安抚话术",
+        "核查清单"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "new-food-launch",
+      "name": "食品新品上市",
+      "steps": [
+        "定位人群",
+        "卖点提炼",
+        "包装标签",
+        "试吃反馈",
+        "渠道铺货"
+      ],
+      "output": "新品上市包"
+    },
+    {
+      "id": "food-complaint",
+      "name": "食品客诉闭环",
+      "steps": [
+        "安抚",
+        "批次核查",
+        "留样/物流",
+        "补偿边界",
+        "复盘改进"
+      ],
+      "output": "客诉处理记录"
+    }
+  ],
+  "safety": [
+    "不夸大食品功效或使用医疗化宣传",
+    "食品安全、过敏原、保质期和储存条件必须优先说明",
+    "发生食品安全投诉时先核实批次和留样，不引导推责"
+  ]
+}

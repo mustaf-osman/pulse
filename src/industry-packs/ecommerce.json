@@ -1,0 +1,528 @@
+{
+  "id": "ecommerce",
+  "name": "电商",
+  "icon": "🛍️",
+  "tagline": "选品、内容、直播、私域复购和售后风险一体化工作台。",
+  "category": "sales_growth",
+  "order": 10,
+  "assistantTitle": "电商助手",
+  "assistantTagline": "懂选品 · 懂内容 · 懂复购 · 懂售后",
+  "themeColor": {
+    "primary": "#e08c4a",
+    "glow": "rgba(224,140,74,0.18)",
+    "bg_tint": "rgba(224,140,74,0.04)"
+  },
+  "aiPersona": "你是一位有 8 年实操经验的电商运营操盘手，做过淘宝、天猫、抖音、小红书、拼多多五个主战场。你懂选品逻辑（动销率、毛利率、复购率、季节性）、内容种草（钩子、人设、转化路径）、直播流程（憋单、促单、过款、福利款）、私域运营（朋友圈节奏、社群促活）。回答时用电商人的直白口吻，不画大饼，多给可执行动作，必要时用'你试试'/'我之前那个客户'/'实测过'这种带经验感的表达。报数字时尽量给参考区间。",
+  "hotspotSources": [
+    "douyin_hot",
+    "xiaohongshu_hot",
+    "1688_trend",
+    "taobao_index",
+    "juliang_data",
+    "chanmama",
+    "qianguai",
+    "weibo_hot",
+    "shein_new",
+    "temu_new"
+  ],
+  "quickActions": [
+    {
+      "title": "诊断店铺增长",
+      "description": "从流量、转化、复购、库存找核心问题",
+      "action": "go-chat",
+      "prompt": "请作为电商增长专家，帮我诊断当前店铺：流量、转化、客单价、复购、退货、库存分别可能有什么问题，并给出本周可执行动作。"
+    },
+    {
+      "title": "生成种草内容",
+      "description": "小红书/抖音标题、脚本和标签",
+      "action": "go-chat",
+      "prompt": "请帮我为一个电商商品生成小红书种草笔记、抖音短视频脚本和 10 个标签，要求自然、有钩子、不夸大功效。"
+    },
+    {
+      "title": "设计直播排品",
+      "description": "引流款、福利款、利润款排布",
+      "action": "go-chat",
+      "prompt": "请帮我设计一场 2 小时直播排品节奏：开场、引流款、福利款、利润款、返场和逼单话术。"
+    },
+    {
+      "title": "处理售后差评",
+      "description": "安抚、补偿边界和追评引导",
+      "action": "go-chat",
+      "prompt": "请帮我处理一个电商差评/退货风险，输出安抚话术、核实问题、补偿边界、内部改进和追评引导。"
+    },
+    {
+      "title": "写复购召回",
+      "description": "按购买周期生成老客召回",
+      "action": "go-chat",
+      "prompt": "请根据电商老客购买周期和偏好，生成 3 个复购召回版本：温和提醒、优惠刺激、上新推荐。"
+    }
+  ],
+  "customerFields": [
+    {
+      "key": "shop_name",
+      "label": "店铺名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "main_category",
+      "label": "主营品类",
+      "type": "select",
+      "options": [
+        "服装",
+        "美妆",
+        "食品饮料",
+        "家居日用",
+        "数码 3C",
+        "母婴",
+        "鞋包配饰",
+        "运动户外",
+        "其他"
+      ]
+    },
+    {
+      "key": "platforms",
+      "label": "经营平台",
+      "type": "tags",
+      "options": [
+        "淘宝",
+        "天猫",
+        "京东",
+        "抖音",
+        "快手",
+        "小红书",
+        "拼多多",
+        "微信小店",
+        "1688"
+      ]
+    },
+    {
+      "key": "shop_level",
+      "label": "店铺等级",
+      "type": "select",
+      "options": [
+        "新店",
+        "1-3 钻",
+        "4-5 钻",
+        "皇冠",
+        "金冠",
+        "天猫"
+      ]
+    },
+    {
+      "key": "monthly_gmv",
+      "label": "月 GMV",
+      "type": "select",
+      "options": [
+        "<1万",
+        "1-10万",
+        "10-50万",
+        "50-100万",
+        "100-500万",
+        "500万+"
+      ]
+    },
+    {
+      "key": "avg_price",
+      "label": "客单价(元)",
+      "type": "number"
+    },
+    {
+      "key": "upload_cycle",
+      "label": "上货周期",
+      "type": "select",
+      "options": [
+        "日更",
+        "周更",
+        "月更",
+        "季更"
+      ]
+    },
+    {
+      "key": "pain_points",
+      "label": "当前痛点",
+      "type": "tags",
+      "options": [
+        "流量贵",
+        "退货高",
+        "库存压",
+        "没爆款",
+        "复购低",
+        "客服累",
+        "竞品压价",
+        "推广无效"
+      ]
+    },
+    {
+      "key": "current_need",
+      "label": "当前需求",
+      "type": "text"
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "咨询",
+        "试单",
+        "批量",
+        "长期合作"
+      ],
+      "required": true
+    }
+  ],
+  "prompts": [
+    {
+      "id": "new_product_xhs",
+      "title": "新品种草小红书文案",
+      "category": "种草",
+      "template": "{{hook_sentence}} 💡\n\n姐妹们救命！最近发现一个 {{category}} 宝藏👇\n\n✨ {{benefit_1}}\n✨ {{benefit_2}}\n✨ {{benefit_3}}\n\n关键是价格不到 {{price}}！性价比 {{rating}}/10\n\n#平价好物 #{{tag_1}} #{{tag_2}}",
+      "vars": [
+        "hook_sentence",
+        "category",
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "price",
+        "rating",
+        "tag_1",
+        "tag_2"
+      ]
+    },
+    {
+      "id": "moments_new_arrival",
+      "title": "朋友圈新品上架",
+      "category": "私域",
+      "template": "{{season}}上新啦～\n\n这一批 {{product}}：\n👉 {{feature_1}}\n👉 {{feature_2}}\n\n首发 {{discount}} 仅限今天\n库存不多，先到先得\n\n👇 戳图直接拍",
+      "vars": [
+        "season",
+        "product",
+        "feature_1",
+        "feature_2",
+        "discount"
+      ]
+    },
+    {
+      "id": "haggling_response",
+      "title": "客户砍价怎么应对",
+      "category": "异议处理",
+      "template": "亲～{{price}} 已经是我家最低了哦，{{material}} 这个成本就 {{cost}} 了。要不这样：今天下单送你 {{gift}}，相当于变相帮你省了 {{saving}}。还有 3 件库存，要不先帮您预留？",
+      "vars": [
+        "price",
+        "material",
+        "cost",
+        "gift",
+        "saving"
+      ]
+    },
+    {
+      "id": "private_traffic_funnel",
+      "title": "淘宝→微信引流话术",
+      "category": "私域",
+      "template": "亲，感谢支持本店～包裹里有张售后卡，扫码加我微信哦：\n1️⃣ 7 天无理由+30 天质保（微信直接对接，比平台快）\n2️⃣ 老客专属：每月 1 次内购 {{discount}}\n3️⃣ {{vip_benefit}}",
+      "vars": [
+        "discount",
+        "vip_benefit"
+      ]
+    },
+    {
+      "id": "vip_recall",
+      "title": "VIP 客户复购召回",
+      "category": "复购",
+      "template": "{{name}}～好久不见。上次买的 {{last_product}} 还满意吗？\n\n这个月上了新一批 {{category}}，特别想到您之前喜欢 {{preference}}，新款这个就很对您口味。\n\n给您留了张老客券，{{coupon}}。点击 {{link}} 直接用。",
+      "vars": [
+        "name",
+        "last_product",
+        "category",
+        "preference",
+        "coupon",
+        "link"
+      ]
+    },
+    {
+      "id": "live_opener",
+      "title": "直播开场白模板",
+      "category": "直播",
+      "template": "兄弟姐妹们晚上好！欢迎来到 {{shop_name}}的直播间～\n\n今天给大家准备了 {{deal_count}} 款福利单品，全场最低 {{lowest_price}} 元起！\n\n关注➕灯牌的家人现在打 1️⃣，我看到立刻给你们点关键的 {{secret_item}} 的福利！",
+      "vars": [
+        "shop_name",
+        "deal_count",
+        "lowest_price",
+        "secret_item"
+      ]
+    },
+    {
+      "id": "holiday_borrow",
+      "title": "节日热点借势",
+      "category": "营销",
+      "template": "{{holiday}}倒计时 {{days}} 天⏰\n\n今年 {{holiday}} 特别准备：\n🎁 {{gift_1}}\n🎁 {{gift_2}}\n🎁 满 {{threshold}} 包邮+赠 {{extra}}\n\n关键活动只有 {{duration}} 哦～\n#{{holiday}}礼物",
+      "vars": [
+        "holiday",
+        "days",
+        "gift_1",
+        "gift_2",
+        "threshold",
+        "extra",
+        "duration"
+      ]
+    },
+    {
+      "id": "refund_handling",
+      "title": "退货售后话术",
+      "category": "售后",
+      "template": "亲～非常抱歉给您不好的体验🥺\n\n您看下哪种方式合适：\n1️⃣ 退货退款（运费我们承担）\n2️⃣ 换货（直接给您发新的，旧的随快递员带走）\n3️⃣ 部分退款 {{partial_refund}} 元 + 您留下使用\n\n您倾向哪种？我立刻给您处理～",
+      "vars": [
+        "partial_refund"
+      ]
+    },
+    {
+      "id": "douyin_hook",
+      "title": "抖音短视频开场钩子",
+      "category": "种草",
+      "template": "{{shocking_fact}}❗\n\n你敢信？{{audience}} 居然有 {{percent}}% 都在踩这个坑：\n\n👉 {{pain_scene}}\n\n今天教你一招，{{solution}}，亲测有效！\n\n#{{tag_1}} #{{tag_2}} #{{tag_3}}",
+      "vars": [
+        "shocking_fact",
+        "audience",
+        "percent",
+        "pain_scene",
+        "solution",
+        "tag_1",
+        "tag_2",
+        "tag_3"
+      ]
+    },
+    {
+      "id": "kol_invite",
+      "title": "达人/博主合作邀约",
+      "category": "营销",
+      "template": "{{kol_name}}你好，我是 {{shop_name}} 的 {{my_name}}，关注你 {{follow_duration}} 了，你 {{compliment}} 这个风格特别戳我们目标人群。\n\n我们最近想推 {{product}}，{{product_highlight}}，目标人群和你粉丝重合度很高。\n\n合作形式：\n• {{form_1}}\n• {{form_2}}\n\n方便发个报价单看下吗？合得拢就走起，合不拢也不耽误彼此时间～",
+      "vars": [
+        "kol_name",
+        "shop_name",
+        "my_name",
+        "follow_duration",
+        "compliment",
+        "product",
+        "product_highlight",
+        "form_1",
+        "form_2"
+      ]
+    },
+    {
+      "id": "big_promo_warmup",
+      "title": "大促前 7 天预热",
+      "category": "营销",
+      "template": "{{name}}～{{promo_name}}还有 {{days}} 天倒计时⏰\n\n提前给老客留几个隐藏福利：\n🎁 收藏加购满 {{cart_threshold}}：送 {{gift_1}}\n🎁 大促当天前 {{first_n}} 单：{{first_n_benefit}}\n🎁 私聊我领【老客专属】{{vip_code}}，叠加店铺券直接 {{final_price}}\n\n不用蹲点，提前帮你算好最低价就行～",
+      "vars": [
+        "name",
+        "promo_name",
+        "days",
+        "cart_threshold",
+        "gift_1",
+        "first_n",
+        "first_n_benefit",
+        "vip_code",
+        "final_price"
+      ]
+    },
+    {
+      "id": "abandoned_cart_chase",
+      "title": "咨询未下单催单",
+      "category": "私域",
+      "template": "{{name}}～看到你前两天问过 {{product}}，是哪里还在纠结？\n\n常见问题给你说一下：\n• 尺码：{{size_tip}}\n• 材质：{{material_tip}}\n• 售后：{{after_sale_tip}}\n\n要是没问题，今天下单我帮你申请个 {{coupon}}，相当于 {{final_price}}。库存只剩 {{stock}} 件了，要不要先帮你锁一件？",
+      "vars": [
+        "name",
+        "product",
+        "size_tip",
+        "material_tip",
+        "after_sale_tip",
+        "coupon",
+        "final_price",
+        "stock"
+      ]
+    },
+    {
+      "id": "bad_review_handle",
+      "title": "差评安抚 + 改好评",
+      "category": "售后",
+      "template": "亲～看到您的评价了，确实是我们的问题🥺\n\n{{specific_apology}}。我们已经把这个情况反馈到 {{department}}，下一批会直接 {{improvement}}。\n\n您的损失我们承担：\n1. 给您补发 {{compensation}}\n2. 私信我您的手机号，单独转您 {{cash_refund}} 元\n\n要是后面体验改善了，方便帮我们追评几个字吗？不强求，您说了算～",
+      "vars": [
+        "specific_apology",
+        "department",
+        "improvement",
+        "compensation",
+        "cash_refund"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "ranking",
+        "title": "本月销售榜",
+        "metric": "gmv"
+      },
+      {
+        "type": "trend",
+        "title": "品类动销曲线",
+        "groupby": "main_category"
+      },
+      {
+        "type": "histogram",
+        "title": "客单价分布",
+        "field": "avg_price"
+      },
+      {
+        "type": "alert",
+        "title": "退货率预警",
+        "threshold_percent": 15
+      },
+      {
+        "type": "calendar",
+        "title": "节日借势日历",
+        "events": [
+          "双十一",
+          "双十二",
+          "618",
+          "年货节",
+          "三八节",
+          "母亲节",
+          "七夕",
+          "圣诞"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "电商工作台 · 选品内容与复购增长",
+    "sub": "围绕选品、标题详情页、短视频种草、直播转化、私域复购和售后风险，输出可执行的店铺增长动作。"
+  },
+  "domainObjects": [
+    "店铺",
+    "商品",
+    "品类",
+    "平台",
+    "内容脚本",
+    "直播场次",
+    "私域客户",
+    "售后工单",
+    "库存",
+    "促销活动"
+  ],
+  "experts": [
+    {
+      "id": "ecom-growth",
+      "name": "店铺增长专家",
+      "focus": "诊断流量、转化、客单、复购和毛利"
+    },
+    {
+      "id": "product-selection",
+      "name": "选品专家",
+      "focus": "分析价格带、供应链、差异化和季节性机会"
+    },
+    {
+      "id": "content-seeding",
+      "name": "小红书/抖音内容专家",
+      "focus": "生成钩子、脚本、标题和种草结构"
+    },
+    {
+      "id": "live-conversion",
+      "name": "直播转化专家",
+      "focus": "设计过款节奏、福利款、逼单和留人话术"
+    },
+    {
+      "id": "after-sales-risk",
+      "name": "售后风险专家",
+      "focus": "处理差评、退换货、物流慢和复购挽回"
+    }
+  ],
+  "skills": [
+    {
+      "id": "sku-diagnosis",
+      "name": "SKU 动销诊断",
+      "description": "按销量、毛利、退货、库存给出保留/优化/清仓建议",
+      "outputs": [
+        "SKU 分层",
+        "动作清单"
+      ]
+    },
+    {
+      "id": "xhs-note",
+      "name": "种草笔记生成",
+      "description": "生成小红书标题、正文、标签和评论区引导",
+      "outputs": [
+        "笔记正文",
+        "标签"
+      ]
+    },
+    {
+      "id": "douyin-script",
+      "name": "短视频脚本",
+      "description": "生成 15-60 秒短视频脚本、镜头和口播",
+      "outputs": [
+        "脚本",
+        "镜头表"
+      ]
+    },
+    {
+      "id": "live-plan",
+      "name": "直播排品节奏",
+      "description": "规划引流款、利润款、福利款和过款顺序",
+      "outputs": [
+        "直播流程",
+        "话术"
+      ]
+    },
+    {
+      "id": "repurchase",
+      "name": "复购召回",
+      "description": "根据购买周期和偏好生成老客召回方案",
+      "outputs": [
+        "微信话术",
+        "优惠边界"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "new-product-launch",
+      "name": "新品上架工作流",
+      "steps": [
+        "卖点提炼",
+        "标题/详情页",
+        "种草内容",
+        "直播话术",
+        "复购卡片"
+      ],
+      "output": "新品首发执行包"
+    },
+    {
+      "id": "bad-review-rescue",
+      "name": "差评挽救工作流",
+      "steps": [
+        "识别原因",
+        "安抚补偿",
+        "内部改进",
+        "追评引导"
+      ],
+      "output": "售后处理方案"
+    },
+    {
+      "id": "monthly-growth-review",
+      "name": "月度增长复盘",
+      "steps": [
+        "GMV 拆解",
+        "品类动销",
+        "内容表现",
+        "复购风险",
+        "下月动作"
+      ],
+      "output": "老板复盘简报"
+    }
+  ],
+  "safety": [
+    "不得刷单、虚假评价或诱导违规营销",
+    "不得夸大商品功效，食品/药品/医美品类必须合规表达",
+    "售后补偿要给边界，不鼓励无底线赔付"
+  ]
+}

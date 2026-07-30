@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Pulse Logo 预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f4f7fb;
+    color: #0f2447;
+    padding: 40px;
+    min-height: 100vh;
+  }
+  h1 {
+    font-size: 22px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .sub {
+    color: #7a8aa3;
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e2eaf3;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(15, 36, 71, 0.04);
+  }
+  .card-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid #e2eaf3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card-head .name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .card-head .tag {
+    font-size: 10px;
+    color: #1e56c0;
+    background: rgba(30, 86, 192, 0.10);
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.4px;
+  }
+  .stage {
+    padding: 28px 18px;
+    border-bottom: 1px dashed #e2eaf3;
+    text-align: center;
+  }
+  .stage-label {
+    font-size: 11px;
+    color: #7a8aa3;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+  .stage img.large {
+    width: 120px; height: 120px;
+  }
+  .stage img.medium {
+    width: 64px; height: 64px;
+  }
+  .stage img.small {
+    width: 26px; height: 26px;
+    vertical-align: middle;
+  }
+  /* 登录页深蓝背景 */
+  .stage.dark {
+    background: linear-gradient(160deg, #0f2a5e 0%, #143a82 50%, #0f2447 100%);
+    color: #fff;
+  }
+  .stage.dark .stage-label { color: rgba(255,255,255,0.55); }
+  /* 顶栏白底场景 */
+  .stage.bar {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    text-align: left;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #0f2447;
+    letter-spacing: 1px;
+  }
+  .stage.bar .stage-label {
+    margin: 0;
+    margin-right: auto;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .stage.bar .bar-row {
+    display: flex; align-items: center; gap: 8px; width: 100%;
+  }
+  .desc {
+    padding: 14px 18px;
+    font-size: 12px;
+    color: #3d5172;
+    line-height: 1.6;
+  }
+  .pick {
+    width: 100%;
+    padding: 12px;
+    background: #1e56c0;
+    color: #fff;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .pick:hover { background: #164aa6; }
+</style>
+</head>
+<body>
+
+<h1>Pulse Logo 候选预览</h1>
+<div class="sub">浏览 4 个候选方案在登录页（深蓝）、应用图标（中尺寸）、顶部栏（小尺寸）的实际效果。选好告诉我编号。</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-head"><span class="name">A · 三层塔</span><span class="tag">寓意：稳固层级</span></div>
+    <div class="stage dark">
+      <div class="stage-label">登录页 · 大尺寸</div>
+      <img src="build/logo-a.svg" class="large" alt="logo A">
+    </div>
+    <div class="stage">
+      <div class="stage-label">应用图标 · 64</div>
+      <img src="build/logo-a.svg" class="medium">
+    </div>
+    <div class="stage bar">
+      <div class="stage-label">顶部栏</div>
+      <div class="bar-row">
+        <img src="build/logo-a.svg" class="small">
+        <span>Pulse</span>
+        <span style="margin-left:auto; font-size:11px; color:#7a8aa3;">v0.1.0</span>
+      </div>
+    </div>
+    <div class="desc">三层方块堆叠呈塔形，金色顶点呼应「Pulse」字面寓意。<br>商务、稳健、值得信赖。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="name">B · 客户脉络</span><span class="tag">寓意：人脉关系</span></div>
+    <div class="stage dark">
+      <div class="stage-label">登录页 · 大尺寸</div>
+      <img src="build/logo-b.svg" class="large">
+    </div>
+    <div class="stage">
+      <div class="stage-label">应用图标 · 64</div>
+      <img src="build/logo-b.svg" class="medium">
+    </div>
+    <div class="stage bar">
+      <div class="stage-label">顶部栏</div>
+      <div class="bar-row">
+        <img src="build/logo-b.svg" class="small">
+        <span>Pulse</span>
+        <span style="margin-left:auto; font-size:11px; color:#7a8aa3;">v0.1.0</span>
+      </div>
+    </div>
+    <div class="desc">中心节点辐射 5 条人脉线，金色为核心客户。<br>直接体现「客户脉络」产品价值。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="name">C · 极简 T</span><span class="tag">寓意：科技现代</span></div>
+    <div class="stage dark">
+      <div class="stage-label">登录页 · 大尺寸</div>
+      <img src="build/logo-c.svg" class="large">
+    </div>
+    <div class="stage">
+      <div class="stage-label">应用图标 · 64</div>
+      <img src="build/logo-c.svg" class="medium">
+    </div>
+    <div class="stage bar">
+      <div class="stage-label">顶部栏</div>
+      <div class="bar-row">
+        <img src="build/logo-c.svg" class="small">
+        <span>Pulse</span>
+        <span style="margin-left:auto; font-size:11px; color:#7a8aa3;">v0.1.0</span>
+      </div>
+    </div>
+    <div class="desc">大写 T + 右下脉点同心圆，国际化字母 mark。<br>现代、简洁，最像 SaaS 产品。</div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="name">D · 折页瓦塔</span><span class="tag">寓意：档案沉淀</span></div>
+    <div class="stage dark">
+      <div class="stage-label">登录页 · 大尺寸</div>
+      <img src="build/logo-d.svg" class="large">
+    </div>
+    <div class="stage">
+      <div class="stage-label">应用图标 · 64</div>
+      <img src="build/logo-d.svg" class="medium">
+    </div>
+    <div class="stage bar">
+      <div class="stage-label">顶部栏</div>
+      <div class="bar-row">
+        <img src="build/logo-d.svg" class="small">
+        <span>Pulse</span>
+        <span style="margin-left:auto; font-size:11px; color:#7a8aa3;">v0.1.0</span>
+      </div>
+    </div>
+    <div class="desc">三层折页堆叠如塔，体现「客户档案层层沉淀」。<br>含蓄又有故事感。</div>
+  </div>
+
+</div>
+
+</body>
+</html>

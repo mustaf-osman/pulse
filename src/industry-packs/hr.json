@@ -1,0 +1,154 @@
+{
+  "id": "hr",
+  "name": "人力资源",
+  "icon": "🧑‍💼",
+  "tagline": "候选人、企业职位和面试流程管理。",
+  "category": "sales_growth",
+  "order": 50,
+  "assistantTitle": "人力资源助手",
+  "assistantTagline": "懂 JD · 懂候选人 · 懂面试推进",
+  "themeColor": {
+    "primary": "#8b5cf6",
+    "glow": "rgba(139,92,246,0.18)",
+    "bg_tint": "rgba(139,92,246,0.04)"
+  },
+  "aiPersona": "你是一位人力资源与猎头顾问助手，熟悉岗位 JD、候选人沟通、面试流程、薪资预期和 offer 推进。回答时帮助整理信息和生成沟通材料，不做歧视性筛选，不输出违法用工建议。",
+  "hotspotSources": [
+    "lagou_hot",
+    "boss_zhipin",
+    "linkedin",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "candidate_or_client",
+      "label": "候选人/企业名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "role_name",
+      "label": "岗位名称",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "seniority",
+      "label": "岗位级别",
+      "type": "select",
+      "options": [
+        "实习",
+        "初级",
+        "中级",
+        "高级",
+        "专家",
+        "经理",
+        "总监",
+        "高管"
+      ]
+    },
+    {
+      "key": "salary_range",
+      "label": "薪资范围",
+      "type": "text"
+    },
+    {
+      "key": "skills",
+      "label": "核心技能",
+      "type": "tags"
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "新需求",
+        "找人中",
+        "候选推荐",
+        "面试中",
+        "Offer",
+        "入职跟进"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "写岗位 JD",
+      "description": "生成清晰可发布的招聘 JD",
+      "action": "go-chat",
+      "prompt": "请根据当前 HR/招聘资料，生成一份岗位 JD，包括职责、要求、加分项、薪资亮点和候选人画像。"
+    },
+    {
+      "title": "候选人推荐报告",
+      "description": "整理卖点、风险和匹配度",
+      "action": "go-chat",
+      "prompt": "请生成候选人推荐报告：匹配点、风险点、面试建议和推荐话术。"
+    },
+    {
+      "title": "面试后跟进",
+      "description": "生成候选人与客户两边的话术",
+      "action": "go-chat",
+      "prompt": "请分别生成给候选人和企业 HR 的面试后跟进话术。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "AI、出海、销售增长岗位需求仍活跃。"
+      },
+      {
+        "source": "客户需求",
+        "title": "候选人更关注稳定性、成长和薪酬结构。"
+      },
+      {
+        "source": "运营机会",
+        "title": "用人部门更看重可验证成果。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "推荐报告标准化",
+        "hint": "提前说清候选人优势和风险，减少客户反复追问。"
+      },
+      {
+        "title": "Offer 前风险排查",
+        "hint": "终面前确认薪资、到岗和多 offer 风险。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "AI 岗位",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "候选人推荐",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "Offer 推进",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "人力资源客户推进",
+        "stages": [
+          "需求",
+          "推荐",
+          "面试",
+          "Offer",
+          "入职"
+        ]
+      }
+    ]
+  }
+}

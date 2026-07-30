@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>名字 + Logo 候选预览</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", -apple-system, "PingFang SC", sans-serif;
+    background: #fafaf9;
+    color: #0a0a0a;
+    padding: 60px 40px;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .sub {
+    color: #71717a;
+    font-size: 14px;
+    margin-bottom: 48px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+  }
+  .card {
+    background: #fff;
+    border: 1px solid #e8e8e6;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover {
+    border-color: #0a0a0a;
+    transform: translateY(-2px);
+  }
+  .card-head {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border-bottom: 1px solid #f4f4f3;
+  }
+  .card-head img {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+  }
+  .card-head .info {
+    flex: 1;
+  }
+  .card-head .en {
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+  .card-head .cn {
+    font-size: 14px;
+    color: #71717a;
+    margin-top: 6px;
+    letter-spacing: 6px;
+  }
+  .card-head .tag {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 3px 10px;
+    background: #f4f4f3;
+    color: #71717a;
+    border-radius: 4px;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+  }
+  .card-meta {
+    padding: 24px 32px;
+    background: #fafaf9;
+    font-size: 13px;
+    color: #52525b;
+    line-height: 1.7;
+  }
+  .card-meta strong {
+    color: #0a0a0a;
+    font-weight: 600;
+  }
+  .stage {
+    padding: 24px 32px;
+    border-top: 1px solid #f4f4f3;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+  }
+  .stage img {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+  }
+  .stage .label {
+    color: #a1a1aa;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-right: auto;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<h1>4 个国际化命名方向</h1>
+<div class="sub">Linear / Notion 风格，极简、单色、无渐变。看完告诉我编号。</div>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-head">
+      <img src="build/preview-trace.svg" alt="Trace">
+      <div class="info">
+        <div class="en">Trace</div>
+        <div class="cn">迹</div>
+        <span class="tag">RECOMMENDED</span>
+      </div>
+    </div>
+    <div class="card-meta">
+      <strong>Trace your customer journey.</strong><br>
+      客户旅程的轨迹追踪。每一次跟进都是一道 trace。<br>
+      logo：T + 紫色斜光迹（暗色调，最有 Linear 感）
+    </div>
+    <div class="stage">
+      <img src="build/preview-trace.svg">
+      <span>Trace</span>
+      <span class="label">app bar</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <img src="build/preview-lume.svg" alt="Lume">
+      <div class="info">
+        <div class="en">Lume</div>
+        <div class="cn">光</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <strong>Light for your sales work.</strong><br>
+      照亮每一个客户洞察。Lumen 词根，含蓄有诗意。<br>
+      logo：发光圆点 + 同心晕（柔和暖色，最有诗意）
+    </div>
+    <div class="stage">
+      <img src="build/preview-lume.svg">
+      <span>Lume</span>
+      <span class="label">app bar</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <img src="build/preview-pulse.svg" alt="Pulse">
+      <div class="info">
+        <div class="en">Pulse</div>
+        <div class="cn">脉</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <strong>The pulse of your customers.</strong><br>
+      客户脉络的英文版。一字一意，最直接。<br>
+      logo：心电波 + 一抹绿点（生命感，但商标冲突多）
+    </div>
+    <div class="stage">
+      <img src="build/preview-pulse.svg">
+      <span>Pulse</span>
+      <span class="label">app bar</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <img src="build/preview-verge.svg" alt="Verge">
+      <div class="info">
+        <div class="en">Verge</div>
+        <div class="cn">沿</div>
+      </div>
+    </div>
+    <div class="card-meta">
+      <strong>On the verge of every deal.</strong><br>
+      销售转折点。冷静理性，适合 B2B 高端市场。<br>
+      logo：折线 + 蓝点（最像 Linear 自身风格）
+    </div>
+    <div class="stage">
+      <img src="build/preview-verge.svg">
+      <span>Verge</span>
+      <span class="label">app bar</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

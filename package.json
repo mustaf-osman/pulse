@@ -1,0 +1,152 @@
+{
+  "name": "nimo-reminder",
+  "productName": "Nimo 提醒助手",
+  "version": "0.1.6",
+  "description": "Nimo 提醒助手 · 桌面 AI 多端提醒服务",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "author": {
+    "name": "Pulse项目团队"
+  },
+  "scripts": {
+    "start": "electron .",
+    "start:lan": "powershell -ExecutionPolicy Bypass -File scripts/start-lan.ps1 app",
+    "start:backend": "node --env-file=.env src/index.js",
+    "start:backend:lan": "powershell -ExecutionPolicy Bypass -File scripts/start-lan.ps1 backend",
+    "dev": "node --env-file=.env --watch src/index.js",
+    "build": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-clean.ps1 && powershell -ExecutionPolicy Bypass -File scripts/build-voice.ps1 && electron-rebuild -f -w better-sqlite3 -v 33.4.11 && electron-builder --win",
+    "build:fast": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-clean.ps1 && electron-rebuild -f -w better-sqlite3 -v 33.4.11 && electron-builder --win",
+    "bake:cloud": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-cloud.ps1",
+    "unbake:cloud": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-cloud.ps1 -Clear",
+    "build:cloud": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-cloud.ps1 && npm run build",
+    "build:cloud:fast": "powershell -ExecutionPolicy Bypass -File scripts/prebuild-cloud.ps1 && npm run build:fast",
+    "build:mac": "electron-rebuild -f -w better-sqlite3 -v 33.4.11 && electron-builder --mac --x64 --arm64",
+    "publish": "electron-builder --win --publish always",
+    "postinstall": "electron-builder install-app-deps",
+    "smoke:tools": "node scripts/smoke-tools.mjs",
+    "smoke:brain-ui": "node scripts/smoke-brain-ui.mjs",
+    "smoke:social": "node scripts/smoke-social.mjs",
+    "smoke:device": "node scripts/smoke-device.mjs",
+    "verify:industry": "node scripts/verify-industry-isolation.mjs",
+    "seed:industry-demo": "node scripts/seed-industry-demo.mjs",
+    "clear:industry-demo": "node scripts/clear-industry-demo.mjs",
+    "release:oss": "powershell -ExecutionPolicy Bypass -File scripts/release-oss.ps1",
+    "release:mac:oss": "powershell -ExecutionPolicy Bypass -File scripts/release-mac-oss.ps1",
+    "publish:site": "powershell -ExecutionPolicy Bypass -File scripts/publish-site.ps1",
+    "test:fresh-install": "powershell -ExecutionPolicy Bypass -File scripts/test-fresh-install.ps1",
+    "test:restore-data": "powershell -ExecutionPolicy Bypass -File scripts/test-restore-data.ps1"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "d3": "^7.9.0",
+    "electron-updater": "^6.3.9",
+    "ffmpeg-static": "^5.3.0",
+    "openai": "^6.34.0",
+    "opusscript": "^0.1.1",
+    "playwright": "^1.59.1",
+    "wechat-ilink-client": "^0.1.0",
+    "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.4",
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.nimo.reminder",
+    "productName": "Nimo 提醒助手",
+    "artifactName": "${productName}-Setup-${version}.${ext}",
+    "npmRebuild": false,
+    "asar": true,
+    "asarUnpack": [
+      "**/node_modules/better-sqlite3/**",
+      "**/node_modules/playwright/**",
+      "**/node_modules/playwright-core/**",
+      "src/voice/**"
+    ],
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "scripts/seed-memories.js",
+      "index.html",
+      "dashboard.html",
+      "brain.html",
+      "brain-ui.html",
+      "website.html",
+      "systemPrompt.html",
+      "login.html",
+      "activation.html",
+      "onboarding.html",
+      "focus-banner.html",
+      "build/icon.ico",
+      "LICENSE",
+      "NOTICE.md",
+      "voice-dist/**/*",
+      "sandbox/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,readme.md,*.d.ts}",
+      "!**/node_modules/.cache",
+      "!**/.vscode",
+      "!data/**/*"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "extraResources": [
+      {
+        "from": "voice-dist/whisper_server",
+        "to": "voice/whisper_server",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.productivity",
+      "identity": null,
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true,
+      "installerHeaderIcon": "build/installerHeaderIcon.ico",
+      "installerSidebar": "build/installerSidebar.bmp",
+      "uninstallerSidebar": "build/uninstallerSidebar.bmp",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Nimo 提醒助手"
+    }
+  }
+}

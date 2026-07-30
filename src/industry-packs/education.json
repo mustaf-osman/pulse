@@ -1,0 +1,319 @@
+{
+  "id": "education",
+  "name": "教育教培",
+  "icon": "📚",
+  "tagline": "教案、题库、错题、学习路径和家校沟通工作台。",
+  "category": "professional_services",
+  "order": 60,
+  "assistantTitle": "教育教培助手",
+  "assistantTagline": "懂备课 · 懂题库 · 懂学习规划",
+  "themeColor": {
+    "primary": "#8b5cf6",
+    "glow": "rgba(139,92,246,0.18)",
+    "bg_tint": "rgba(139,92,246,0.04)"
+  },
+  "homeCopy": {
+    "eyebrow": "教育工作台 · 教案题库与学习路径",
+    "sub": "围绕课程目标、学生水平、知识点、错题、测评和家校沟通，生成可直接使用的教学辅助方案。"
+  },
+  "aiPersona": "你是一位教育教培和学习规划助手，适合老师、教培机构、家长和学生使用。你擅长备课、教案、题库、错题分析、学习路径和家校沟通。回答时要区分学生年级、学科、基础水平和学习目标，输出可执行计划，不替代学校老师和专业心理咨询。",
+  "hotspotSources": [
+    "education_news",
+    "gaokao_news",
+    "xiaohongshu_education",
+    "douyin_hot",
+    "weibo_hot"
+  ],
+  "domainObjects": [
+    "学生",
+    "课程",
+    "学科",
+    "知识点",
+    "题目",
+    "错题",
+    "测评",
+    "学习目标",
+    "教案",
+    "家长沟通"
+  ],
+  "experts": [
+    {
+      "id": "lesson-planner",
+      "name": "课程设计专家",
+      "focus": "把知识点拆成课时目标、活动和作业"
+    },
+    {
+      "id": "quiz-generator",
+      "name": "题库专家",
+      "focus": "按知识点和难度生成题目与答案解析"
+    },
+    {
+      "id": "wrong-answer",
+      "name": "错题分析专家",
+      "focus": "识别薄弱知识点、错误类型和补救练习"
+    },
+    {
+      "id": "learning-coach",
+      "name": "学习规划师",
+      "focus": "制定日/周/月学习计划和复习节奏"
+    },
+    {
+      "id": "parent-comm",
+      "name": "家校沟通专家",
+      "focus": "把学习情况转成家长能理解的话术"
+    }
+  ],
+  "skills": [
+    {
+      "id": "lesson-plan",
+      "name": "教案生成",
+      "description": "按年级、学科、知识点、时长生成完整教案",
+      "outputs": [
+        "教学目标",
+        "课堂流程",
+        "作业"
+      ]
+    },
+    {
+      "id": "quiz-set",
+      "name": "题库生成",
+      "description": "按难度和题型生成练习题、答案和解析",
+      "outputs": [
+        "题目",
+        "答案解析"
+      ]
+    },
+    {
+      "id": "wrong-analysis",
+      "name": "错题诊断",
+      "description": "从错题识别知识漏洞和补救路径",
+      "outputs": [
+        "薄弱点",
+        "练习计划"
+      ]
+    },
+    {
+      "id": "study-plan",
+      "name": "学习计划",
+      "description": "按目标、时间、基础和考试节点制定计划",
+      "outputs": [
+        "日程表",
+        "复盘指标"
+      ]
+    },
+    {
+      "id": "parent-message",
+      "name": "家长沟通",
+      "description": "生成客观、温和、有行动建议的沟通话术",
+      "outputs": [
+        "沟通话术",
+        "下一步建议"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "prepare-class",
+      "name": "备课工作流",
+      "steps": [
+        "明确学情",
+        "拆知识点",
+        "设计讲解",
+        "配置练习",
+        "布置作业"
+      ],
+      "output": "一节课教案"
+    },
+    {
+      "id": "wrong-book-review",
+      "name": "错题复盘工作流",
+      "steps": [
+        "收集错题",
+        "归因分类",
+        "补知识点",
+        "生成变式题",
+        "安排复测"
+      ],
+      "output": "错题复盘报告"
+    },
+    {
+      "id": "exam-sprint",
+      "name": "考前冲刺工作流",
+      "steps": [
+        "目标拆分",
+        "知识清单",
+        "每日任务",
+        "模拟测试",
+        "复盘调整"
+      ],
+      "output": "冲刺计划"
+    }
+  ],
+  "safety": [
+    "不鼓励作弊、代考或替学生完成应提交作业",
+    "不对学生贴负面标签，评价要基于行为和证据",
+    "涉及心理危机、严重厌学或校园欺凌时建议联系老师/家长/专业人士"
+  ],
+  "customerFields": [
+    {
+      "key": "student_name",
+      "label": "学生/班级",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "grade",
+      "label": "年级",
+      "type": "select",
+      "options": [
+        "小学低年级",
+        "小学高年级",
+        "初中",
+        "高中",
+        "大学",
+        "成人学习"
+      ]
+    },
+    {
+      "key": "subject",
+      "label": "学科",
+      "type": "tags",
+      "options": [
+        "语文",
+        "数学",
+        "英语",
+        "物理",
+        "化学",
+        "生物",
+        "历史",
+        "地理",
+        "编程",
+        "考研/考证"
+      ]
+    },
+    {
+      "key": "learning_goal",
+      "label": "学习目标",
+      "type": "text"
+    },
+    {
+      "key": "weak_points",
+      "label": "薄弱点",
+      "type": "tags"
+    },
+    {
+      "key": "stage",
+      "label": "阶段",
+      "type": "select",
+      "options": [
+        "学情诊断",
+        "备课",
+        "练习",
+        "错题复盘",
+        "考前冲刺",
+        "家校沟通"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "生成教案",
+      "description": "目标、流程、互动、练习和作业",
+      "action": "go-chat",
+      "prompt": "请帮我生成一份教案：先问我年级、学科、知识点、课时时长和学生基础，然后输出教学目标、课堂流程、互动问题、练习题和作业。"
+    },
+    {
+      "title": "出一套题",
+      "description": "按知识点和难度生成题库",
+      "action": "go-chat",
+      "prompt": "请按指定知识点生成一套练习题，包含基础题、提高题、答案和解析，并标注每题考察点。"
+    },
+    {
+      "title": "分析错题",
+      "description": "找薄弱点并生成补救练习",
+      "action": "go-chat",
+      "prompt": "请帮我分析学生错题，输出错误类型、薄弱知识点、讲解思路、变式练习和一周补救计划。"
+    },
+    {
+      "title": "学习计划",
+      "description": "日/周计划和复盘指标",
+      "action": "go-chat",
+      "prompt": "请根据学生目标、当前水平和可用时间，制定一个可执行学习计划，包含每日任务、复盘指标和调整规则。"
+    },
+    {
+      "title": "家长沟通",
+      "description": "客观温和地反馈学习情况",
+      "action": "go-chat",
+      "prompt": "请生成一段家长沟通话术：客观说明孩子当前表现、主要问题、进步点、家庭配合建议和下一步安排。"
+    }
+  ],
+  "prompts": [
+    {
+      "id": "lesson_plan",
+      "title": "标准教案生成",
+      "category": "备课",
+      "template": "请为 {{grade}} {{subject}} 的「{{topic}}」设计 {{duration}} 分钟教案，包含教学目标、重点难点、课堂流程、互动问题、练习题和作业。学生基础：{{level}}。",
+      "vars": [
+        "grade",
+        "subject",
+        "topic",
+        "duration",
+        "level"
+      ]
+    },
+    {
+      "id": "wrong_answer_review",
+      "title": "错题复盘报告",
+      "category": "错题",
+      "template": "请分析以下错题：{{wrong_questions}}。输出：错误类型、薄弱知识点、讲解方法、3 道变式题、未来 7 天复习计划。",
+      "vars": [
+        "wrong_questions"
+      ]
+    },
+    {
+      "id": "study_plan_week",
+      "title": "一周学习计划",
+      "category": "规划",
+      "template": "学生目标是 {{goal}}，每天可学习 {{daily_time}}，薄弱点是 {{weak_points}}。请制定一周学习计划，并给出每天任务和复盘标准。",
+      "vars": [
+        "goal",
+        "daily_time",
+        "weak_points"
+      ]
+    },
+    {
+      "id": "parent_update",
+      "title": "家长反馈话术",
+      "category": "沟通",
+      "template": "{{parent_name}}您好，今天 {{student_name}} 在 {{topic}} 上的表现是：{{performance}}。目前需要加强 {{weak_point}}，建议家里配合 {{home_action}}。我们下一步会 {{next_step}}。",
+      "vars": [
+        "parent_name",
+        "student_name",
+        "topic",
+        "performance",
+        "weak_point",
+        "home_action",
+        "next_step"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "progress",
+        "title": "学习目标进度",
+        "field": "learning_goal"
+      },
+      {
+        "type": "heatmap",
+        "title": "薄弱知识点分布",
+        "field": "weak_points"
+      },
+      {
+        "type": "calendar",
+        "title": "学习计划日历"
+      }
+    ]
+  }
+}

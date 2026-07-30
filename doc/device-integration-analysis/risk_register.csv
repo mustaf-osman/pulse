@@ -1,0 +1,7 @@
+﻿风险,影响,当前状态,建议处理
+局域网未开启,ESP32-S3 无法访问电脑 API,当前默认 127.0.0.1,硬件调试使用 npm run start:lan，并放行 Windows 防火墙
+无设备鉴权,同网段设备可能误调用提醒接口,待增强,实现 pairing code + deviceToken
+设备状态未持久化,重启后设备记录丢失,待增强,新增 devices 表和 device_events 表
+轮询延迟,提醒非实时,可接受,第一版使用 15 秒轮询；后续评估 SSE/WebSocket/MQTT
+普通 Node 与 better-sqlite3 ABI 不一致,部分本地脚本不能直接读提醒库,已在 smoke 中跳过 DB 依赖项,使用 Electron runtime 或重建 better-sqlite3
+防火墙阻断,硬件无法连接,需现场验证,设备中心加入 LAN 诊断和二维码

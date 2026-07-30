@@ -1,0 +1,313 @@
+{
+  "id": "tourism",
+  "name": "旅游服务",
+  "icon": "✈️",
+  "tagline": "行程规划、预算拆分、签证材料、亲子/团建和出行提醒工作台。",
+  "category": "store_ops",
+  "order": 110,
+  "assistantTitle": "旅游服务助手",
+  "assistantTagline": "懂路线 · 懂预算 · 懂材料 · 懂体验",
+  "themeColor": {
+    "primary": "#38a3d1",
+    "glow": "rgba(56,163,209,0.18)",
+    "bg_tint": "rgba(56,163,209,0.04)"
+  },
+  "aiPersona": "你是一位旅游服务与定制出行顾问，熟悉自由行、跟团游、签证材料、亲子游、公司团建和高端定制。回答时先确认目的地、人数、预算、出行时间和签证/机酒状态，不承诺签证必过。",
+  "hotspotSources": [
+    "mafengwo",
+    "ctrip",
+    "xiaohongshu_travel",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "customer_name",
+      "label": "客户/家庭名",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "destination",
+      "label": "意向目的地",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "travel_type",
+      "label": "出行类型",
+      "type": "select",
+      "options": [
+        "自由行",
+        "跟团游",
+        "定制游",
+        "亲子游",
+        "公司团建",
+        "研学"
+      ]
+    },
+    {
+      "key": "budget_level",
+      "label": "预算区间",
+      "type": "select",
+      "options": [
+        "<3000/人",
+        "3000-8000/人",
+        "8000-2万/人",
+        "2万+/人"
+      ]
+    },
+    {
+      "key": "needs",
+      "label": "核心需求",
+      "type": "tags",
+      "options": [
+        "签证",
+        "机票",
+        "酒店",
+        "包车",
+        "亲子",
+        "老人友好"
+      ]
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "咨询",
+        "方案中",
+        "报价",
+        "收材料",
+        "已成交",
+        "出行后回访"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "生成行程",
+      "description": "按目的地、天数和预算生成路线",
+      "action": "go-chat",
+      "prompt": "请帮我做一份旅行行程：先确认目的地、天数、人数、预算、偏好和禁忌，再输出每日路线、交通、酒店区域、预算和注意事项。"
+    },
+    {
+      "title": "预算拆分",
+      "description": "机酒门票餐饮交通分项预算",
+      "action": "go-chat",
+      "prompt": "请帮我拆分旅行预算：机票/交通、酒店、餐饮、门票、购物、保险和应急金，并给出省钱建议。"
+    },
+    {
+      "title": "签证材料",
+      "description": "材料清单和补件提醒",
+      "action": "go-chat",
+      "prompt": "请帮我整理签证/出行材料清单：基础材料、资产/在职/学生/亲子材料、时间节点和客户提醒话术，不承诺签证结果。"
+    },
+    {
+      "title": "亲子/老人方案",
+      "description": "低强度、便利和安全路线",
+      "action": "go-chat",
+      "prompt": "请为亲子/老人出行设计低强度旅行方案：节奏、酒店位置、交通、餐饮、休息点、应急和安全提醒。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "亲子游、银发游和小众目的地咨询升温。"
+      },
+      {
+        "source": "客户需求",
+        "title": "热门国家材料周期与出签节奏变化。"
+      },
+      {
+        "source": "运营机会",
+        "title": "城市漫游和轻奢酒店带动询盘。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "节假日提前锁单",
+        "hint": "对暑期、十一、春节意向客户提前推材料清单。"
+      },
+      {
+        "title": "企业团建套餐",
+        "hint": "把团建客户按预算和人数拆成三档方案。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "亲子游",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "签证材料",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "小众路线",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "trip_plan",
+      "title": "旅行行程生成",
+      "category": "行程",
+      "template": "请为 {{destination}} 做 {{days}} 天游行程。人数 {{people}}，预算 {{budget}}，偏好 {{preferences}}。输出每日安排、交通、酒店区域、预算和注意事项。",
+      "vars": [
+        "destination",
+        "days",
+        "people",
+        "budget",
+        "preferences"
+      ]
+    },
+    {
+      "id": "visa_materials",
+      "title": "签证材料清单",
+      "category": "材料",
+      "template": "请为 {{country}} {{visa_type}} 整理签证材料清单、时间节点、常见缺失项和客户提醒话术。不承诺出签结果。",
+      "vars": [
+        "country",
+        "visa_type"
+      ]
+    },
+    {
+      "id": "packing_list",
+      "title": "行李清单",
+      "category": "出行",
+      "template": "目的地 {{destination}}，季节 {{season}}，人群 {{people_type}}。请生成行李清单、药品/证件/电子设备提醒和风险注意。",
+      "vars": [
+        "destination",
+        "season",
+        "people_type"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "旅游服务客户推进",
+        "stages": [
+          "咨询",
+          "方案",
+          "报价",
+          "成交"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "旅游工作台 · 行程规划与出行材料",
+    "sub": "围绕目的地、天数、预算、同行人、签证材料、酒店交通和风险提醒，生成可执行的旅行方案。"
+  },
+  "domainObjects": [
+    "目的地",
+    "行程天数",
+    "预算",
+    "同行人",
+    "景点",
+    "酒店",
+    "交通",
+    "签证材料",
+    "保险",
+    "出行清单"
+  ],
+  "experts": [
+    {
+      "id": "itinerary",
+      "name": "行程规划师",
+      "focus": "路线、节奏、交通和景点取舍"
+    },
+    {
+      "id": "budget",
+      "name": "预算规划师",
+      "focus": "机酒、门票、餐饮、交通和弹性预算"
+    },
+    {
+      "id": "visa",
+      "name": "签证材料专家",
+      "focus": "材料清单、时间节点和补件提醒"
+    },
+    {
+      "id": "family-travel",
+      "name": "亲子/老人友好专家",
+      "focus": "体力、节奏、住宿和安全提醒"
+    }
+  ],
+  "skills": [
+    {
+      "id": "trip-plan",
+      "name": "行程生成",
+      "description": "根据目的地、天数、预算和偏好生成每日安排",
+      "outputs": [
+        "日程表",
+        "路线建议"
+      ]
+    },
+    {
+      "id": "budget-breakdown",
+      "name": "预算拆分",
+      "description": "拆机票、酒店、交通、餐饮、门票和应急金",
+      "outputs": [
+        "预算表",
+        "省钱建议"
+      ]
+    },
+    {
+      "id": "visa-checklist",
+      "name": "签证/材料清单",
+      "description": "按国家和人群整理材料与提醒话术",
+      "outputs": [
+        "材料清单",
+        "补件提醒"
+      ]
+    },
+    {
+      "id": "packing-list",
+      "name": "出行清单",
+      "description": "按季节、目的地和人群生成行李清单",
+      "outputs": [
+        "行李清单",
+        "注意事项"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "custom-trip",
+      "name": "定制旅行方案",
+      "steps": [
+        "确认目的地",
+        "预算/人数",
+        "路线节奏",
+        "酒店交通",
+        "风险提醒"
+      ],
+      "output": "完整行程方案"
+    },
+    {
+      "id": "visa-followup",
+      "name": "签证材料跟进",
+      "steps": [
+        "材料清单",
+        "缺失项",
+        "截止时间",
+        "客户提醒",
+        "状态复盘"
+      ],
+      "output": "材料进度表"
+    }
+  ],
+  "safety": [
+    "不承诺签证必过、航班不延误或景区一定开放",
+    "涉及高风险地区、极限运动、老人儿童出行时必须提示安全风险",
+    "价格和政策可能变化，需要用户以官方/供应商信息为准"
+  ]
+}

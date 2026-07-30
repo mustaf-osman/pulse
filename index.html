@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nimo 提醒助手</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./src/ui/brain-ui/styles.css">
+<link rel="stylesheet" href="./src/ui/brain-ui/styles-enhance.css">
+<link rel="stylesheet" href="./src/ui/brain-ui/stripe-theme.css">
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  /* 顶部应用栏 #pulse-app-bar 由 src/ui/brain-ui/app-shell.js 在运行时渲染，
+     这里只放 nav 自身的视觉样式（不再绑定任何虚假点击逻辑）。 */
+  #pulse-app-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 44px; z-index: 9999;
+    display: flex; align-items: center; padding: 0 16px;
+    background: #ffffff;
+    border-bottom: 1px solid #ececec;
+    color: #0a0a0a;
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+    user-select: none;
+  }
+  #pulse-app-bar .nb-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 600; font-size: 14px; letter-spacing: -0.1px;
+    color: #0a0a0a;
+  }
+  #pulse-app-bar .nb-logo { width: 22px; height: 22px; flex-shrink: 0; }
+  #pulse-app-bar .nb-logo img { width: 100%; height: 100%; display: block; }
+  #pulse-app-bar .nb-divider { width: 1px; height: 16px; background: #ececec; margin: 0 12px; }
+  #pulse-app-bar .nb-nav { display: flex; align-items: center; gap: 2px; }
+  #pulse-app-bar .nb-nav button {
+    background: transparent; border: none;
+    padding: 5px 10px; font-size: 13px;
+    color: #525252; cursor: pointer; border-radius: 5px;
+    font-family: inherit; transition: background 0.12s, color 0.12s;
+  }
+  #pulse-app-bar .nb-nav button:hover { background: #f5f5f5; color: #0a0a0a; }
+  #pulse-app-bar .nb-nav button.active { background: #f0f0f0; color: #0a0a0a; font-weight: 500; }
+  #pulse-app-bar .nb-spacer { flex: 1; }
+  #pulse-app-bar .nb-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: #8a8a8a; }
+  #pulse-app-bar .nb-meta .nb-version { color: #8a8a8a; letter-spacing: 0.2px; }
+  #pulse-app-bar .nb-user {
+    display: flex; align-items: center; gap: 7px;
+    padding: 3px 9px 3px 3px; border-radius: 4px;
+    cursor: pointer; transition: background 0.12s;
+  }
+  #pulse-app-bar .nb-user:hover { background: #f5f5f5; }
+  #pulse-app-bar .nb-avatar {
+    width: 22px; height: 22px;
+    background: #0a0a0a; border-radius: 50%; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+  }
+  #pulse-app-bar .nb-user > span { color: #0a0a0a; font-size: 12.5px; }
+  body { padding-top: 44px !important; background: #ffffff; }
+
+  /* 给所有 chevron / 箭头小图标显式指定 Symbol 字体回退，
+     避免 Inter/PingFang 把 ▾ ▴ ▼ ▲ ↑ ↓ 渲染成奇怪的中文字形（如「钦」「?」）。 */
+  .nb-ind-arrow,
+  .cust-toggle-chevron,
+  .thread-entry-chev,
+  .physics-toggle-icon,
+  .aw-chevron,
+  .ind-dash-chip-toggle,
+  .panel-tab,
+  .panel-tab::before,
+  .nb-meta .nb-version + *,
+  [data-arrow-fallback] {
+    font-family: "Segoe UI Symbol", "Apple Symbols", "Inter", "PingFang SC", "Microsoft YaHei", sans-serif !important;
+    font-feature-settings: normal;
+    font-variant-emoji: text;
+  }
+
+  /* ── 首页 hero「问 Nimo」输入框 ── */
+  .today-ask {
+    margin: 32px auto 16px;
+    width: min(820px, calc(100% - 48px));
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 10px 10px 20px;
+    background: #fff;
+    border: 1px solid #e5eaf3;
+    border-radius: 999px;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.10), 0 2px 4px rgba(15, 23, 42, 0.04);
+    transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .today-ask:hover {
+    border-color: #cfd9eb;
+    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.12), 0 2px 6px rgba(15, 23, 42, 0.05);
+  }
+  .today-ask:focus-within {
+    border-color: #0a0a0a;
+    box-shadow: 0 22px 50px rgba(15, 23, 42, 0.14);
+  }
+  .today-ask-input {
+    flex: 1; min-width: 0;
+    border: 0; outline: 0; background: transparent;
+    font-size: 15px; color: #0f172a;
+    font-family: inherit;
+    padding: 8px 0;
+  }
+  .today-ask-input::placeholder { color: #94a3b8; }
+  .today-ask-send {
+    flex: 0 0 auto;
+    width: 42px; height: 42px;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: #0a0a0a; color: #fff;
+    display: grid; place-items: center;
+    transition: background .15s, transform .15s;
+  }
+  .today-ask-send:hover { background: #2457d6; transform: translateY(-1px); }
+  .today-ask-send svg { width: 18px; height: 18px; }
+
+  .today-ask-hints {
+    margin: 0 auto 10px;
+    width: min(820px, calc(100% - 48px));
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .today-ask-hint-label {
+    font-size: 12.5px;
+    color: #94a3b8;
+    margin-right: 2px;
+  }
+  .today-ask-chip {
+    border: 1px solid #e5eaf3;
+    background: #fff;
+    color: #5b6b88;
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12.5px; font-weight: 500;
+    cursor: pointer; font-family: inherit;
+    transition: border-color .15s, color .15s, background .15s, transform .12s;
+  }
+  .today-ask-chip:hover {
+    border-color: #cfd9eb;
+    color: #0a0a0a;
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+</style>
+</head>
+<body data-theme="linear">
+<!-- 顶部应用栏与主界面均由 src/ui/brain-ui/app-shell.js 渲染 -->
+<script type="module" src="./src/ui/brain-ui/app.js"></script>
+<script>
+  // 首页：注入 Hero 右侧 mockup + 下方信任锚点
+  (function () {
+    function injectHeroDecor() {
+      const hero = document.querySelector('#today-view .today-hero');
+      if (!hero) return;
+
+      const pharma = document.body.dataset.activeIndustry === 'pharma';
+      let mockup = hero.querySelector('.today-hero-mockup');
+      if (!mockup) {
+        mockup = document.createElement('div');
+        mockup.className = 'today-hero-mockup';
+        mockup.setAttribute('aria-hidden', 'true');
+        hero.appendChild(mockup);
+      }
+      mockup.innerHTML = pharma ? `
+          <div class="thm-card thm-customer">
+            <div class="thm-customer-head">
+              <div class="thm-avatar">R</div>
+              <div class="thm-customer-meta">
+                <div class="thm-customer-name">阿尔茨海默病 · Aβ 靶点</div>
+                <div class="thm-customer-sub">文献精读 · 课题训练</div>
+              </div>
+              <span class="thm-stage">调研中</span>
+            </div>
+            <div class="thm-customer-tags">
+              <span class="thm-tag">#论文摘要</span>
+              <span class="thm-tag">#机制链</span>
+              <span class="thm-tag">#实验指标</span>
+            </div>
+            <div class="thm-customer-mem">
+              <span class="thm-mem-dot"></span>
+              <span class="thm-mem-text">AI 已整理 12 条文献证据与研究问题</span>
+            </div>
+          </div>
+          <div class="thm-card thm-bubble">
+            <div class="thm-bubble-head">
+              <div class="thm-bubble-avatar">N</div>
+              <span class="thm-bubble-from">Nimo</span>
+              <span class="thm-bubble-time">刚刚</span>
+            </div>
+            <div class="thm-bubble-body">建议先补 3 篇关键论文，再把疾病-靶点-药物-指标整理成证据表。</div>
+          </div>
+          <div class="thm-card thm-memchip">
+            <span class="thm-memchip-icon">✦</span>
+            <span class="thm-memchip-text">新增课题资产 · 文献证据表</span>
+          </div>
+        ` : `
+          <div class="thm-card thm-customer">
+            <div class="thm-customer-head">
+              <div class="thm-avatar">L</div>
+              <div class="thm-customer-meta">
+                <div class="thm-customer-name">李总 · 锦绣科技</div>
+                <div class="thm-customer-sub">CTO · 上海</div>
+              </div>
+              <span class="thm-stage">意向</span>
+            </div>
+            <div class="thm-customer-tags">
+              <span class="thm-tag">#偏好微信沟通</span>
+              <span class="thm-tag">#关注 ROI</span>
+              <span class="thm-tag">#周五跟进</span>
+            </div>
+            <div class="thm-customer-mem">
+              <span class="thm-mem-dot"></span>
+              <span class="thm-mem-text">AI 已沉淀 12 条客户偏好与约束</span>
+            </div>
+          </div>
+          <div class="thm-card thm-bubble">
+            <div class="thm-bubble-head">
+              <div class="thm-bubble-avatar">N</div>
+              <span class="thm-bubble-from">Nimo</span>
+              <span class="thm-bubble-time">刚刚</span>
+            </div>
+            <div class="thm-bubble-body">下周一 10:00 提醒你跟进李总，附上他关心的 3 个 ROI 案例。</div>
+          </div>
+          <div class="thm-card thm-memchip">
+            <span class="thm-memchip-icon">✦</span>
+            <span class="thm-memchip-text">新增长期记忆 · 客户偏好</span>
+          </div>
+        `;
+
+      let trust = hero.querySelector('.today-hero-trust');
+      if (!trust) {
+        trust = document.createElement('div');
+        trust.className = 'today-hero-trust';
+        hero.appendChild(trust);
+      }
+      trust.innerHTML = pharma ? `
+          <div class="thm-trust-item"><span class="thm-trust-num">3</span><span class="thm-trust-label">科研入口</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">4</span><span class="thm-trust-label">输入方式</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">∞</span><span class="thm-trust-label">课题资产</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">24/7</span><span class="thm-trust-label">学习陪练</span></div>
+        ` : `
+          <div class="thm-trust-item"><span class="thm-trust-num">6</span><span class="thm-trust-label">核心场景</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">30+</span><span class="thm-trust-label">长期记忆</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">∞</span><span class="thm-trust-label">客户档案</span></div>
+          <div class="thm-trust-divider"></div>
+          <div class="thm-trust-item"><span class="thm-trust-num">24/7</span><span class="thm-trust-label">AI 持续在线</span></div>
+        `;
+    }
+
+    // 进入首页时注入
+    window.addEventListener('pulse:today-view-shown', injectHeroDecor);
+    // 兼容直接打开首页（today-view-shown 在 SPA 切换才触发）
+    if (document.body.getAttribute('data-active-view') === 'home') {
+      setTimeout(injectHeroDecor, 200);
+    }
+    window.addEventListener('pulse:view-changed', (e) => {
+      if (e.detail?.view === 'home') setTimeout(injectHeroDecor, 50);
+    });
+    window.addEventListener('pulse:industry-changed', () => setTimeout(injectHeroDecor, 50));
+  })();
+
+  // 设置页：点 sticky nav-item → 平滑滚动到对应 section
+  (function () {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('#settings-overlay .settings-nav-item');
+      if (!btn) return;
+      const tabKey = btn.dataset.tab;
+      if (!tabKey) return;
+      const target = document.querySelector(
+        '#settings-overlay .settings-tab[data-tab="' + tabKey + '"]'
+      );
+      const scroller = document.querySelector('#settings-overlay .settings-content');
+      if (!target || !scroller) return;
+      // 计算 target 相对 scroller 的 offsetTop
+      const top = target.getBoundingClientRect().top
+                - scroller.getBoundingClientRect().top
+                + scroller.scrollTop
+                - 16;
+      scroller.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    });
+  })();
+</script>
+</body>
+</html>

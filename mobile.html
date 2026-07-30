@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Pulse Mobile · 手机上的 AI 陪伴与行业助手</title>
+  <meta name="description" content="Pulse Mobile 是面向手机场景的轻量入口，适合随时记录想法、查看提醒、继续对话，并与 Windows 桌面版协同。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #080f1f;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-strong: rgba(255, 255, 255, 0.13);
+      --line: rgba(255, 255, 255, 0.16);
+      --text: #f8fafc;
+      --muted: rgba(226, 232, 240, 0.72);
+      --soft: rgba(226, 232, 240, 0.54);
+      --green: #5eead4;
+      --blue: #60a5fa;
+      --orange: #fbbf24;
+      --pink: #fb7185;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "IBM Plex Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(96, 165, 250, 0.35), transparent 28%),
+        radial-gradient(circle at 86% 4%, rgba(94, 234, 212, 0.22), transparent 30%),
+        radial-gradient(circle at 50% 98%, rgba(251, 113, 133, 0.18), transparent 32%),
+        linear-gradient(145deg, #050816 0%, #0f172a 45%, #111827 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 78%);
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 18px 0 96px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 12px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(8, 15, 31, 0.68);
+      box-shadow: 0 18px 60px rgba(2, 6, 23, 0.24);
+      backdrop-filter: blur(22px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 58% 64%, rgba(94, 234, 212, 0.95) 0 8%, transparent 9%),
+        linear-gradient(145deg, rgba(96, 165, 250, 0.95), rgba(15, 23, 42, 0.92));
+      box-shadow: 0 12px 32px rgba(96, 165, 250, 0.28);
+    }
+
+    .logo svg { width: 25px; height: 25px; }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: rgba(248, 250, 252, 0.86);
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 44px;
+      align-items: center;
+      padding: 74px 0 56px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(94, 234, 212, 0.24);
+      border-radius: 999px;
+      color: rgba(204, 251, 241, 0.92);
+      background: rgba(20, 184, 166, 0.11);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 18px 0 18px;
+      max-width: 720px;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(44px, 8vw, 82px);
+      line-height: 0.98;
+      letter-spacing: -0.08em;
+    }
+
+    .hero p {
+      max-width: 660px;
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: clamp(17px, 2.4vw, 21px);
+      line-height: 1.75;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .primary-btn {
+      color: #06201c;
+      background: linear-gradient(135deg, var(--green), #a7f3d0);
+      box-shadow: 0 18px 42px rgba(45, 212, 191, 0.25);
+    }
+
+    .secondary-btn {
+      color: rgba(248, 250, 252, 0.92);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover { transform: translateY(-2px); }
+
+    .note {
+      margin-top: 18px;
+      color: var(--soft);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .phone-stage {
+      position: relative;
+      min-height: 640px;
+      display: grid;
+      place-items: center;
+    }
+
+    .phone-glow {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(94, 234, 212, 0.30), transparent 64%);
+      filter: blur(6px);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .phone {
+      position: relative;
+      width: min(320px, 86vw);
+      border-radius: 44px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(24px);
+      transform: rotate(2deg);
+      animation: floatPhone 6s ease-in-out infinite;
+    }
+
+    .phone-screen {
+      overflow: hidden;
+      min-height: 600px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(96, 165, 250, 0.26), transparent 38%),
+        linear-gradient(180deg, #f8fafc, #ecfeff 52%, #fff7ed);
+      color: #0f172a;
+      padding: 18px;
+    }
+
+    .phone-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .island {
+      width: 86px;
+      height: 24px;
+      border-radius: 999px;
+      background: #0f172a;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+    }
+
+    .mobile-card {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+
+    .mobile-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: -0.06em;
+    }
+
+    .mobile-card p {
+      margin: 0;
+      color: #64748b;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .chat-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .bubble {
+      width: fit-content;
+      max-width: 94%;
+      padding: 11px 13px;
+      border-radius: 18px;
+      font-size: 13px;
+      line-height: 1.55;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .bubble.ai {
+      color: #0f172a;
+      background: #ffffff;
+      border-bottom-left-radius: 6px;
+    }
+
+    .bubble.me {
+      justify-self: end;
+      color: #042f2e;
+      background: linear-gradient(135deg, #99f6e4, #ccfbf1);
+      border-bottom-right-radius: 6px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .mini {
+      padding: 12px;
+      border-radius: 18px;
+      color: #0f172a;
+      background: rgba(15, 23, 42, 0.06);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .section {
+      margin-top: 34px;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      background: var(--panel);
+      box-shadow: 0 22px 70px rgba(2, 6, 23, 0.18);
+      backdrop-filter: blur(24px);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.08;
+      letter-spacing: -0.06em;
+    }
+
+    .section-head p {
+      max-width: 470px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .feature {
+      min-height: 170px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: rgba(255,255,255,0.065);
+    }
+
+    .feature .icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(94, 234, 212, 0.14);
+      font-size: 22px;
+    }
+
+    .feature h3 {
+      margin: 16px 0 8px;
+      font-size: 18px;
+      letter-spacing: -0.03em;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .roadmap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .num {
+      width: 40px;
+      height: 40px;
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      color: #06201c;
+      background: linear-gradient(135deg, var(--green), #bef264);
+      font-weight: 900;
+    }
+
+    .step h3 { margin: 0 0 6px; }
+    .step p { margin: 0; color: var(--muted); line-height: 1.65; }
+
+    .final-cta {
+      text-align: center;
+      padding: 42px 24px;
+      border-radius: 36px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(251, 191, 36, 0.18), transparent 30%),
+        radial-gradient(circle at 85% 15%, rgba(94, 234, 212, 0.20), transparent 30%),
+        rgba(255,255,255,0.09);
+    }
+
+    .final-cta h2 {
+      margin-bottom: 12px;
+    }
+
+    .final-cta p {
+      max-width: 620px;
+      margin: 0 auto 22px;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .share-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translate(-50%, 18px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 20;
+      padding: 12px 16px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--text);
+      background: rgba(8, 15, 31, 0.82);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      transition: opacity 0.22s ease, transform 0.22s ease;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .share-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @keyframes floatPhone {
+      0%, 100% { transform: translateY(0) rotate(2deg); }
+      50% { transform: translateY(-16px) rotate(-1deg); }
+    }
+
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.92); opacity: 0.7; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    @media (max-width: 860px) {
+      .page { width: min(100% - 24px, 680px); padding-bottom: 70px; }
+      .nav { top: 8px; border-radius: 20px; }
+      .brand span:last-child { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 24px; padding: 44px 0 28px; }
+      .phone-stage { min-height: auto; }
+      .phone { width: min(310px, 92vw); transform: none; }
+      .phone-screen { min-height: 560px; }
+      .section { padding: 20px; border-radius: 28px; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 10px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .cta-row { align-items: stretch; }
+      .primary-btn, .secondary-btn { width: 100%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="nav" aria-label="主导航">
+      <a class="brand" href="#top" aria-label="Pulse Mobile 首页">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none">
+            <path d="M7 33h16l5-13 8 27 7-25 5 11h9" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="36" cy="47" r="4" fill="#5eead4" />
+          </svg>
+        </span>
+        <span>Pulse Mobile</span>
+      </a>
+      <div class="nav-actions">
+        <a class="pill-link" data-home-link href="./">电脑版官网</a>
+        <a class="pill-link" href="#roadmap">怎么做成手机端</a>
+      </div>
+    </nav>
+
+    <section id="top" class="hero">
+      <div>
+        <div class="eyebrow">📱 独立手机版入口 · 不影响 Windows 版</div>
+        <h1>把 Pulse 带到手机上。</h1>
+        <p>现在的 Pulse 是完整 Windows 桌面软件，手机不能直接安装 `.exe`。手机版更适合做成 Web / PWA：打开网页就能聊、能记录、能看提醒，桌面版继续保持完整下载。</p>
+        <div class="cta-row">
+          <button class="primary-btn" id="shareBtn" type="button">分享这个手机版页面</button>
+          <a class="secondary-btn" href="#roadmap">查看手机版路线</a>
+        </div>
+        <div class="note">手机用户看到的是独立页面；电脑用户仍然从原官网下载安装 Windows 版，两条线路互不影响。</div>
+      </div>
+
+      <div class="phone-stage" aria-hidden="true">
+        <div class="phone-glow"></div>
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="phone-top"><span>9:41</span><span class="island"></span><span>5G</span></div>
+            <div class="mobile-card">
+              <h2>今天想先聊什么？</h2>
+              <p>手机上适合快速记录、继续对话、查看提醒。复杂工作仍交给 Windows 桌面版。</p>
+              <div class="chat-list">
+                <div class="bubble ai">我在手机上也能陪你，先把想法记下来。</div>
+                <div class="bubble me">帮我整理今天要跟进的客户。</div>
+                <div class="bubble ai">可以。我会同步到你的工作台，回电脑后继续处理。</div>
+              </div>
+              <div class="mini-grid">
+                <div class="mini">💬 随手对话</div>
+                <div class="mini">📝 灵感记录</div>
+                <div class="mini">⏰ 跟进提醒</div>
+                <div class="mini">🏷 行业助手</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>手机端先做轻量，不复制电脑端。</h2>
+        <p>桌面端负责完整 Agent、行业数据、客户工作台和本地能力；手机端负责随时打开、快速输入、查看提醒、同步上下文。</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature">
+          <div class="icon">💬</div>
+          <h3>移动对话</h3>
+          <p>不用安装 `.exe`，打开网页即可继续和 Pulse 说话，适合碎片时间记录想法。</p>
+        </article>
+        <article class="feature">
+          <div class="icon">📌</div>
+          <h3>提醒与待办</h3>
+          <p>手机端重点展示今天该跟谁聊、哪件事要跟进，而不是塞满复杂后台。</p>
+        </article>
+        <article class="feature">
+          <div class="icon">🔄</div>
+          <h3>云端同步</h3>
+          <p>之后把账号、订阅、聊天和关键记忆放到云端，手机和电脑共用同一份数据。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section">
+      <div class="section-head">
+        <h2>真正做成手机版，需要这三步。</h2>
+        <p>不建议一上来做 App Store / APK。最快、最稳的方式是先做 PWA 手机网页版，跑通付费和用户留存后再封装原生 App。</p>
+      </div>
+      <div class="roadmap">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>先上线手机网页入口</h3>
+            <p>今天这个页面就是第一步：让手机用户知道产品是什么，并把流量和电脑下载分开。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>做 Web / PWA 版聊天与提醒</h3>
+            <p>把聊天、账号、订阅、基础记忆放到服务器。用户用手机浏览器打开，也能像 App 一样添加到桌面。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>再封装 iOS / Android App</h3>
+            <p>等手机网页验证有人用，再用 Capacitor / React Native 封装上架，避免一开始被应用商店审核和支付规则拖慢。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section final-cta">
+      <h2>电脑版继续完整保留。</h2>
+      <p>Windows 桌面版仍然是主产品：完整下载、安装、行业助手、Agent 能力都不变。手机版只是新增一个独立入口，用来承接手机用户。</p>
+      <div class="cta-row" style="justify-content:center;">
+        <a class="primary-btn" data-home-link href="./">打开电脑版官网</a>
+        <button class="secondary-btn" id="copyBtn" type="button">复制当前链接</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="share-toast" id="toast">链接已复制</div>
+
+  <script>
+    const toast = document.getElementById('toast');
+    const showToast = (text) => {
+      toast.textContent = text;
+      toast.classList.add('show');
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove('show'), 1800);
+    };
+
+    const pageUrl = () => window.location.href;
+
+    const copyLink = async () => {
+      try {
+        await navigator.clipboard.writeText(pageUrl());
+        showToast('手机版链接已复制');
+      } catch {
+        showToast('请复制浏览器地址栏链接');
+      }
+    };
+
+    document.getElementById('copyBtn')?.addEventListener('click', copyLink);
+    document.getElementById('shareBtn')?.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: 'Pulse Mobile', text: 'Pulse 的手机入口', url: pageUrl() });
+          return;
+        } catch {}
+      }
+      copyLink();
+    });
+
+    document.querySelectorAll('[data-home-link]').forEach((link) => {
+      link.href = window.location.protocol === 'file:' ? './website.html' : './';
+    });
+  </script>
+</body>
+</html>

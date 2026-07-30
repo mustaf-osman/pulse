@@ -1,0 +1,307 @@
+{
+  "id": "legal",
+  "name": "法律服务",
+  "icon": "⚖️",
+  "tagline": "合同审查、案情时间线、证据清单、文书初稿和合规边界工作台。",
+  "category": "professional_services",
+  "order": 210,
+  "assistantTitle": "法律服务助手",
+  "assistantTagline": "懂材料 · 懂证据 · 懂文书边界",
+  "themeColor": {
+    "primary": "#64748b",
+    "glow": "rgba(100,116,139,0.18)",
+    "bg_tint": "rgba(100,116,139,0.04)"
+  },
+  "aiPersona": "你是一位法律服务客户与材料整理助手，适合律师、律所商务和法律咨询团队使用。你可以整理咨询记录、案件时间线、证据清单和文书初稿，但必须提示由专业律师最终审核，不替代律师意见，不承诺案件结果。",
+  "hotspotSources": [
+    "court_news",
+    "legal_news",
+    "baidu_hot",
+    "weibo_hot"
+  ],
+  "customerFields": [
+    {
+      "key": "client_name",
+      "label": "客户/当事人",
+      "type": "text",
+      "required": true
+    },
+    {
+      "key": "case_type",
+      "label": "事项类型",
+      "type": "select",
+      "options": [
+        "合同纠纷",
+        "劳动争议",
+        "婚姻家事",
+        "交通事故",
+        "债务催收",
+        "知识产权",
+        "公司法务"
+      ]
+    },
+    {
+      "key": "urgency",
+      "label": "紧急程度",
+      "type": "select",
+      "options": [
+        "普通",
+        "较急",
+        "非常急",
+        "已临近期限"
+      ]
+    },
+    {
+      "key": "materials",
+      "label": "已有材料",
+      "type": "tags",
+      "options": [
+        "合同",
+        "聊天记录",
+        "转账记录",
+        "发票",
+        "录音",
+        "照片",
+        "身份材料"
+      ]
+    },
+    {
+      "key": "case_summary",
+      "label": "案情摘要",
+      "type": "textarea"
+    },
+    {
+      "key": "stage",
+      "label": "跟进阶段",
+      "type": "select",
+      "options": [
+        "初次咨询",
+        "材料收集",
+        "方案沟通",
+        "委托中",
+        "办理中",
+        "回访"
+      ],
+      "required": true
+    }
+  ],
+  "quickActions": [
+    {
+      "title": "审合同风险",
+      "description": "条款风险和修改建议",
+      "action": "go-chat",
+      "prompt": "请帮我审查合同风险：付款、交付、违约、解除、保密、知识产权、争议解决等条款，并给出修改建议。请提示需律师最终审核。"
+    },
+    {
+      "title": "整理案情时间线",
+      "description": "事实、证据和争议点",
+      "action": "go-chat",
+      "prompt": "请根据案情材料整理时间线：日期、事件、相关证据、证明目的、争议点和待补材料。"
+    },
+    {
+      "title": "生成证据清单",
+      "description": "已有证据和待补材料",
+      "action": "go-chat",
+      "prompt": "请生成证据清单：证据名称、来源、证明目的、当前状态、缺口和补充建议。"
+    },
+    {
+      "title": "起草文书框架",
+      "description": "律师审核前初稿",
+      "action": "go-chat",
+      "prompt": "请起草一份法律文书初稿框架，包含事实、诉求/请求、证据、法律依据提示和律师审核提醒，不构成正式法律意见。"
+    }
+  ],
+  "radar": {
+    "hotspots": [
+      {
+        "source": "行业趋势",
+        "title": "合同、劳动和债务类咨询线索持续高频。"
+      },
+      {
+        "source": "客户需求",
+        "title": "中小企业需要合同审查和催收材料整理。"
+      },
+      {
+        "source": "运营机会",
+        "title": "文书初稿必须保留律师审核和风险提示。"
+      }
+    ],
+    "opportunities": [
+      {
+        "title": "咨询记录标准化",
+        "hint": "首次咨询后自动沉淀案情、证据和期限。"
+      },
+      {
+        "title": "材料清单提前发",
+        "hint": "正式面谈前让客户补齐关键材料。"
+      }
+    ],
+    "trends": [
+      {
+        "keyword": "合同纠纷",
+        "change": 0.22,
+        "period": "7d"
+      },
+      {
+        "keyword": "劳动争议",
+        "change": 0.18,
+        "period": "7d"
+      },
+      {
+        "keyword": "证据清单",
+        "change": 0.15,
+        "period": "7d"
+      }
+    ]
+  },
+  "prompts": [
+    {
+      "id": "contract_review",
+      "title": "合同审查摘要",
+      "category": "合同",
+      "template": "请审查合同内容：{{contract_text}}。输出核心风险、条款位置、风险等级、修改建议和需律师确认的问题。",
+      "vars": [
+        "contract_text"
+      ]
+    },
+    {
+      "id": "case_timeline",
+      "title": "案情时间线",
+      "category": "案件",
+      "template": "请把以下案情整理成时间线：{{case_facts}}。每条包含时间、事件、证据、证明目的和待补材料。",
+      "vars": [
+        "case_facts"
+      ]
+    },
+    {
+      "id": "lawyer_letter_outline",
+      "title": "律师函框架",
+      "category": "文书",
+      "template": "请为 {{case_type}} 生成律师函初稿框架：背景事实、主张、履行要求、期限、证据和律师审核提示。",
+      "vars": [
+        "case_type"
+      ]
+    }
+  ],
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "funnel",
+        "title": "法律服务客户推进",
+        "stages": [
+          "咨询",
+          "材料",
+          "委托",
+          "办理"
+        ]
+      }
+    ]
+  },
+  "homeCopy": {
+    "eyebrow": "法律工作台 · 材料整理与文书初稿",
+    "sub": "围绕咨询记录、案件事实、证据材料、合同条款、风险清单和文书框架，辅助法律服务团队高效整理。"
+  },
+  "domainObjects": [
+    "当事人",
+    "案由",
+    "事实经过",
+    "证据",
+    "合同条款",
+    "期限",
+    "诉求",
+    "风险点",
+    "文书",
+    "沟通记录"
+  ],
+  "experts": [
+    {
+      "id": "contract-review",
+      "name": "合同审查专家",
+      "focus": "识别责任、付款、违约、解除和争议条款"
+    },
+    {
+      "id": "evidence",
+      "name": "证据清单专家",
+      "focus": "把聊天、转账、合同、发票等整理成证据表"
+    },
+    {
+      "id": "timeline",
+      "name": "案情时间线专家",
+      "focus": "按时间、事实、证据和争议点整理案件"
+    },
+    {
+      "id": "document-draft",
+      "name": "文书初稿专家",
+      "focus": "生成起诉状、律师函、咨询纪要等初稿框架"
+    }
+  ],
+  "skills": [
+    {
+      "id": "contract-risk",
+      "name": "合同风险审查",
+      "description": "逐条识别付款、交付、违约、管辖和解除风险",
+      "outputs": [
+        "风险清单",
+        "修改建议"
+      ]
+    },
+    {
+      "id": "case-timeline",
+      "name": "案情时间线",
+      "description": "把事实按时间排序并关联证据",
+      "outputs": [
+        "时间线",
+        "待补材料"
+      ]
+    },
+    {
+      "id": "evidence-list",
+      "name": "证据清单",
+      "description": "整理已有证据、证明目的和缺口",
+      "outputs": [
+        "证据表",
+        "补证建议"
+      ]
+    },
+    {
+      "id": "legal-draft",
+      "name": "文书初稿",
+      "description": "生成需律师审核的文书结构和要点",
+      "outputs": [
+        "文书框架",
+        "审核提醒"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "id": "consultation-to-case",
+      "name": "咨询到立案材料",
+      "steps": [
+        "记录诉求",
+        "整理时间线",
+        "归类证据",
+        "识别期限",
+        "输出材料清单"
+      ],
+      "output": "案件材料包"
+    },
+    {
+      "id": "contract-review-flow",
+      "name": "合同审查流程",
+      "steps": [
+        "合同背景",
+        "核心条款",
+        "风险条款",
+        "修改建议",
+        "谈判要点"
+      ],
+      "output": "合同审查摘要"
+    }
+  ],
+  "safety": [
+    "不构成正式法律意见",
+    "所有文书和策略必须由执业律师最终审核",
+    "不承诺案件结果，不诱导隐瞒证据或规避监管"
+  ]
+}

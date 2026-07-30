@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse · 欢迎使用</title>
+  <style>
+    :root {
+      --ink: #0f172a;
+      --ink-2: #1f2a44;
+      --muted: #5b6b88;
+      --bg: #f6f8fc;
+      --card: #ffffff;
+      --line: #e5eaf3;
+      --line-2: #cfd9eb;
+      --accent: #2457d6;
+      --accent-deep: #102a55;
+      --warn: #b45309;
+      --green: #16a34a;
+      --error: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── App shell ── */
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(246, 248, 252, 0.85);
+      backdrop-filter: blur(12px);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 13px;
+      box-shadow: 0 6px 16px rgba(36, 87, 214, 0.3);
+    }
+
+    /* ── Step indicator ── */
+    .steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: transparent;
+      transition: background .2s, color .2s;
+    }
+    .step-pill.active { color: var(--ink); background: #fff; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06); border: 1px solid var(--line); }
+    .step-pill.done { color: var(--accent); }
+    .step-pill .pill-num {
+      display: grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .step-pill.active .pill-num { background: var(--ink); color: #fff; }
+    .step-pill.done .pill-num { background: var(--accent); color: #fff; }
+    .step-pill.done .pill-num::after { content: "✓"; }
+    .step-pill.done .pill-text { display: inline; }
+    .step-divider {
+      width: 24px;
+      height: 1px;
+      background: var(--line);
+      margin: 0 4px;
+    }
+
+    /* ── Main content area ── */
+    .stage {
+      flex: 1 1 auto;
+      display: grid;
+      place-items: center;
+      padding: 18px 20px 28px;
+    }
+    .stage-inner {
+      width: 100%;
+      max-width: 920px;
+      animation: fade-up .35s ease both;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Step base ── */
+    .step { display: none; }
+    .step.active { display: block; }
+    body.np-auth-pending .app,
+    body.np-auth-pending .footer-note { display: none; }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(28px, 3.4vw, 40px);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .lede {
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    /* ── Welcome step ── */
+    .welcome-hero {
+      text-align: center;
+    }
+    .welcome-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #eef4ff, #e0ecff);
+      border: 1px solid #cfdfff;
+      color: #1d4ed8;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      margin-bottom: 24px;
+    }
+    .welcome-badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #2457d6;
+      box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.18);
+      animation: pulse-dot 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.18); }
+      50%      { box-shadow: 0 0 0 7px rgba(36, 87, 214, 0.05); }
+    }
+    .welcome-mark {
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 30px;
+      font-weight: 800;
+      margin: 0 auto 22px;
+      box-shadow: 0 22px 44px rgba(36, 87, 214, 0.28);
+      animation: bob 3.2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    .welcome-hero h1 {
+      font-size: 44px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin: 8px 0 18px;
+    }
+    .welcome-accent {
+      background: linear-gradient(95deg, #2457d6 0%, #5b8def 60%, #2457d6 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+    .welcome-hero .lede {
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 auto 36px;
+    }
+    .welcome-features {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 36px 0 40px;
+      text-align: left;
+    }
+    .welcome-features li {
+      padding: 22px 20px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+      transition: transform .15s, border-color .15s, box-shadow .15s;
+    }
+    .welcome-features li:hover {
+      transform: translateY(-3px);
+      border-color: var(--line-2);
+      box-shadow: 0 16px 32px rgba(15, 23, 42, 0.07);
+    }
+    .feat-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #eef4ff, #d6e6ff);
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      margin-bottom: 14px;
+    }
+    .feat-icon svg { width: 20px; height: 20px; }
+    .feat-title { font-size: 14.5px; font-weight: 800; margin-bottom: 6px; color: var(--ink); letter-spacing: -0.01em; }
+    .feat-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    @media (max-width: 720px) {
+      .welcome-features { grid-template-columns: 1fr; }
+      .welcome-hero h1 { font-size: 34px; }
+    }
+    .welcome-trust {
+      margin-top: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    .welcome-trust span { display: inline-flex; align-items: center; gap: 5px; }
+    .welcome-trust svg { stroke: var(--muted); }
+    .welcome-trust-dot { color: #cbd5e1; }
+
+    /* ── Keys step ── */
+    .key-block {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.03);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .key-block:focus-within {
+      border-color: var(--line-2);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+    .key-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .key-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .key-tag {
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .key-tag.required { background: #fef2f2; color: var(--error); }
+    .key-tag.optional { background: #f1f5f9; color: var(--muted); }
+    .key-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 2px;
+    }
+    .key-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+      letter-spacing: 0.04em;
+      transition: border-color .15s;
+      background: #fff;
+    }
+    .key-input:hover { border-color: var(--line-2); }
+    .key-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(36, 87, 214, 0.1); }
+    .key-status {
+      margin-top: 10px;
+      font-size: 12.5px;
+      min-height: 16px;
+    }
+    .key-status.error { color: var(--error); }
+    .key-status.success { color: var(--green); }
+    .key-status.info { color: var(--muted); }
+
+    /* ── Industry step ── */
+    .step[data-step="1"] h1 {
+      margin-bottom: 8px;
+      letter-spacing: -0.035em;
+    }
+    .step[data-step="1"] .lede {
+      max-width: 720px;
+      margin-bottom: 18px;
+    }
+    .industry-grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .industry-group {
+      border: 1px solid rgba(207, 217, 235, 0.82);
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 255, 0.92));
+      padding: 14px;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055);
+    }
+    .industry-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .industry-group-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+    .industry-group-title::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(36, 87, 214, 0.1);
+    }
+    .industry-group-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      text-align: right;
+    }
+    .industry-group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(152px, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 720px) {
+      .industry-group-head {
+        display: block;
+      }
+      .industry-group-desc {
+        text-align: left;
+        margin-top: 4px;
+      }
+      .industry-group-grid { grid-template-columns: 1fr; }
+    }
+    .industry-card {
+      position: relative;
+      padding: 12px 12px 11px;
+      border-radius: 18px;
+      border: 1px solid rgba(207, 217, 235, 0.95);
+      background:
+        radial-gradient(circle at 100% 0%, var(--ind-soft, rgba(36, 87, 214, 0.08)), transparent 48%),
+        linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      cursor: pointer;
+      text-align: left;
+      transition: transform .16s, border-color .16s, box-shadow .16s, background .16s;
+      overflow: hidden;
+      color: var(--ink);
+      font-family: inherit;
+      min-height: 116px;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.045);
+    }
+    .industry-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: var(--ind-color, var(--accent));
+      opacity: 0.72;
+      pointer-events: none;
+    }
+    .industry-card:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--ind-color, var(--accent)) 42%, #cfd9eb);
+      box-shadow: 0 16px 34px rgba(15, 23, 42, 0.09);
+    }
+    .industry-card.selected {
+      border-color: var(--ind-color, var(--accent));
+      background:
+        radial-gradient(circle at 100% 0%, var(--ind-soft, rgba(36, 87, 214, 0.12)), transparent 52%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      box-shadow: 0 0 0 4px var(--ind-ring, rgba(36, 87, 214, 0.12)), 0 18px 42px rgba(15, 23, 42, 0.12);
+    }
+    .industry-card-top {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      padding-right: 22px;
+    }
+    .industry-card .ind-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--ind-soft, #eef4ff);
+      color: var(--ind-color, var(--accent));
+      font-size: 16px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+    }
+    .industry-card .ind-tag {
+      display: inline-flex;
+      align-items: center;
+      min-width: 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(241, 245, 249, 0.86);
+      color: #64748b;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      font-size: 10.5px;
+      font-weight: 800;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .industry-card h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 15px;
+      font-weight: 900;
+      margin-bottom: 5px;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+    .industry-card .desc {
+      position: relative;
+      z-index: 1;
+      font-size: 11.5px;
+      line-height: 1.45;
+      color: #5b6b88;
+      margin-bottom: 9px;
+      min-height: 32px;
+    }
+    .industry-card ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      position: relative;
+      z-index: 1;
+    }
+    .industry-card ul li {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 100%;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: #f8fafc;
+      border: 1px solid #edf2f7;
+      color: #475569;
+      font-size: 10.5px;
+      font-weight: 700;
+      line-height: 1.15;
+    }
+    .industry-card ul li::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--ind-color, var(--accent));
+      flex-shrink: 0;
+    }
+    .industry-card .check-mark {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--ind-color, var(--accent));
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity .18s, transform .18s;
+      box-shadow: 0 8px 18px var(--ind-ring, rgba(36, 87, 214, 0.18));
+    }
+    .industry-card.selected .check-mark {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .industry-card.casual-card {
+      --ind-color: #0f172a;
+      --ind-soft: rgba(15, 23, 42, 0.06);
+      --ind-ring: rgba(15, 23, 42, 0.12);
+    }
+
+    /* ── Action bar ── */
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .actions.welcome { justify-content: center; border-top: 0; padding-top: 0; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background .15s, transform .15s, box-shadow .15s, color .15s, border-color .15s;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, 0.18);
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--accent-deep);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 36px rgba(15, 23, 42, 0.22);
+    }
+    .btn-primary:disabled {
+      background: #cbd5e1;
+      color: #94a3b8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: transparent;
+    }
+    .btn-ghost:hover { color: var(--ink); }
+    .btn-large {
+      padding: 16px 32px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+    .btn svg { width: 16px; height: 16px; }
+
+    /* ── Footer ── */
+    .footer-note {
+      flex: 0 0 auto;
+      padding: 18px 32px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer-note a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body class="np-auth-pending">
+  <script type="module">
+    import { ensureCloudAuthorized } from './src/ui/brain-ui/cloud-auth.js';
+    async function shouldRequireCloudAuth() {
+      const res = await fetch('/cloud/config');
+      const data = await res.json().catch(() => ({}));
+      return Boolean(data?.cloudApi) && data?.allowOverride === false;
+    }
+    try {
+      if (await shouldRequireCloudAuth()) {
+        await ensureCloudAuthorized(document.body);
+      }
+    } catch (err) {
+      console.warn('[cloud-auth] onboarding gate skipped:', err);
+    }
+    document.body.classList.remove('np-auth-pending');
+  </script>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark">P</span>
+        <span>Pulse</span>
+      </div>
+      <div class="steps" id="step-indicator">
+        <span class="step-pill active" data-step="0">
+          <span class="pill-num">1</span>
+          <span class="pill-text">欢迎</span>
+        </span>
+        <span class="step-divider"></span>
+        <span class="step-pill" data-step="1">
+          <span class="pill-num">2</span>
+          <span class="pill-text">行业</span>
+        </span>
+        <span class="step-divider"></span>
+        <span class="step-pill" data-step="2">
+          <span class="pill-num">3</span>
+          <span class="pill-text">配置</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="stage">
+      <div class="stage-inner">
+
+        <!-- ─────── Step 1: Welcome ─────── -->
+        <section class="step active" data-step="0">
+          <div class="welcome-hero">
+            <span class="welcome-badge">
+              <span class="welcome-badge-dot"></span>
+              3 分钟完成配置，立即可用
+            </span>
+
+            <div class="welcome-mark">P</div>
+            <span class="eyebrow">AI 销售客户脉络助手</span>
+            <h1>客户太多<br><span class="welcome-accent">脑子记不住</span></h1>
+            <p class="lede">每次电话、微信、面谈、签约状态<br>Pulse 都自动归档到对应客户。<br>下次见面前 30 秒，看清上次聊到了哪。</p>
+
+            <ul class="welcome-features">
+              <li>
+                <div class="feat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                </div>
+                <div class="feat-title">每次沟通自动归档</div>
+                <div class="feat-sub">微信、电话、面谈摘要都进对应客户档案，再也不用翻聊天记录</div>
+              </li>
+              <li>
+                <div class="feat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                </div>
+                <div class="feat-title">AI 主动提醒</div>
+                <div class="feat-sub">停滞超过 7 天的客户、关键阶段、行业热点，AI 推到你桌面</div>
+              </li>
+              <li>
+                <div class="feat-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                </div>
+                <div class="feat-title">行业独立工作台</div>
+                <div class="feat-sub">电商和科技业务完全隔离，客户、记忆、热点互不打架</div>
+              </li>
+            </ul>
+
+            <div class="actions welcome">
+              <button type="button" class="btn btn-primary btn-large" id="welcome-next">
+                开始使用
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+
+            <div class="welcome-trust">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> 数据全本地，不上传服务器</span>
+              <span class="welcome-trust-dot">·</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 5 分钟上手</span>
+              <span class="welcome-trust-dot">·</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> 免费使用，自带 Key</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─────── Step 3: API Keys ─────── -->
+        <section class="step" data-step="2">
+          <span class="eyebrow">第 2 步 · 配置 AI 能力</span>
+          <h1>给 Pulse 装上 AI 大脑</h1>
+          <p class="lede">先填一个文字模型 API Key，应用就能用。语音识别和语音播报可选，以后在设置里补也行。</p>
+
+          <div class="key-block">
+            <div class="key-head">
+              <div>
+                <div class="key-title">
+                  文字模型
+                  <span class="key-tag required">必填</span>
+                </div>
+                <div class="key-sub">支持 DeepSeek、OpenAI、通义、智谱、MiniMax、Moonshot 等。Pulse 会自动识别你的厂商。</div>
+              </div>
+            </div>
+            <input type="password" class="key-input" id="text-key" placeholder="粘贴 API Key，例如 sk-..." autocomplete="off" spellcheck="false" />
+            <div class="key-status info" id="text-status">没有 API Key？<a href="https://platform.deepseek.com/api_keys" target="_blank" style="color: var(--accent);">获取 DeepSeek 免费 key →</a></div>
+          </div>
+
+          <div class="key-block">
+            <div class="key-head">
+              <div>
+                <div class="key-title">
+                  语音识别
+                  <span class="key-tag optional">可选</span>
+                </div>
+                <div class="key-sub">让你说话变文字，使用阿里云百炼 Paraformer。空着可跳过，以后在设置里补。</div>
+              </div>
+            </div>
+            <input type="password" class="key-input" id="voice-key" placeholder="阿里云百炼 API Key（可空）" autocomplete="off" spellcheck="false" />
+          </div>
+
+          <div class="key-block">
+            <div class="key-head">
+              <div>
+                <div class="key-title">
+                  语音播报（TTS）
+                  <span class="key-tag optional">可选</span>
+                </div>
+                <div class="key-sub">让 AI 念给你听，使用 MiniMax T2A。空着可跳过，以后在设置里补。</div>
+              </div>
+            </div>
+            <input type="password" class="key-input" id="tts-key" placeholder="MiniMax API Key（可空）" autocomplete="off" spellcheck="false" />
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-ghost" id="keys-back">← 返回</button>
+            <button type="button" class="btn btn-primary" id="keys-next" disabled>
+              完成，进入应用
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ─────── Step 2: Industry ─────── -->
+        <section class="step" data-step="1">
+          <span class="eyebrow">第 1 步 · 选择行业</span>
+          <h1>你主要在哪个行业做销售？</h1>
+          <p class="lede">Pulse 会按行业给你独立的工作台，客户/员工/数据互不污染。装完后随时可在「设置」里切换。</p>
+
+          <div class="industry-grid" id="industry-grid">
+            <div class="key-status info">正在加载行业工作台...</div>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-ghost" id="industry-back">← 返回</button>
+            <button type="button" class="btn btn-primary" id="industry-next" disabled>
+              下一步
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <div class="footer-note">© Pulse · AI 销售客户脉络助手 · 你的数据全部在本地</div>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const pills = document.querySelectorAll('.step-pill');
+    let currentStep = 0;
+    let selectedIndustry = null;
+
+    function setStep(i) {
+      currentStep = i;
+      // 用 data-step 匹配，不依赖 DOM 顺序，未来调整步骤更安全
+      steps.forEach((el) => {
+        const stepIdx = Number(el.dataset.step);
+        el.classList.toggle('active', stepIdx === i);
+      });
+      pills.forEach((p) => {
+        const stepIdx = Number(p.dataset.step);
+        p.classList.toggle('active', stepIdx === i);
+        p.classList.toggle('done', stepIdx < i);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Welcome → Industry
+    document.getElementById('welcome-next').addEventListener('click', () => setStep(1));
+
+    // Keys validation
+    const textKey = document.getElementById('text-key');
+    const keysNext = document.getElementById('keys-next');
+    const textStatus = document.getElementById('text-status');
+
+    function refreshKeysButton() {
+      keysNext.disabled = textKey.value.trim().length === 0;
+    }
+    textKey.addEventListener('input', refreshKeysButton);
+
+    // Industry selection (Step 2 现在是行业)
+    const industryNext = document.getElementById('industry-next');
+    const industryGrid = document.getElementById('industry-grid');
+    const industryGroups = [
+      { id: 'sales_growth', title: '销售增长', desc: '线索、报价、跟进和成交推进' },
+      { id: 'store_ops', title: '门店经营', desc: '会员、复购、活动和客诉处理' },
+      { id: 'professional_services', title: '专业服务', desc: '资料、文书、记录和合规边界' },
+    ];
+    const industryHints = {
+      ecommerce: ['店铺客户字段', '复购召回话术', '售后风险处理'],
+      tech: ['Demo / POC 推进', '决策角色识别', '方案销售跟进'],
+      crossborder: ['英文开发信', '报价邮件跟进', '海外询盘整理'],
+      usedcar: ['试驾邀约', '车况卖点整理', '置换贷款跟进'],
+      hr: ['岗位 JD', '候选人报告', '面试流程推进'],
+      tourism: ['出行方案', '签证材料清单', '报价后跟进'],
+      fitness: ['会员续费', '私教转化', '沉睡用户唤醒'],
+      pet: ['宠物档案', '到店提醒', '会员关怀'],
+      food: ['订货复购', '新品推广', '食品客诉处理'],
+      catering: ['活动方案', '老客召回', '客诉回复'],
+      legal: ['文书初稿', '案件时间线', '证据清单'],
+      pharma: ['拜访记录', '准入推进', '竞品分析'],
+      agriculture: ['农户档案', '作物周期', '农资复购'],
+    };
+    const industryPalettes = {
+      ecommerce: ['#ef4444', 'rgba(239, 68, 68, 0.09)', 'rgba(239, 68, 68, 0.15)'],
+      tech: ['#2563eb', 'rgba(37, 99, 235, 0.09)', 'rgba(37, 99, 235, 0.15)'],
+      crossborder: ['#2563eb', 'rgba(37, 99, 235, 0.09)', 'rgba(37, 99, 235, 0.15)'],
+      usedcar: ['#dc2626', 'rgba(220, 38, 38, 0.09)', 'rgba(220, 38, 38, 0.15)'],
+      hr: ['#7c3aed', 'rgba(124, 58, 237, 0.09)', 'rgba(124, 58, 237, 0.15)'],
+      tourism: ['#0284c7', 'rgba(2, 132, 199, 0.09)', 'rgba(2, 132, 199, 0.15)'],
+      fitness: ['#16a34a', 'rgba(22, 163, 74, 0.09)', 'rgba(22, 163, 74, 0.15)'],
+      pet: ['#d97706', 'rgba(217, 119, 6, 0.09)', 'rgba(217, 119, 6, 0.15)'],
+      food: ['#ea580c', 'rgba(234, 88, 12, 0.09)', 'rgba(234, 88, 12, 0.15)'],
+      catering: ['#dc2626', 'rgba(220, 38, 38, 0.09)', 'rgba(220, 38, 38, 0.15)'],
+      legal: ['#475569', 'rgba(71, 85, 105, 0.09)', 'rgba(71, 85, 105, 0.15)'],
+      pharma: ['#0891b2', 'rgba(8, 145, 178, 0.09)', 'rgba(8, 145, 178, 0.15)'],
+      agriculture: ['#65a30d', 'rgba(101, 163, 13, 0.09)', 'rgba(101, 163, 13, 0.15)'],
+      default: ['#2457d6', 'rgba(36, 87, 214, 0.09)', 'rgba(36, 87, 214, 0.15)'],
+    };
+
+    function esc(text) {
+      return String(text ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function groupIndustryPacks(packs) {
+      const known = new Set(industryGroups.map(g => g.id));
+      const groups = industryGroups
+        .map(group => ({ ...group, packs: packs.filter(pack => (pack.category || 'sales_growth') === group.id) }))
+        .filter(group => group.packs.length);
+      const other = packs.filter(pack => !known.has(pack.category || 'sales_growth'));
+      if (other.length) groups.push({ id: 'other', title: '更多行业', desc: '其他可扩展行业工作台', packs: other });
+      return groups;
+    }
+
+    function selectIndustryCard(card) {
+      document.querySelectorAll('.industry-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedIndustry = card.dataset.id;
+      industryNext.disabled = false;
+    }
+
+    async function loadIndustryCards() {
+      try {
+        const res = await fetch('/industry');
+        const state = await res.json();
+        const packs = Array.isArray(state.allPacks) ? state.allPacks : [];
+        if (!packs.length) throw new Error('没有可用行业包');
+        const casualSection = `
+          <section class="industry-group">
+            <div class="industry-group-head">
+              <div class="industry-group-title">通用模式</div>
+              <div class="industry-group-desc">不绑定行业，先轻松聊天</div>
+            </div>
+            <div class="industry-group-grid">
+              <button type="button" class="industry-card casual-card" data-id="">
+                <span class="check-mark">✓</span>
+                <div class="industry-card-top">
+                  <span class="ind-icon">💬</span>
+                  <span class="ind-tag">闲聊</span>
+                </div>
+                <h3>闲聊模式</h3>
+                <p class="desc">不选择行业工作台，直接进入通用对话。之后可在设置里再选择行业。</p>
+                <ul><li>轻松聊天</li><li>通用助手</li><li>稍后配置行业</li></ul>
+              </button>
+            </div>
+          </section>
+        `;
+        industryGrid.innerHTML = casualSection + groupIndustryPacks(packs).map(group => `
+          <section class="industry-group">
+            <div class="industry-group-head">
+              <div class="industry-group-title">${esc(group.title)}</div>
+              <div class="industry-group-desc">${esc(group.desc)}</div>
+            </div>
+            <div class="industry-group-grid">
+              ${group.packs.map((pack) => {
+                const palette = industryPalettes[pack.id] || industryPalettes.default;
+                const hints = industryHints[pack.id] || ['客户档案', 'AI 跟进助手', '行业雷达'];
+                return `
+                  <button type="button" class="industry-card" data-id="${esc(pack.id)}" style="--ind-color: ${palette[0]}; --ind-soft: ${palette[1]}; --ind-ring: ${palette[2]};">
+                    <span class="check-mark">✓</span>
+                    <div class="industry-card-top">
+                      <span class="ind-icon">${esc(pack.icon || '🏢')}</span>
+                      <span class="ind-tag">${esc(pack.name || pack.id)}</span>
+                    </div>
+                    <h3>${esc(pack.name || pack.id)}工作台</h3>
+                    <p class="desc">${esc(pack.tagline || '专属客户、记忆与知识工作台')}</p>
+                    <ul>${hints.slice(0, 3).map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </section>
+        `).join('');
+        document.querySelectorAll('.industry-card').forEach(card => {
+          card.addEventListener('click', () => selectIndustryCard(card));
+        });
+      } catch (err) {
+        industryGrid.innerHTML = `<div class="key-status error">行业加载失败：${esc(err.message || '未知错误')}</div>`;
+      }
+    }
+    loadIndustryCards();
+
+    // Industry → 返回欢迎；Industry → Keys
+    document.getElementById('industry-back').addEventListener('click', () => setStep(0));
+    industryNext.addEventListener('click', () => {
+      setStep(2);
+    });
+
+    // Keys → 返回行业
+    document.getElementById('keys-back').addEventListener('click', () => setStep(1));
+
+    // Keys 最后一步：激活 LLM → 可选保存语音/TTS → 保存行业 → 进入主界面
+    keysNext.addEventListener('click', async () => {
+      keysNext.disabled = true;
+      const originalLabel = keysNext.innerHTML;
+      keysNext.innerHTML = '保存中...';
+      textStatus.className = 'key-status info';
+      textStatus.textContent = '正在自动识别厂商并激活...';
+
+      try {
+        // 1) Activate text LLM (required) — 后端端点是 /activate
+        const r = await fetch('/activate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ apiKey: textKey.value.trim(), provider: 'auto' })
+        });
+        const data = await r.json();
+        if (!data.ok) throw new Error(data.error || '激活失败，请检查 API Key');
+
+        textStatus.className = 'key-status success';
+        textStatus.textContent = `激活成功：${data.provider || '已识别'}${data.model ? ' · ' + data.model : ''}`;
+
+        // 2) Voice (optional)
+        const voiceKey = document.getElementById('voice-key').value.trim();
+        if (voiceKey) {
+          await fetch('/settings/voice', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ aliyunApiKey: voiceKey })
+          });
+        }
+
+        // 3) TTS (optional)
+        const ttsKey = document.getElementById('tts-key').value.trim();
+        if (ttsKey) {
+          await fetch('/settings/tts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ttsProvider: 'minimax', minimaxKey: ttsKey })
+          });
+        }
+
+        // 4) Persist industry (selected in Step 2)
+        if (selectedIndustry) {
+          await fetch('/industry/enabled', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: [selectedIndustry] })
+          });
+          await fetch('/industry/active', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: selectedIndustry })
+          });
+          await fetch('/industry/onboarded', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ value: true })
+          });
+        } else {
+          await fetch('/industry/enabled', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ids: [] })
+          });
+          await fetch('/industry/active', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: null })
+          });
+          await fetch('/industry/onboarded', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ value: true })
+          });
+        }
+
+        // 5) Enter main app
+        setTimeout(() => { window.location.href = '/'; }, 600);
+      } catch (err) {
+        textStatus.className = 'key-status error';
+        textStatus.textContent = '出错：' + (err.message || '未知错误');
+        keysNext.disabled = false;
+        keysNext.innerHTML = originalLabel;
+      }
+    });
+
+    // If LLM already activated (e.g. user came back), skip the keys step's blocking validation
+    fetch('/activation-status').then(r => r.json()).then(data => {
+      if (data && data.activated) {
+        // Allow next button even with empty input (skip)
+        keysNext.disabled = false;
+        textStatus.className = 'key-status info';
+        textStatus.textContent = '检测到已激活，可直接「下一步」或更新 Key';
+      }
+    }).catch(() => {});
+  </script>
+</body>
+</html>
